@@ -3,635 +3,1164 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0752a8">
 
 <title>EDUVIORA Shop Manager</title>
 
 <style>
-*{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
-    font-family:Arial,Helvetica,sans-serif;
+
+/* ===============================
+   BASIC RESET
+================================ */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
-body{
-    background:#f4f7fb;
-    color:#172033;
-    min-height:100vh;
+body {
+    background: #f4f7fb;
+    color: #172033;
+    font-family: Arial, Helvetica, sans-serif;
+    min-height: 100vh;
 }
 
-/* HEADER */
-.header{
-    background:linear-gradient(135deg,#063b8f,#1261c9);
-    color:white;
-    padding:18px 20px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    position:sticky;
-    top:0;
-    z-index:100;
-    box-shadow:0 3px 12px rgba(0,0,0,.12);
+
+/* ===============================
+   HEADER
+================================ */
+
+.header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+
+    background: linear-gradient(
+        135deg,
+        #063b8f,
+        #1261c9
+    );
+
+    color: white;
+
+    padding: 14px 16px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    box-shadow: 0 3px 12px rgba(0,0,0,0.15);
 }
 
-.brand{
-    display:flex;
-    align-items:center;
-    gap:10px;
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-.logo{
-    width:42px;
-    height:42px;
-    border-radius:10px;
-    background:white;
-    color:#0752a8;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-weight:bold;
-    font-size:18px;
+
+.logo {
+    width: 44px;
+    height: 44px;
+
+    border-radius: 11px;
+
+    background: white;
+    color: #0752a8;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 20px;
+    font-weight: 800;
 }
 
-.brand h1{
-    font-size:19px;
+
+.brand-title {
+    font-size: 17px;
+    font-weight: 800;
 }
 
-.brand small{
-    display:block;
-    opacity:.85;
-    margin-top:3px;
+
+.brand-subtitle {
+    display: block;
+
+    margin-top: 3px;
+
+    font-size: 11px;
+
+    opacity: 0.85;
 }
 
-.menu-btn{
-    border:0;
-    background:rgba(255,255,255,.15);
-    color:white;
-    width:42px;
-    height:42px;
-    border-radius:10px;
-    font-size:21px;
-    cursor:pointer;
+
+.settings-button {
+    border: 0;
+
+    width: 42px;
+    height: 42px;
+
+    border-radius: 10px;
+
+    background: rgba(255,255,255,0.15);
+
+    color: white;
+
+    font-size: 20px;
+
+    cursor: pointer;
 }
 
-/* MAIN */
-.container{
-    max-width:1100px;
-    margin:auto;
-    padding:20px;
+
+/* ===============================
+   MAIN CONTAINER
+================================ */
+
+.container {
+    width: 100%;
+    max-width: 1050px;
+
+    margin: auto;
+
+    padding: 14px 14px 90px;
 }
 
-.shop-title{
-    background:white;
-    padding:18px;
-    border-radius:14px;
-    box-shadow:0 3px 12px rgba(0,0,0,.06);
-    margin-bottom:18px;
+
+/* ===============================
+   SHOP PROFILE HEADER
+================================ */
+
+.shop-profile {
+    background: white;
+
+    border-radius: 16px;
+
+    padding: 17px;
+
+    margin-bottom: 14px;
+
+    box-shadow: 0 3px 12px rgba(0,0,0,0.06);
 }
 
-.shop-title h2{
-    color:#0752a8;
-    margin-bottom:6px;
+
+.shop-profile h2 {
+    color: #0752a8;
+
+    font-size: 24px;
+
+    margin-bottom: 5px;
 }
 
-.shop-title p{
-    color:#6b7280;
-    font-size:14px;
+
+.shop-profile p {
+    color: #64748b;
+
+    font-size: 13px;
+
+    line-height: 1.5;
 }
 
-/* CARDS */
-.cards{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:14px;
-    margin-bottom:20px;
+
+/* ===============================
+   DASHBOARD CARDS
+================================ */
+
+.dashboard-cards {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 10px;
 }
 
-.card{
-    background:white;
-    border-radius:14px;
-    padding:18px;
-    box-shadow:0 3px 12px rgba(0,0,0,.06);
+
+.dashboard-card {
+    background: white;
+
+    border-radius: 15px;
+
+    padding: 16px;
+
+    box-shadow: 0 3px 12px rgba(0,0,0,0.06);
 }
 
-.card-label{
-    color:#6b7280;
-    font-size:13px;
-    margin-bottom:8px;
+
+.card-label {
+    color: #64748b;
+
+    font-size: 12px;
 }
 
-.card-value{
-    font-size:24px;
-    font-weight:bold;
+
+.card-value {
+    font-size: 22px;
+
+    font-weight: 800;
+
+    margin-top: 7px;
 }
 
-.income{
-    color:#07883f;
+
+.green {
+    color: #07883f;
 }
 
-.expense{
-    color:#d52f2f;
+
+.red {
+    color: #d52f2f;
 }
 
-.profit{
-    color:#0752a8;
+
+.blue {
+    color: #0752a8;
 }
 
-.balance{
-    color:#9a6a00;
+
+.gold {
+    color: #a17000;
 }
 
-/* BUTTONS */
-.quick-actions{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:14px;
-    margin-bottom:20px;
+
+/* ===============================
+   QUICK ACTIONS
+================================ */
+
+.quick-actions {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 10px;
+
+    margin: 14px 0;
 }
 
-.btn{
-    border:0;
-    padding:14px;
-    border-radius:11px;
-    cursor:pointer;
-    font-size:15px;
-    font-weight:bold;
+
+.btn {
+    border: 0;
+
+    border-radius: 11px;
+
+    padding: 13px;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    cursor: pointer;
 }
 
-.btn-income{
-    background:#e4f8ec;
-    color:#07883f;
+
+.income-button {
+    background: #e3f8ec;
+
+    color: #087b3c;
 }
 
-.btn-expense{
-    background:#ffebeb;
-    color:#d52f2f;
+
+.expense-button {
+    background: #ffe9e9;
+
+    color: #c92f2f;
 }
 
-.btn-primary{
-    background:#0752a8;
-    color:white;
+
+.primary-button {
+    background: #0752a8;
+
+    color: white;
 }
 
-.btn-gold{
-    background:#dcae36;
-    color:white;
+
+.secondary-button {
+    background: #e9eef5;
+
+    color: #334155;
 }
 
-.btn-danger{
-    background:#d52f2f;
-    color:white;
+
+.danger-button {
+    background: #ffe5e5;
+
+    color: #c62828;
 }
 
-.btn-secondary{
-    background:#e9eef5;
-    color:#334155;
+
+/* ===============================
+   SECTION
+================================ */
+
+.section {
+    background: white;
+
+    border-radius: 16px;
+
+    padding: 16px;
+
+    margin: 14px 0;
+
+    box-shadow: 0 3px 12px rgba(0,0,0,0.06);
 }
 
-/* SECTION */
-.section{
-    background:white;
-    border-radius:14px;
-    padding:20px;
-    margin-bottom:20px;
-    box-shadow:0 3px 12px rgba(0,0,0,.06);
+
+.section-header {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 10px;
+
+    margin-bottom: 14px;
 }
 
-.section-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:16px;
+
+.section h3 {
+    color: #0752a8;
+
+    font-size: 20px;
 }
 
-.section-header h3{
-    color:#0752a8;
+
+/* ===============================
+   SMALL SUMMARY CARDS
+================================ */
+
+.summary-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 10px;
 }
 
-/* TABLE */
-.table-wrap{
-    overflow-x:auto;
+
+.summary-card {
+    background: #f7f9fc;
+
+    border-radius: 11px;
+
+    padding: 13px;
 }
 
-table{
-    width:100%;
-    border-collapse:collapse;
-    min-width:650px;
+
+.summary-card span {
+    display: block;
+
+    font-size: 11px;
+
+    color: #64748b;
 }
 
-th,td{
-    padding:12px 10px;
-    border-bottom:1px solid #edf0f5;
-    text-align:left;
-    font-size:14px;
+
+.summary-card strong {
+    display: block;
+
+    margin-top: 6px;
+
+    font-size: 17px;
 }
 
-th{
-    background:#f6f8fc;
-    color:#475569;
+
+/* ===============================
+   FILTERS
+================================ */
+
+.filters {
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr auto;
+
+    gap: 9px;
+
+    margin-bottom: 12px;
 }
 
-.action-btn{
-    border:0;
-    padding:7px 9px;
-    border-radius:7px;
-    cursor:pointer;
-    margin-right:4px;
+
+input,
+select {
+    width: 100%;
+
+    padding: 12px;
+
+    border: 1px solid #d9dee7;
+
+    border-radius: 9px;
+
+    background: white;
+
+    font-size: 14px;
+
+    outline: none;
 }
 
-.edit{
-    background:#e7f0ff;
-    color:#0752a8;
+
+input:focus,
+select:focus {
+    border-color: #0752a8;
 }
 
-.delete{
-    background:#ffe8e8;
-    color:#d52f2f;
+
+/* ===============================
+   TRANSACTION TABLE
+================================ */
+
+.table-wrapper {
+    width: 100%;
+
+    overflow-x: auto;
 }
 
-/* MODAL */
-.modal{
-    display:none;
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.45);
-    z-index:500;
-    align-items:center;
-    justify-content:center;
-    padding:15px;
+
+table {
+    width: 100%;
+
+    min-width: 760px;
+
+    border-collapse: collapse;
 }
 
-.modal-box{
-    width:100%;
-    max-width:480px;
-    background:white;
-    border-radius:16px;
-    padding:22px;
-    max-height:90vh;
-    overflow-y:auto;
+
+th,
+td {
+    padding: 10px;
+
+    border-bottom: 1px solid #edf0f5;
+
+    text-align: left;
+
+    font-size: 13px;
 }
 
-.modal-header{
-    display:flex;
-    justify-content:space-between;
-    margin-bottom:20px;
+
+th {
+    background: #f7f9fc;
+
+    color: #475569;
 }
 
-.close{
-    border:0;
-    background:#f0f2f5;
-    width:34px;
-    height:34px;
-    border-radius:50%;
-    cursor:pointer;
+
+/* ===============================
+   MOBILE TRANSACTION CARDS
+================================ */
+
+.mobile-transactions {
+    display: none;
 }
 
-.form-group{
-    margin-bottom:15px;
+
+.transaction-card {
+    border: 1px solid #edf0f5;
+
+    border-radius: 12px;
+
+    padding: 12px;
+
+    margin-bottom: 8px;
 }
 
-.form-group label{
-    display:block;
-    font-size:13px;
-    font-weight:bold;
-    color:#475569;
-    margin-bottom:6px;
+
+.transaction-top {
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 10px;
+
+    font-weight: 700;
 }
 
-.form-group input,
-.form-group select{
-    width:100%;
-    padding:12px;
-    border:1px solid #d9dee7;
-    border-radius:9px;
-    outline:none;
-    font-size:15px;
+
+.transaction-info {
+    color: #64748b;
+
+    font-size: 12px;
+
+    margin-top: 6px;
+
+    line-height: 1.6;
 }
 
-.form-group input:focus,
-.form-group select:focus{
-    border-color:#0752a8;
+
+/* ===============================
+   EMPTY MESSAGE
+================================ */
+
+.empty-message {
+    text-align: center;
+
+    color: #94a3b8;
+
+    padding: 25px;
 }
 
-.full{
-    width:100%;
+
+/* ===============================
+   MODAL
+================================ */
+
+.modal {
+    display: none;
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 500;
+
+    background: rgba(0,0,0,0.55);
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 14px;
 }
 
-/* REPORT */
-.report-grid{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:12px;
+
+.modal-box {
+    width: 100%;
+
+    max-width: 480px;
+
+    max-height: 92vh;
+
+    overflow-y: auto;
+
+    background: white;
+
+    border-radius: 16px;
+
+    padding: 18px;
 }
 
-.report-item{
-    background:#f7f9fc;
-    padding:15px;
-    border-radius:10px;
+
+.modal-header {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 15px;
 }
 
-.report-item span{
-    display:block;
-    color:#64748b;
-    font-size:12px;
-    margin-bottom:6px;
+
+.modal-header h3 {
+    color: #0752a8;
 }
 
-.report-item strong{
-    font-size:19px;
+
+.close-button {
+    border: 0;
+
+    width: 34px;
+    height: 34px;
+
+    border-radius: 50%;
+
+    background: #eef1f5;
+
+    cursor: pointer;
 }
 
-/* FILTER */
-.filters{
-    display:grid;
-    grid-template-columns:1fr 1fr auto;
-    gap:10px;
-    margin-bottom:15px;
+
+.form-group {
+    margin-bottom: 12px;
 }
 
-.filters input{
-    padding:11px;
-    border:1px solid #d9dee7;
-    border-radius:8px;
+
+.form-group label {
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: #475569;
+
+    font-size: 12px;
+
+    font-weight: 700;
 }
 
-/* NAV */
-.bottom-nav{
-    position:fixed;
-    bottom:0;
-    left:0;
-    right:0;
-    background:white;
-    border-top:1px solid #e5e7eb;
-    display:flex;
-    justify-content:space-around;
-    padding:8px 4px;
-    z-index:200;
+
+.full-width {
+    width: 100%;
 }
 
-.nav-item{
-    background:none;
-    border:0;
-    color:#64748b;
-    font-size:11px;
-    cursor:pointer;
+
+/* ===============================
+   BOTTOM NAVIGATION
+================================ */
+
+.bottom-navigation {
+    position: fixed;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    z-index: 200;
+
+    background: white;
+
+    border-top: 1px solid #ddd;
+
+    display: flex;
+
+    justify-content: space-around;
+
+    padding: 7px;
 }
 
-.nav-item span{
-    display:block;
-    font-size:19px;
-    margin-bottom:2px;
+
+.nav-button {
+    border: 0;
+
+    background: none;
+
+    color: #64748b;
+
+    font-size: 11px;
+
+    cursor: pointer;
 }
 
-.nav-item.active{
-    color:#0752a8;
-    font-weight:bold;
+
+.nav-button span {
+    display: block;
+
+    font-size: 18px;
+
+    margin-bottom: 2px;
 }
 
-/* EMPTY */
-.empty{
-    text-align:center;
-    padding:30px;
-    color:#94a3b8;
+
+.nav-button.active {
+    color: #0752a8;
+
+    font-weight: 700;
 }
 
-/* FOOTER */
-.footer{
-    text-align:center;
-    padding:25px 10px 90px;
-    color:#94a3b8;
-    font-size:12px;
+
+/* ===============================
+   FOOTER
+================================ */
+
+.footer {
+    text-align: center;
+
+    color: #94a3b8;
+
+    font-size: 12px;
+
+    padding: 20px;
 }
 
-/* RESPONSIVE */
-@media(max-width:800px){
-    .cards{
-        grid-template-columns:1fr 1fr;
+
+/* ===============================
+   RESPONSIVE
+================================ */
+
+@media(max-width:800px) {
+
+    .dashboard-cards {
+        grid-template-columns:
+            1fr 1fr;
     }
 
-    .report-grid{
-        grid-template-columns:1fr 1fr;
+    .summary-grid {
+        grid-template-columns:
+            1fr 1fr;
     }
+
 }
 
-@media(max-width:520px){
-    .container{
-        padding:12px;
+
+@media(max-width:600px) {
+
+    .brand-title {
+        font-size: 15px;
     }
 
-    .header{
-        padding:14px;
+    .brand-subtitle {
+        font-size: 10px;
     }
 
-    .brand h1{
-        font-size:16px;
+    .dashboard-card {
+        padding: 13px;
     }
 
-    .cards{
-        gap:9px;
+    .card-value {
+        font-size: 19px;
     }
 
-    .card{
-        padding:13px;
+    .summary-grid {
+        grid-template-columns:
+            1fr 1fr;
     }
 
-    .card-value{
-        font-size:20px;
+    .filters {
+        grid-template-columns: 1fr;
     }
 
-    .section{
-        padding:15px;
+    .table-wrapper {
+        display: none;
     }
 
-    .filters{
-        grid-template-columns:1fr;
+    .mobile-transactions {
+        display: block;
     }
 
-    .report-grid{
-        grid-template-columns:1fr 1fr;
-    }
 }
+
 </style>
 </head>
+    <body>
 
-<body>
+<!-- =====================================================
+     HEADER
+===================================================== -->
 
-<!-- HEADER -->
 <header class="header">
 
     <div class="brand">
-        <div class="logo">E</div>
+
+        <div class="logo">
+            E
+        </div>
 
         <div>
-            <h1>EDUVIORA SHOP MANAGER</h1>
-            <small>Simple • Professional • Affordable</small>
+            <div class="brand-title">
+                EDUVIORA SHOP MANAGER
+            </div>
+
+            <small class="brand-subtitle">
+                Simple • Professional • Affordable
+            </small>
         </div>
+
     </div>
 
-    <button class="menu-btn" onclick="openSettings()">⚙</button>
+    <button
+        class="settings-button"
+        onclick="openSettings()"
+        aria-label="Settings"
+    >
+        ⚙️
+    </button>
 
 </header>
 
 
+<!-- =====================================================
+     MAIN CONTENT
+===================================================== -->
+
 <main class="container">
 
-    <!-- SHOP -->
-    <div class="shop-title">
-        <h2 id="shopName">My Shop</h2>
-        <p id="todayText"></p>
-    </div>
 
+    <!-- =================================================
+         SHOP PROFILE
+    ================================================== -->
 
-    <!-- DASHBOARD -->
-    <section id="dashboard">
+    <section class="shop-profile">
 
-        <div class="cards">
+        <h2 id="shopName">
+            My Shop
+        </h2>
 
-            <div class="card">
-                <div class="card-label">Today's Income</div>
-                <div class="card-value income" id="todayIncome">
-                    ₹0
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-label">Today's Expenses</div>
-                <div class="card-value expense" id="todayExpense">
-                    ₹0
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-label">Today's Profit</div>
-                <div class="card-value profit" id="todayProfit">
-                    ₹0
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-label">Current Balance</div>
-                <div class="card-value balance" id="currentBalance">
-                    ₹0
-                </div>
-            </div>
-
-        </div>
-
-
-        <!-- QUICK ACTIONS -->
-        <div class="quick-actions">
-
-            <button
-                class="btn btn-income"
-                onclick="openTransaction('income')">
-                + ADD INCOME
-            </button>
-
-            <button
-                class="btn btn-expense"
-                onclick="openTransaction('expense')">
-                − ADD EXPENSE
-            </button>
-
-        </div>
-
-
-        <!-- RECENT -->
-        <section class="section">
-
-            <div class="section-header">
-                <h3>Recent Transactions</h3>
-
-                <button
-                    class="btn btn-secondary"
-                    onclick="showAllTransactions()">
-                    View All
-                </button>
-            </div>
-
-            <div class="table-wrap">
-
-                <table>
-
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Type</th>
-                            <th>Description</th>
-                            <th>Payment</th>
-                            <th>Amount</th>
-                        </tr>
-                    </thead>
-
-                    <tbody id="recentTable"></tbody>
-
-                </table>
-
-            </div>
-
-        </section>
+        <p id="shopInformation">
+            Owner • Mobile • Address • Date
+        </p>
 
     </section>
 
 
-    <!-- REPORT -->
-    <section class="section" id="reports">
+
+    <!-- =================================================
+         DASHBOARD CARDS
+    ================================================== -->
+
+    <div class="dashboard-cards">
+
+
+        <!-- TODAY INCOME -->
+
+        <div class="dashboard-card">
+
+            <div class="card-label">
+                Today's Income
+            </div>
+
+            <div
+                id="todayIncome"
+                class="card-value green"
+            >
+                ₹0.00
+            </div>
+
+        </div>
+
+
+
+        <!-- TODAY EXPENSE -->
+
+        <div class="dashboard-card">
+
+            <div class="card-label">
+                Today's Expenses
+            </div>
+
+            <div
+                id="todayExpense"
+                class="card-value red"
+            >
+                ₹0.00
+            </div>
+
+        </div>
+
+
+
+        <!-- TODAY PROFIT -->
+
+        <div class="dashboard-card">
+
+            <div class="card-label">
+                Today's Profit
+            </div>
+
+            <div
+                id="todayProfit"
+                class="card-value blue"
+            >
+                ₹0.00
+            </div>
+
+        </div>
+
+
+
+        <!-- CURRENT BALANCE -->
+
+        <div class="dashboard-card">
+
+            <div class="card-label">
+                Current Balance
+            </div>
+
+            <div
+                id="currentBalance"
+                class="card-value gold"
+            >
+                ₹0.00
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================================
+         QUICK ACTION BUTTONS
+    ================================================== -->
+
+    <div class="quick-actions">
+
+
+        <button
+            class="btn income-button"
+            onclick="openTransaction('income')"
+        >
+            ＋ ADD INCOME
+        </button>
+
+
+        <button
+            class="btn expense-button"
+            onclick="openTransaction('expense')"
+        >
+            − ADD EXPENSE
+        </button>
+
+    </div>
+
+
+
+    <!-- =================================================
+         PAYMENT BALANCE
+    ================================================== -->
+
+    <section class="section">
 
         <div class="section-header">
-            <h3>Monthly Report</h3>
+
+            <h3>
+                Payment Balance
+            </h3>
+
         </div>
+
+
+        <div class="summary-grid">
+
+
+            <!-- CASH -->
+
+            <div class="summary-card">
+
+                <span>
+                    Cash Balance
+                </span>
+
+                <strong
+                    id="cashBalance"
+                    class="green"
+                >
+                    ₹0.00
+                </strong>
+
+            </div>
+
+
+
+            <!-- UPI -->
+
+            <div class="summary-card">
+
+                <span>
+                    UPI Balance
+                </span>
+
+                <strong
+                    id="upiBalance"
+                    class="blue"
+                >
+                    ₹0.00
+                </strong>
+
+            </div>
+
+
+
+            <!-- BANK -->
+
+            <div class="summary-card">
+
+                <span>
+                    Bank Balance
+                </span>
+
+                <strong
+                    id="bankBalance"
+                    class="gold"
+                >
+                    ₹0.00
+                </strong>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         RECENT TRANSACTIONS
+    ================================================== -->
+
+    <section class="section">
+
+        <div class="section-header">
+
+            <h3>
+                Recent Transactions
+            </h3>
+
+            <button
+                class="btn secondary-button"
+                onclick="showAllTransactions()"
+            >
+                View All
+            </button>
+
+        </div>
+
+
+        <!-- Desktop/tablet -->
+
+        <div
+            id="recentTransactions"
+            class="mobile-transactions"
+        >
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         MONTHLY REPORT
+    ================================================== -->
+
+    <section
+        class="section"
+        id="reportsSection"
+    >
+
+        <div class="section-header">
+
+            <h3>
+                Monthly Report
+            </h3>
+
+        </div>
+
+
+        <!-- MONTH SELECT -->
 
         <div class="filters">
 
             <input
                 type="month"
                 id="reportMonth"
-                onchange="generateReport()">
+                onchange="updateDashboard()"
+            >
 
             <button
-                class="btn btn-primary"
-                onclick="exportCSV()">
+                class="btn primary-button"
+                onclick="exportCSV()"
+            >
                 Export CSV
             </button>
 
             <button
-                class="btn btn-secondary"
-                onclick="window.print()">
+                class="btn secondary-button"
+                onclick="window.print()"
+            >
                 Print
             </button>
 
         </div>
 
-        <div class="report-grid">
 
-            <div class="report-item">
-                <span>Total Income</span>
-                <strong class="income" id="monthIncome">₹0</strong>
+        <!-- MONTHLY SUMMARY -->
+
+        <div class="summary-grid">
+
+
+            <!-- MONTH INCOME -->
+
+            <div class="summary-card">
+
+                <span>
+                    Total Income
+                </span>
+
+                <strong
+                    id="monthlyIncome"
+                    class="green"
+                >
+                    ₹0.00
+                </strong>
+
             </div>
 
-            <div class="report-item">
-                <span>Total Expenses</span>
-                <strong class="expense" id="monthExpense">₹0</strong>
+
+
+            <!-- MONTH EXPENSE -->
+
+            <div class="summary-card">
+
+                <span>
+                    Total Expenses
+                </span>
+
+                <strong
+                    id="monthlyExpense"
+                    class="red"
+                >
+                    ₹0.00
+                </strong>
+
             </div>
 
-            <div class="report-item">
-                <span>Net Profit</span>
-                <strong class="profit" id="monthProfit">₹0</strong>
+
+
+            <!-- MONTH PROFIT -->
+
+            <div class="summary-card">
+
+                <span>
+                    Net Profit
+                </span>
+
+                <strong
+                    id="monthlyProfit"
+                    class="blue"
+                >
+                    ₹0.00
+                </strong>
+
             </div>
 
-            <div class="report-item">
-                <span>Income Transactions</span>
-                <strong id="incomeCount">0</strong>
+
+
+            <!-- INCOME COUNT -->
+
+            <div class="summary-card">
+
+                <span>
+                    Income Transactions
+                </span>
+
+                <strong id="incomeCount">
+                    0
+                </strong>
+
             </div>
 
-            <div class="report-item">
-                <span>Expense Transactions</span>
-                <strong id="expenseCount">0</strong>
+
+
+            <!-- EXPENSE COUNT -->
+
+            <div class="summary-card">
+
+                <span>
+                    Expense Transactions
+                </span>
+
+                <strong id="expenseCount">
+                    0
+                </strong>
+
             </div>
 
-            <div class="report-item">
-                <span>Closing Balance</span>
-                <strong class="balance" id="monthBalance">₹0</strong>
+
+
+            <!-- CLOSING BALANCE -->
+
+            <div class="summary-card">
+
+                <span>
+                    Closing Balance
+                </span>
+
+                <strong
+                    id="monthlyBalance"
+                    class="gold"
+                >
+                    ₹0.00
+                </strong>
+
             </div>
 
         </div>
@@ -639,166 +1168,331 @@ th{
     </section>
 
 
-    <!-- ALL TRANSACTIONS -->
-    <section class="section" id="transactions">
+
+    <!-- =================================================
+         ALL TRANSACTIONS
+    ================================================== -->
+
+    <section
+        class="section"
+        id="transactionsSection"
+    >
 
         <div class="section-header">
 
-            <h3>Transactions</h3>
+            <h3>
+                Transactions
+            </h3>
 
             <button
-                class="btn btn-primary"
-                onclick="openTransaction('income')">
-                + Add
+                class="btn primary-button"
+                onclick="openTransaction('income')"
+            >
+                ＋ Add
             </button>
 
         </div>
 
-        <div class="table-wrap">
+
+
+        <!-- FILTERS -->
+
+        <div class="filters">
+
+            <input
+                type="date"
+                id="fromDate"
+                onchange="renderTransactions()"
+            >
+
+
+            <input
+                type="date"
+                id="toDate"
+                onchange="renderTransactions()"
+            >
+
+
+            <select
+                id="transactionFilter"
+                onchange="renderTransactions()"
+            >
+
+                <option value="">
+                    All Transactions
+                </option>
+
+                <option value="income">
+                    Income Only
+                </option>
+
+                <option value="expense">
+                    Expense Only
+                </option>
+
+            </select>
+
+        </div>
+
+
+
+        <!-- =================================================
+             DESKTOP TABLE
+        ================================================== -->
+
+        <div class="table-wrapper">
 
             <table>
 
                 <thead>
+
                     <tr>
-                        <th>Date</th>
-                        <th>Type</th>
-                        <th>Category</th>
-                        <th>Description</th>
-                        <th>Payment</th>
-                        <th>Amount</th>
-                        <th>Action</th>
+
+                        <th>
+                            Date
+                        </th>
+
+                        <th>
+                            Type
+                        </th>
+
+                        <th>
+                            Category
+                        </th>
+
+                        <th>
+                            Description
+                        </th>
+
+                        <th>
+                            Payment
+                        </th>
+
+                        <th>
+                            Amount
+                        </th>
+
+                        <th>
+                            Action
+                        </th>
+
                     </tr>
+
                 </thead>
 
-                <tbody id="allTable"></tbody>
+
+                <tbody id="transactionTable">
+
+                    <tr>
+
+                        <td
+                            colspan="7"
+                            class="empty-message"
+                        >
+                            No transactions yet
+                        </td>
+
+                    </tr>
+
+                </tbody>
 
             </table>
 
         </div>
 
+
+
+        <!-- =================================================
+             MOBILE TRANSACTIONS
+        ================================================== -->
+
+        <div
+            id="mobileTransactions"
+            class="mobile-transactions"
+        >
+
+            <div class="empty-message">
+                No transactions yet
+            </div>
+
+        </div>
+
     </section>
+
+
+
+    <!-- =================================================
+         FOOTER
+    ================================================== -->
+
+    <div class="footer">
+
+        EDUVIORA Shop Manager
+
+        <br>
+
+        Simple accounting for small businesses
+
+    </div>
+
 
 </main>
 
 
-<div class="footer">
-    EDUVIORA Shop Manager<br>
-    Simple accounting for small businesses
-</div>
+
+<!-- =====================================================
+     BOTTOM NAVIGATION
+===================================================== -->
+
+<nav class="bottom-navigation">
 
 
-<!-- BOTTOM NAV -->
-<nav class="bottom-nav">
+    <button
+        class="nav-button active"
+        onclick="goHome()"
+    >
 
-    <button class="nav-item active" onclick="goDashboard()">
-        <span>🏠</span>
+        <span>
+            🏠
+        </span>
+
         Home
+
     </button>
 
-    <button class="nav-item" onclick="openTransaction('income')">
-        <span>💰</span>
+
+
+    <button
+        class="nav-button"
+        onclick="openTransaction('income')"
+    >
+
+        <span>
+            💰
+        </span>
+
         Income
+
     </button>
 
-    <button class="nav-item" onclick="openTransaction('expense')">
-        <span>💸</span>
+
+
+    <button
+        class="nav-button"
+        onclick="openTransaction('expense')"
+    >
+
+        <span>
+            💸
+        </span>
+
         Expense
+
     </button>
 
-    <button class="nav-item" onclick="goReports()">
-        <span>📊</span>
+
+
+    <button
+        class="nav-button"
+        onclick="goToReports()"
+    >
+
+        <span>
+            📊
+        </span>
+
         Reports
+
     </button>
+
 
 </nav>
+<!-- =====================================================
+     ADD INCOME / EXPENSE MODAL
+===================================================== -->
 
-
-<!-- TRANSACTION MODAL -->
-<div class="modal" id="transactionModal">
+<div
+    class="modal"
+    id="transactionModal"
+>
 
     <div class="modal-box">
 
+
+        <!-- MODAL HEADER -->
+
         <div class="modal-header">
 
-            <h3 id="modalTitle">Add Income</h3>
+            <h3 id="transactionModalTitle">
+                Add Income
+            </h3>
 
             <button
-                class="close"
-                onclick="closeModal('transactionModal')">
+                class="close-button"
+                onclick="closeModal('transactionModal')"
+            >
                 ✕
             </button>
 
         </div>
 
 
+
+        <!-- TRANSACTION FORM -->
+
         <form id="transactionForm">
 
-            <input type="hidden" id="editId">
-            <input type="hidden" id="transactionType">
 
+            <!-- Hidden ID -->
+
+            <input
+                type="hidden"
+                id="transactionId"
+            >
+
+
+            <!-- Hidden Type -->
+
+            <input
+                type="hidden"
+                id="transactionType"
+            >
+
+
+
+            <!-- DATE -->
 
             <div class="form-group">
 
-                <label>Date</label>
+                <label for="transactionDate">
+                    Date
+                </label>
 
                 <input
                     type="date"
                     id="transactionDate"
-                    required>
+                    required
+                >
 
             </div>
 
 
+
+            <!-- CATEGORY -->
+
             <div class="form-group">
 
-                <label>Category</label>
+                <label for="transactionCategory">
+                    Category
+                </label>
 
-                <select id="category" required>
+                <select
+                    id="transactionCategory"
+                    required
+                >
 
-                    <option value="">Select Category</option>
-
-                    <option value="Sales">
-                        Sales
-                    </option>
-
-                    <option value="Service">
-                        Service
-                    </option>
-
-                    <option value="Other Income">
-                        Other Income
-                    </option>
-
-                    <option value="Purchase">
-                        Purchase
-                    </option>
-
-                    <option value="Rent">
-                        Rent
-                    </option>
-
-                    <option value="Electricity">
-                        Electricity
-                    </option>
-
-                    <option value="Salary">
-                        Salary
-                    </option>
-
-                    <option value="Transport">
-                        Transport
-                    </option>
-
-                    <option value="Maintenance">
-                        Maintenance
-                    </option>
-
-                    <option value="Marketing">
-                        Marketing
-                    </option>
-
-                    <option value="Other Expense">
-                        Other Expense
+                    <option value="">
+                        Select Category
                     </option>
 
                 </select>
@@ -806,55 +1500,91 @@ th{
             </div>
 
 
+
+            <!-- DESCRIPTION -->
+
             <div class="form-group">
 
-                <label>Description</label>
+                <label for="transactionDescription">
+                    Description
+                </label>
 
                 <input
                     type="text"
-                    id="description"
+                    id="transactionDescription"
                     placeholder="Example: Daily sales"
-                    required>
+                    required
+                >
 
             </div>
 
 
+
+            <!-- PAYMENT MODE -->
+
             <div class="form-group">
 
-                <label>Payment Mode</label>
+                <label for="transactionPayment">
+                    Payment Mode
+                </label>
 
-                <select id="paymentMode" required>
+                <select
+                    id="transactionPayment"
+                    required
+                >
 
-                    <option value="Cash">Cash</option>
-                    <option value="UPI">UPI</option>
-                    <option value="Bank">Bank</option>
-                    <option value="Credit">Credit</option>
+                    <option value="Cash">
+                        Cash
+                    </option>
+
+                    <option value="UPI">
+                        UPI
+                    </option>
+
+                    <option value="Bank">
+                        Bank
+                    </option>
+
+                    <option value="Credit">
+                        Credit
+                    </option>
 
                 </select>
 
             </div>
 
 
+
+            <!-- AMOUNT -->
+
             <div class="form-group">
 
-                <label>Amount ₹</label>
+                <label for="transactionAmount">
+                    Amount ₹
+                </label>
 
                 <input
                     type="number"
-                    id="amount"
+                    id="transactionAmount"
+                    placeholder="Enter amount"
                     min="0.01"
                     step="0.01"
-                    placeholder="Enter amount"
-                    required>
+                    required
+                >
 
             </div>
 
 
+
+            <!-- SAVE BUTTON -->
+
             <button
                 type="submit"
-                class="btn btn-primary full">
+                class="btn primary-button full-width"
+            >
                 Save Transaction
             </button>
+
 
         </form>
 
@@ -863,817 +1593,2295 @@ th{
 </div>
 
 
-<!-- SETTINGS MODAL -->
-<div class="modal" id="settingsModal">
+
+<!-- =====================================================
+     SHOP SETTINGS MODAL
+===================================================== -->
+
+<div
+    class="modal"
+    id="settingsModal"
+>
 
     <div class="modal-box">
 
+
+        <!-- SETTINGS HEADER -->
+
         <div class="modal-header">
 
-            <h3>Shop Settings</h3>
+            <h3>
+                Shop Profile
+            </h3>
 
             <button
-                class="close"
-                onclick="closeModal('settingsModal')">
+                class="close-button"
+                onclick="closeModal('settingsModal')"
+            >
                 ✕
             </button>
 
         </div>
 
 
+
+        <!-- SHOP NAME -->
+
         <div class="form-group">
 
-            <label>Shop Name</label>
+            <label for="settingsShopName">
+                Shop Name
+            </label>
 
             <input
                 type="text"
-                id="shopNameInput"
-                placeholder="Enter shop name">
+                id="settingsShopName"
+                placeholder="Enter shop name"
+            >
 
         </div>
 
+
+
+        <!-- OWNER NAME -->
 
         <div class="form-group">
 
-            <label>Opening Balance ₹</label>
+            <label for="settingsOwnerName">
+                Owner Name
+            </label>
 
             <input
-                type="number"
-                id="openingBalance"
-                min="0"
-                step="0.01">
+                type="text"
+                id="settingsOwnerName"
+                placeholder="Enter owner name"
+            >
 
         </div>
 
 
+
+        <!-- MOBILE NUMBER -->
+
+        <div class="form-group">
+
+            <label for="settingsMobile">
+                Mobile Number
+            </label>
+
+            <input
+                type="tel"
+                id="settingsMobile"
+                placeholder="Enter mobile number"
+                maxlength="15"
+            >
+
+        </div>
+
+
+
+        <!-- ADDRESS -->
+
+        <div class="form-group">
+
+            <label for="settingsAddress">
+                Shop Address
+            </label>
+
+            <input
+                type="text"
+                id="settingsAddress"
+                placeholder="Enter shop address"
+            >
+
+        </div>
+
+
+
+        <!-- OPENING BALANCE -->
+
+        <div class="form-group">
+
+            <label for="settingsOpeningBalance">
+                Opening Balance ₹
+            </label>
+
+            <input
+                type="number"
+                id="settingsOpeningBalance"
+                placeholder="0.00"
+                min="0"
+                step="0.01"
+            >
+
+        </div>
+
+
+
+        <!-- SAVE SETTINGS -->
+
         <button
-            class="btn btn-primary full"
-            onclick="saveSettings()">
-            Save Settings
+            class="btn primary-button full-width"
+            onclick="saveShopSettings()"
+        >
+            Save Shop Profile
         </button>
 
 
         <br><br>
 
 
+
+        <!-- DELETE DATA -->
+
         <button
-            class="btn btn-danger full"
-            onclick="clearAllData()">
+            class="btn danger-button full-width"
+            onclick="deleteAllShopData()"
+        >
             Delete All Data
         </button>
+
 
     </div>
 
 </div>
 
 
+
+<!-- =====================================================
+     CONFIRMATION / MESSAGE AREA
+===================================================== -->
+
+<div
+    id="messageBox"
+    style="
+        display:none;
+        position:fixed;
+        left:50%;
+        bottom:75px;
+        transform:translateX(-50%);
+        z-index:1000;
+        background:#172033;
+        color:white;
+        padding:12px 18px;
+        border-radius:10px;
+        font-size:13px;
+        box-shadow:0 5px 20px rgba(0,0,0,0.2);
+    "
+>
+    Saved successfully
+</div>
+<!-- =====================================================
+     EDUVIORA SHOP MANAGER
+     JAVASCRIPT ENGINE
+===================================================== -->
+
 <script>
 
-/* =========================================
-   EDUVIORA SHOP MANAGER
-   LOCAL STORAGE VERSION
-========================================= */
+/* =====================================================
+   STORAGE
+===================================================== */
+
+const STORAGE_KEY = "eduviora_shop_manager_v2";
 
 
-let transactions =
-    JSON.parse(localStorage.getItem("eduviora_transactions")) || [];
+let shopData = JSON.parse(
+    localStorage.getItem(STORAGE_KEY)
+) || {
 
-let settings =
-    JSON.parse(localStorage.getItem("eduviora_settings")) || {
+    settings: {
 
         shopName: "My Shop",
 
+        ownerName: "",
+
+        mobile: "",
+
+        address: "",
+
         openingBalance: 0
 
-    };
+    },
+
+    transactions: []
+
+};
 
 
-/* =========================================
-   INITIALIZATION
-========================================= */
 
-document.addEventListener("DOMContentLoaded", function(){
+/* =====================================================
+   CATEGORY LISTS
+===================================================== */
 
-    document.getElementById("reportMonth").value =
-        getCurrentMonth();
+const incomeCategories = [
 
-    document.getElementById("transactionDate").value =
-        getToday();
+    "Sales",
 
-    updateUI();
+    "Service",
 
-});
+    "Other Income"
 
-
-/* =========================================
-   DATE
-========================================= */
-
-function getToday(){
-
-    const d = new Date();
-
-    return d.toISOString().split("T")[0];
-
-}
+];
 
 
-function getCurrentMonth(){
+const expenseCategories = [
 
-    const d = new Date();
+    "Purchase",
 
-    return d.toISOString().slice(0,7);
+    "Rent",
 
-}
+    "Electricity",
 
+    "Salary",
 
-function formatDate(date){
+    "Transport",
 
-    if(!date) return "";
+    "Maintenance",
 
-    const parts = date.split("-");
+    "Marketing",
 
-    return `${parts[2]}-${parts[1]}-${parts[0]}`;
+    "Other Expense"
 
-}
-
-
-/* =========================================
-   CURRENCY
-========================================= */
-
-function money(value){
-
-    return "₹" + Number(value || 0).toLocaleString(
-        "en-IN",
-        {
-            minimumFractionDigits:2,
-            maximumFractionDigits:2
-        }
-    );
-
-}
+];
 
 
-/* =========================================
-   SAVE DATA
-========================================= */
 
-function saveTransactions(){
+/* =====================================================
+   BASIC FUNCTIONS
+===================================================== */
+
+function saveData() {
 
     localStorage.setItem(
-        "eduviora_transactions",
-        JSON.stringify(transactions)
+
+        STORAGE_KEY,
+
+        JSON.stringify(shopData)
+
     );
 
 }
 
 
-function saveSettingsData(){
 
-    localStorage.setItem(
-        "eduviora_settings",
-        JSON.stringify(settings)
-    );
+function getToday() {
 
-}
+    const date = new Date();
 
-
-/* =========================================
-   OPEN TRANSACTION
-========================================= */
-
-function openTransaction(type, id=null){
-
-    document.getElementById("transactionModal")
-        .style.display="flex";
-
-    document.getElementById("transactionType")
-        .value=type;
-
-    document.getElementById("editId")
-        .value=id || "";
-
-    document.getElementById("transactionDate")
-        .value=getToday();
-
-
-    if(type==="income"){
-
-        document.getElementById("modalTitle")
-            .innerText=id ? "Edit Income" : "Add Income";
-
-        document.getElementById("category").value="Sales";
-
-    }else{
-
-        document.getElementById("modalTitle")
-            .innerText=id ? "Edit Expense" : "Add Expense";
-
-        document.getElementById("category").value="Purchase";
-
-    }
-
-
-    if(id){
-
-        const item =
-            transactions.find(t => t.id === id);
-
-        if(item){
-
-            document.getElementById("transactionDate")
-                .value=item.date;
-
-            document.getElementById("category")
-                .value=item.category;
-
-            document.getElementById("description")
-                .value=item.description;
-
-            document.getElementById("paymentMode")
-                .value=item.payment;
-
-            document.getElementById("amount")
-                .value=item.amount;
-
-        }
-
-    }else{
-
-        document.getElementById("description").value="";
-        document.getElementById("amount").value="";
-
-    }
+    return date.toISOString().split("T")[0];
 
 }
 
 
-/* =========================================
-   CLOSE MODAL
-========================================= */
 
-function closeModal(id){
+function getCurrentMonth() {
 
-    document.getElementById(id)
-        .style.display="none";
+    const date = new Date();
+
+    return date.toISOString().slice(0, 7);
 
 }
 
 
-/* =========================================
-   SAVE TRANSACTION
-========================================= */
 
-document.getElementById("transactionForm")
-.addEventListener("submit",function(e){
+function formatMoney(amount) {
 
-    e.preventDefault();
+    return "₹" +
 
+        Number(amount || 0).toLocaleString(
 
-    const type =
-        document.getElementById("transactionType").value;
-
-    const editId =
-        document.getElementById("editId").value;
-
-
-    const data={
-
-        id: editId || Date.now().toString(),
-
-        type:type,
-
-        date:
-            document.getElementById("transactionDate").value,
-
-        category:
-            document.getElementById("category").value,
-
-        description:
-            document.getElementById("description").value,
-
-        payment:
-            document.getElementById("paymentMode").value,
-
-        amount:
-            Number(document.getElementById("amount").value)
-
-    };
-
-
-    if(editId){
-
-        const index =
-            transactions.findIndex(t => t.id === editId);
-
-        if(index !== -1){
-
-            transactions[index]=data;
-
-        }
-
-    }else{
-
-        transactions.push(data);
-
-    }
-
-
-    saveTransactions();
-
-    closeModal("transactionModal");
-
-    updateUI();
-
-    alert("Transaction saved successfully.");
-
-});
-
-
-/* =========================================
-   DELETE
-========================================= */
-
-function deleteTransaction(id){
-
-    if(!confirm("Delete this transaction?")){
-
-        return;
-
-    }
-
-
-    transactions =
-        transactions.filter(t => t.id !== id);
-
-
-    saveTransactions();
-
-    updateUI();
-
-}
-
-
-/* =========================================
-   CALCULATIONS
-========================================= */
-
-function getIncome(){
-
-    return transactions
-        .filter(t => t.type==="income")
-        .reduce((sum,t)=>sum+Number(t.amount),0);
-
-}
-
-
-function getExpenses(){
-
-    return transactions
-        .filter(t => t.type==="expense")
-        .reduce((sum,t)=>sum+Number(t.amount),0);
-
-}
-
-
-function getBalance(){
-
-    return Number(settings.openingBalance)
-        + getIncome()
-        - getExpenses();
-
-}
-
-
-/* =========================================
-   TODAY
-========================================= */
-
-function getTodayIncome(){
-
-    return transactions
-        .filter(t =>
-            t.type==="income" &&
-            t.date===getToday()
-        )
-        .reduce((sum,t)=>sum+Number(t.amount),0);
-
-}
-
-
-function getTodayExpense(){
-
-    return transactions
-        .filter(t =>
-            t.type==="expense" &&
-            t.date===getToday()
-        )
-        .reduce((sum,t)=>sum+Number(t.amount),0);
-
-}
-
-
-/* =========================================
-   UPDATE UI
-========================================= */
-
-function updateUI(){
-
-    document.getElementById("shopName")
-        .innerText=settings.shopName;
-
-
-    document.getElementById("todayText")
-        .innerText=
-        new Date().toLocaleDateString(
             "en-IN",
+
             {
-                weekday:"long",
-                day:"numeric",
-                month:"long",
-                year:"numeric"
+
+                minimumFractionDigits: 2,
+
+                maximumFractionDigits: 2
+
             }
+
         );
-
-
-    const income=getTodayIncome();
-
-    const expense=getTodayExpense();
-
-    const profit=income-expense;
-
-    const balance=getBalance();
-
-
-    document.getElementById("todayIncome")
-        .innerText=money(income);
-
-    document.getElementById("todayExpense")
-        .innerText=money(expense);
-
-    document.getElementById("todayProfit")
-        .innerText=money(profit);
-
-    document.getElementById("currentBalance")
-        .innerText=money(balance);
-
-
-    renderRecent();
-
-    renderAll();
-
-    generateReport();
 
 }
 
 
-/* =========================================
-   RECENT TRANSACTIONS
-========================================= */
 
-function renderRecent(){
+function escapeHTML(value) {
 
-    const tbody =
-        document.getElementById("recentTable");
+    return String(value || "")
 
-    tbody.innerHTML="";
+        .replace(/&/g, "&amp;")
+
+        .replace(/</g, "&lt;")
+
+        .replace(/>/g, "&gt;")
+
+        .replace(/"/g, "&quot;")
+
+        .replace(/'/g, "&#039;");
+
+}
 
 
-    const data =
-        [...transactions]
-        .sort((a,b)=>b.date.localeCompare(a.date))
-        .slice(0,8);
 
+/* =====================================================
+   INITIALIZE
+===================================================== */
 
-    if(data.length===0){
+document.addEventListener(
 
-        tbody.innerHTML=`
-            <tr>
-                <td colspan="5" class="empty">
-                    No transactions yet
-                </td>
-            </tr>
-        `;
+    "DOMContentLoaded",
 
-        return;
+    function () {
+
+        initializeApplication();
 
     }
 
+);
 
-    data.forEach(t=>{
 
-        const tr=document.createElement("tr");
 
-        tr.innerHTML=`
+function initializeApplication() {
 
-            <td>${formatDate(t.date)}</td>
+    document.getElementById(
 
-            <td>
-                <strong class="${t.type==="income"?"income":"expense"}">
-                    ${t.type==="income"?"Income":"Expense"}
-                </strong>
-            </td>
+        "reportMonth"
 
-            <td>${escapeHTML(t.description)}</td>
+    ).value = getCurrentMonth();
 
-            <td>${t.payment}</td>
 
-            <td class="${t.type==="income"?"income":"expense"}">
-                ${t.type==="income"?"+":"-"}${money(t.amount)}
-            </td>
+    document.getElementById(
 
-        `;
+        "transactionDate"
 
-        tbody.appendChild(tr);
+    ).value = getToday();
 
-    });
+
+    loadShopSettings();
+
+
+    updateDashboard();
 
 }
 
 
-/* =========================================
-   ALL TRANSACTIONS
-========================================= */
 
-function renderAll(){
+/* =====================================================
+   SHOP SETTINGS
+===================================================== */
 
-    const tbody =
-        document.getElementById("allTable");
+function openSettings() {
 
-    tbody.innerHTML="";
+    const settings = shopData.settings;
 
 
-    const data =
-        [...transactions]
-        .sort((a,b)=>b.date.localeCompare(a.date));
+    document.getElementById(
+
+        "settingsShopName"
+
+    ).value = settings.shopName || "";
 
 
-    if(data.length===0){
+    document.getElementById(
 
-        tbody.innerHTML=`
-            <tr>
-                <td colspan="7" class="empty">
-                    No transactions found
-                </td>
-            </tr>
-        `;
+        "settingsOwnerName"
 
-        return;
-
-    }
+    ).value = settings.ownerName || "";
 
 
-    data.forEach(t=>{
+    document.getElementById(
 
-        const tr=document.createElement("tr");
+        "settingsMobile"
 
-
-        tr.innerHTML=`
-
-            <td>${formatDate(t.date)}</td>
-
-            <td>
-                <strong class="${t.type==="income"?"income":"expense"}">
-                    ${t.type==="income"?"Income":"Expense"}
-                </strong>
-            </td>
-
-            <td>${escapeHTML(t.category)}</td>
-
-            <td>${escapeHTML(t.description)}</td>
-
-            <td>${t.payment}</td>
-
-            <td class="${t.type==="income"?"income":"expense"}">
-                ${money(t.amount)}
-            </td>
-
-            <td>
-
-                <button
-                    class="action-btn edit"
-                    onclick="openTransaction('${t.type}','${t.id}')">
-                    Edit
-                </button>
-
-                <button
-                    class="action-btn delete"
-                    onclick="deleteTransaction('${t.id}')">
-                    Delete
-                </button>
-
-            </td>
-
-        `;
+    ).value = settings.mobile || "";
 
 
-        tbody.appendChild(tr);
+    document.getElementById(
 
-    });
+        "settingsAddress"
+
+    ).value = settings.address || "";
+
+
+    document.getElementById(
+
+        "settingsOpeningBalance"
+
+    ).value = settings.openingBalance || 0;
+
+
+    document.getElementById(
+
+        "settingsModal"
+
+    ).style.display = "flex";
 
 }
 
 
-/* =========================================
-   MONTHLY REPORT
-========================================= */
 
-function generateReport(){
+function loadShopSettings() {
 
-    const month =
-        document.getElementById("reportMonth").value;
+    const settings = shopData.settings;
 
 
-    const data =
-        transactions.filter(t =>
-            t.date.startsWith(month)
-        );
+    document.getElementById(
+
+        "shopName"
+
+    ).textContent =
+
+        settings.shopName || "My Shop";
 
 
-    const income =
-        data
-        .filter(t=>t.type==="income")
-        .reduce((sum,t)=>sum+Number(t.amount),0);
+    const information = [
 
+        settings.ownerName,
 
-    const expense =
-        data
-        .filter(t=>t.type==="expense")
-        .reduce((sum,t)=>sum+Number(t.amount),0);
+        settings.mobile,
 
+        settings.address,
 
-    const profit=income-expense;
+        new Date().toLocaleDateString(
 
+            "en-IN",
 
-    const previousIncome =
-        transactions
-        .filter(t =>
-            t.date < month+"-01" &&
-            t.type==="income"
+            {
+
+                weekday: "long",
+
+                day: "numeric",
+
+                month: "long",
+
+                year: "numeric"
+
+            }
+
         )
-        .reduce((sum,t)=>sum+Number(t.amount),0);
+
+    ]
+
+    .filter(Boolean)
+
+    .join(" • ");
 
 
-    const previousExpense =
-        transactions
-        .filter(t =>
-            t.date < month+"-01" &&
-            t.type==="expense"
-        )
-        .reduce((sum,t)=>sum+Number(t.amount),0);
+    document.getElementById(
 
+        "shopInformation"
 
-    const closing =
-        Number(settings.openingBalance)
-        + previousIncome
-        - previousExpense
-        + income
-        - expense;
-
-
-    document.getElementById("monthIncome")
-        .innerText=money(income);
-
-    document.getElementById("monthExpense")
-        .innerText=money(expense);
-
-    document.getElementById("monthProfit")
-        .innerText=money(profit);
-
-    document.getElementById("incomeCount")
-        .innerText=
-        data.filter(t=>t.type==="income").length;
-
-    document.getElementById("expenseCount")
-        .innerText=
-        data.filter(t=>t.type==="expense").length;
-
-    document.getElementById("monthBalance")
-        .innerText=money(closing);
+    ).textContent = information;
 
 }
 
 
-/* =========================================
-   SETTINGS
-========================================= */
 
-function openSettings(){
+function saveShopSettings() {
 
-    document.getElementById("settingsModal")
-        .style.display="flex";
+    shopData.settings.shopName =
 
+        document.getElementById(
 
-    document.getElementById("shopNameInput")
-        .value=settings.shopName;
+            "settingsShopName"
+
+        ).value.trim() || "My Shop";
 
 
-    document.getElementById("openingBalance")
-        .value=settings.openingBalance;
+    shopData.settings.ownerName =
 
-}
+        document.getElementById(
 
+            "settingsOwnerName"
 
-function saveSettings(){
-
-    settings.shopName =
-        document.getElementById("shopNameInput").value
-        || "My Shop";
+        ).value.trim();
 
 
-    settings.openingBalance =
+    shopData.settings.mobile =
+
+        document.getElementById(
+
+            "settingsMobile"
+
+        ).value.trim();
+
+
+    shopData.settings.address =
+
+        document.getElementById(
+
+            "settingsAddress"
+
+        ).value.trim();
+
+
+    shopData.settings.openingBalance =
+
         Number(
-            document.getElementById("openingBalance").value
+
+            document.getElementById(
+
+                "settingsOpeningBalance"
+
+            ).value
+
         ) || 0;
 
 
-    saveSettingsData();
+    saveData();
+
+
+    loadShopSettings();
+
+
+    updateDashboard();
+
 
     closeModal("settingsModal");
 
-    updateUI();
+
+    showMessage(
+
+        "Shop profile saved successfully"
+
+    );
 
 }
 
 
-/* =========================================
-   DELETE ALL
-========================================= */
 
-function clearAllData(){
+/* =====================================================
+   OPEN TRANSACTION FORM
+===================================================== */
 
-    if(!confirm(
-        "WARNING: This will delete all shop transactions. Continue?"
-    )){
+function openTransaction(type, transactionId = "") {
+
+    const modal = document.getElementById(
+
+        "transactionModal"
+
+    );
+
+
+    modal.style.display = "flex";
+
+
+    document.getElementById(
+
+        "transactionType"
+
+    ).value = type;
+
+
+    document.getElementById(
+
+        "transactionId"
+
+    ).value = transactionId;
+
+
+    document.getElementById(
+
+        "transactionDate"
+
+    ).value = getToday();
+
+
+    document.getElementById(
+
+        "transactionDescription"
+
+    ).value = "";
+
+
+    document.getElementById(
+
+        "transactionAmount"
+
+    ).value = "";
+
+
+    document.getElementById(
+
+        "transactionPayment"
+
+    ).value = "Cash";
+
+
+    const categorySelect =
+
+        document.getElementById(
+
+            "transactionCategory"
+
+        );
+
+
+    const categories =
+
+        type === "income"
+
+            ? incomeCategories
+
+            : expenseCategories;
+
+
+    categorySelect.innerHTML =
+
+        '<option value="">Select Category</option>' +
+
+        categories.map(
+
+            function (category) {
+
+                return `
+
+                    <option value="${category}">
+
+                        ${category}
+
+                    </option>
+
+                `;
+
+            }
+
+        ).join("");
+
+
+    document.getElementById(
+
+        "transactionModalTitle"
+
+    ).textContent =
+
+        transactionId
+
+            ? "Edit " +
+
+              (
+
+                  type === "income"
+
+                      ? "Income"
+
+                      : "Expense"
+
+              )
+
+            : "Add " +
+
+              (
+
+                  type === "income"
+
+                      ? "Income"
+
+                      : "Expense"
+
+              );
+
+
+
+    /* EDIT EXISTING */
+
+    if (transactionId) {
+
+        const transaction =
+
+            shopData.transactions.find(
+
+                function (item) {
+
+                    return item.id === transactionId;
+
+                }
+
+            );
+
+
+        if (transaction) {
+
+            document.getElementById(
+
+                "transactionDate"
+
+            ).value = transaction.date;
+
+
+            document.getElementById(
+
+                "transactionCategory"
+
+            ).value = transaction.category;
+
+
+            document.getElementById(
+
+                "transactionDescription"
+
+            ).value = transaction.description;
+
+
+            document.getElementById(
+
+                "transactionPayment"
+
+            ).value = transaction.payment;
+
+
+            document.getElementById(
+
+                "transactionAmount"
+
+            ).value = transaction.amount;
+
+        }
+
+    }
+
+}
+
+
+
+/* =====================================================
+   SAVE TRANSACTION
+===================================================== */
+
+document.getElementById(
+
+    "transactionForm"
+
+).addEventListener(
+
+    "submit",
+
+    function (event) {
+
+        event.preventDefault();
+
+
+        const type =
+
+            document.getElementById(
+
+                "transactionType"
+
+            ).value;
+
+
+        const existingId =
+
+            document.getElementById(
+
+                "transactionId"
+
+            ).value;
+
+
+        const transaction = {
+
+            id:
+
+                existingId ||
+
+                Date.now().toString(),
+
+
+            type: type,
+
+
+            date:
+
+                document.getElementById(
+
+                    "transactionDate"
+
+                ).value,
+
+
+            category:
+
+                document.getElementById(
+
+                    "transactionCategory"
+
+                ).value,
+
+
+            description:
+
+                document.getElementById(
+
+                    "transactionDescription"
+
+                ).value.trim(),
+
+
+            payment:
+
+                document.getElementById(
+
+                    "transactionPayment"
+
+                ).value,
+
+
+            amount:
+
+                Number(
+
+                    document.getElementById(
+
+                        "transactionAmount"
+
+                    ).value
+
+                )
+
+        };
+
+
+
+        if (
+
+            !transaction.date ||
+
+            !transaction.category ||
+
+            !transaction.description ||
+
+            transaction.amount <= 0
+
+        ) {
+
+            alert(
+
+                "Please enter all required details."
+
+            );
+
+            return;
+
+        }
+
+
+
+        /* EDIT */
+
+        if (existingId) {
+
+            const index =
+
+                shopData.transactions.findIndex(
+
+                    function (item) {
+
+                        return item.id === existingId;
+
+                    }
+
+                );
+
+
+            if (index !== -1) {
+
+                shopData.transactions[index] =
+
+                    transaction;
+
+            }
+
+        }
+
+
+        /* NEW */
+
+        else {
+
+            shopData.transactions.push(
+
+                transaction
+
+            );
+
+        }
+
+
+        saveData();
+
+
+        closeModal(
+
+            "transactionModal"
+
+        );
+
+
+        updateDashboard();
+
+
+        showMessage(
+
+            type === "income"
+
+                ? "Income saved successfully"
+
+                : "Expense saved successfully"
+
+        );
+
+    }
+
+);
+
+
+
+/* =====================================================
+   CALCULATIONS
+===================================================== */
+
+function calculateTotals(transactions) {
+
+    let income = 0;
+
+    let expense = 0;
+
+
+    transactions.forEach(
+
+        function (transaction) {
+
+            if (
+
+                transaction.type ===
+
+                "income"
+
+            ) {
+
+                income += Number(
+
+                    transaction.amount
+
+                );
+
+            }
+
+
+            else {
+
+                expense += Number(
+
+                    transaction.amount
+
+                );
+
+            }
+
+        }
+
+    );
+
+
+    return {
+
+        income: income,
+
+        expense: expense,
+
+        profit: income - expense
+
+    };
+
+}
+
+
+
+/* =====================================================
+   TODAY TOTALS
+===================================================== */
+
+function getTodayTotals() {
+
+    const todayTransactions =
+
+        shopData.transactions.filter(
+
+            function (transaction) {
+
+                return (
+
+                    transaction.date ===
+
+                    getToday()
+
+                );
+
+            }
+
+        );
+
+
+    return calculateTotals(
+
+        todayTransactions
+
+    );
+
+}
+
+
+
+/* =====================================================
+   CURRENT BALANCE
+===================================================== */
+
+function getCurrentBalance() {
+
+    const totals = calculateTotals(
+
+        shopData.transactions
+
+    );
+
+
+    return (
+
+        Number(
+
+            shopData.settings.openingBalance
+
+        ) +
+
+        totals.income -
+
+        totals.expense
+
+    );
+
+}
+
+
+
+/* =====================================================
+   PAYMENT MODE BALANCE
+===================================================== */
+
+function getPaymentBalance(paymentMode) {
+
+    let balance = 0;
+
+
+    shopData.transactions.forEach(
+
+        function (transaction) {
+
+            if (
+
+                transaction.payment !==
+
+                paymentMode
+
+            ) {
+
+                return;
+
+            }
+
+
+            if (
+
+                transaction.type ===
+
+                "income"
+
+            ) {
+
+                balance += Number(
+
+                    transaction.amount
+
+                );
+
+            }
+
+
+            else {
+
+                balance -= Number(
+
+                    transaction.amount
+
+                );
+
+            }
+
+        }
+
+    );
+
+
+    /*
+
+       Opening balance is treated as cash.
+
+    */
+
+    if (
+
+        paymentMode === "Cash"
+
+    ) {
+
+        balance += Number(
+
+            shopData.settings.openingBalance
+
+        );
+
+    }
+
+
+    return balance;
+
+}
+
+
+
+/* =====================================================
+   UPDATE DASHBOARD
+===================================================== */
+
+function updateDashboard() {
+
+    loadShopSettings();
+
+
+    const todayTotals =
+
+        getTodayTotals();
+
+
+    document.getElementById(
+
+        "todayIncome"
+
+    ).textContent =
+
+        formatMoney(
+
+            todayTotals.income
+
+        );
+
+
+    document.getElementById(
+
+        "todayExpense"
+
+    ).textContent =
+
+        formatMoney(
+
+            todayTotals.expense
+
+        );
+
+
+    document.getElementById(
+
+        "todayProfit"
+
+    ).textContent =
+
+        formatMoney(
+
+            todayTotals.profit
+
+        );
+
+
+    document.getElementById(
+
+        "currentBalance"
+
+    ).textContent =
+
+        formatMoney(
+
+            getCurrentBalance()
+
+        );
+
+
+    document.getElementById(
+
+        "cashBalance"
+
+    ).textContent =
+
+        formatMoney(
+
+            getPaymentBalance("Cash")
+
+        );
+
+
+    document.getElementById(
+
+        "upiBalance"
+
+    ).textContent =
+
+        formatMoney(
+
+            getPaymentBalance("UPI")
+
+        );
+
+
+    document.getElementById(
+
+        "bankBalance"
+
+    ).textContent =
+
+        formatMoney(
+
+            getPaymentBalance("Bank")
+
+        );
+
+
+    renderRecentTransactions();
+
+
+    renderMonthlyReport();
+
+
+    renderTransactions();
+
+}
+
+
+
+/* =====================================================
+   RECENT TRANSACTIONS
+===================================================== */
+
+function renderRecentTransactions() {
+
+    const container =
+
+        document.getElementById(
+
+            "recentTransactions"
+
+        );
+
+
+    const recent =
+
+        [
+
+            ...shopData.transactions
+
+        ]
+
+        .sort(
+
+            function (a, b) {
+
+                return (
+
+                    b.date.localeCompare(
+
+                        a.date
+
+                    )
+
+                );
+
+            }
+
+        )
+
+        .slice(0, 6);
+
+
+    if (!recent.length) {
+
+        container.innerHTML = `
+
+            <div class="empty-message">
+
+                No transactions yet.
+
+                <br><br>
+
+                Add your first income or expense.
+
+            </div>
+
+        `;
 
         return;
 
     }
 
 
-    transactions=[];
+    container.innerHTML =
 
-    settings={
-        shopName:"My Shop",
-        openingBalance:0
-    };
+        recent.map(
+
+            function (transaction) {
+
+                const isIncome =
+
+                    transaction.type ===
+
+                    "income";
 
 
-    saveTransactions();
+                return `
 
-    saveSettingsData();
+                    <div class="transaction-card">
 
-    updateUI();
+                        <div class="transaction-top">
 
-    closeModal("settingsModal");
+                            <span>
+
+                                ${escapeHTML(
+
+                                    transaction.description
+
+                                )}
+
+                            </span>
+
+
+                            <span class="${
+
+                                isIncome
+
+                                    ? "green"
+
+                                    : "red"
+
+                            }">
+
+                                ${
+
+                                    isIncome
+
+                                        ? "+"
+
+                                        : "-"
+
+                                }
+
+                                ${formatMoney(
+
+                                    transaction.amount
+
+                                )}
+
+                            </span>
+
+                        </div>
+
+
+                        <div class="transaction-info">
+
+                            ${transaction.date}
+
+                            •
+
+                            ${escapeHTML(
+
+                                transaction.category
+
+                            )}
+
+                            •
+
+                            ${escapeHTML(
+
+                                transaction.payment
+
+                            )}
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            }
+
+        )
+
+        .join("");
 
 }
 
 
-/* =========================================
-   NAVIGATION
-========================================= */
 
-function goDashboard(){
+/* =====================================================
+   MONTHLY REPORT
+===================================================== */
 
-    window.scrollTo({
-        top:0,
-        behavior:"smooth"
-    });
+function renderMonthlyReport() {
+
+    let month =
+
+        document.getElementById(
+
+            "reportMonth"
+
+        ).value;
+
+
+    if (!month) {
+
+        month = getCurrentMonth();
+
+
+        document.getElementById(
+
+            "reportMonth"
+
+        ).value = month;
+
+    }
+
+
+    const monthlyTransactions =
+
+        shopData.transactions.filter(
+
+            function (transaction) {
+
+                return transaction.date
+
+                    .startsWith(month);
+
+            }
+
+        );
+
+
+    const monthlyTotals =
+
+        calculateTotals(
+
+            monthlyTransactions
+
+        );
+
+
+    document.getElementById(
+
+        "monthlyIncome"
+
+    ).textContent =
+
+        formatMoney(
+
+            monthlyTotals.income
+
+        );
+
+
+    document.getElementById(
+
+        "monthlyExpense"
+
+    ).textContent =
+
+        formatMoney(
+
+            monthlyTotals.expense
+
+        );
+
+
+    document.getElementById(
+
+        "monthlyProfit"
+
+    ).textContent =
+
+        formatMoney(
+
+            monthlyTotals.profit
+
+        );
+
+
+    document.getElementById(
+
+        "incomeCount"
+
+    ).textContent =
+
+        monthlyTransactions.filter(
+
+            function (item) {
+
+                return item.type ===
+
+                    "income";
+
+            }
+
+        ).length;
+
+
+    document.getElementById(
+
+        "expenseCount"
+
+    ).textContent =
+
+        monthlyTransactions.filter(
+
+            function (item) {
+
+                return item.type ===
+
+                    "expense";
+
+            }
+
+        ).length;
+
+
+
+    /*
+
+       Balance before selected month
+
+    */
+
+    const previousTransactions =
+
+        shopData.transactions.filter(
+
+            function (transaction) {
+
+                return (
+
+                    transaction.date <
+
+                    month + "-01"
+
+                );
+
+            }
+
+        );
+
+
+    const previousTotals =
+
+        calculateTotals(
+
+            previousTransactions
+
+        );
+
+
+    const closingBalance =
+
+        Number(
+
+            shopData.settings.openingBalance
+
+        ) +
+
+        previousTotals.income -
+
+        previousTotals.expense +
+
+        monthlyTotals.income -
+
+        monthlyTotals.expense;
+
+
+    document.getElementById(
+
+        "monthlyBalance"
+
+    ).textContent =
+
+        formatMoney(
+
+            closingBalance
+
+        );
 
 }
 
 
-function goReports(){
 
-    document.getElementById("reports")
-        .scrollIntoView({
-            behavior:"smooth"
-        });
+/* =====================================================
+   ALL TRANSACTIONS
+===================================================== */
+
+function renderTransactions() {
+
+    const fromDate =
+
+        document.getElementById(
+
+            "fromDate"
+
+        ).value;
+
+
+    const toDate =
+
+        document.getElementById(
+
+            "toDate"
+
+        ).value;
+
+
+    const filterType =
+
+        document.getElementById(
+
+            "transactionFilter"
+
+        ).value;
+
+
+    let transactions =
+
+        shopData.transactions.filter(
+
+            function (transaction) {
+
+
+                if (
+
+                    fromDate &&
+
+                    transaction.date <
+
+                    fromDate
+
+                ) {
+
+                    return false;
+
+                }
+
+
+                if (
+
+                    toDate &&
+
+                    transaction.date >
+
+                    toDate
+
+                ) {
+
+                    return false;
+
+                }
+
+
+                if (
+
+                    filterType &&
+
+                    transaction.type !==
+
+                    filterType
+
+                ) {
+
+                    return false;
+
+                }
+
+
+                return true;
+
+            }
+
+        );
+
+
+    transactions.sort(
+
+        function (a, b) {
+
+            return b.date.localeCompare(
+
+                a.date
+
+            );
+
+        }
+
+    );
+
+
+    renderDesktopTransactions(
+
+        transactions
+
+    );
+
+
+    renderMobileTransactions(
+
+        transactions
+
+    );
 
 }
 
 
-function showAllTransactions(){
 
-    document.getElementById("transactions")
-        .scrollIntoView({
-            behavior:"smooth"
-        });
+/* =====================================================
+   DESKTOP TABLE
+===================================================== */
+
+function renderDesktopTransactions(
+
+    transactions
+
+) {
+
+    const table =
+
+        document.getElementById(
+
+            "transactionTable"
+
+        );
+
+
+    if (!transactions.length) {
+
+        table.innerHTML = `
+
+            <tr>
+
+                <td
+
+                    colspan="7"
+
+                    class="empty-message"
+
+                >
+
+                    No transactions found.
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    table.innerHTML =
+
+        transactions.map(
+
+            function (transaction) {
+
+                const isIncome =
+
+                    transaction.type ===
+
+                    "income";
+
+
+                return `
+
+                    <tr>
+
+
+                        <td>
+
+                            ${transaction.date}
+
+                        </td>
+
+
+                        <td>
+
+                            <strong class="${
+
+                                isIncome
+
+                                    ? "green"
+
+                                    : "red"
+
+                            }">
+
+                                ${
+
+                                    isIncome
+
+                                        ? "Income"
+
+                                        : "Expense"
+
+                                }
+
+                            </strong>
+
+                        </td>
+
+
+                        <td>
+
+                            ${escapeHTML(
+
+                                transaction.category
+
+                            )}
+
+                        </td>
+
+
+                        <td>
+
+                            ${escapeHTML(
+
+                                transaction.description
+
+                            )}
+
+                        </td>
+
+
+                        <td>
+
+                            ${escapeHTML(
+
+                                transaction.payment
+
+                            )}
+
+                        </td>
+
+
+                        <td class="${
+
+                            isIncome
+
+                                ? "green"
+
+                                : "red"
+
+                        }">
+
+                            ${
+
+                                isIncome
+
+                                    ? "+"
+
+                                    : "-"
+
+                            }
+
+                            ${formatMoney(
+
+                                transaction.amount
+
+                            )}
+
+                        </td>
+
+
+                        <td>
+
+                            <button
+
+                                class="btn secondary-button"
+
+                                onclick="openTransaction(
+
+                                    '${transaction.type}',
+
+                                    '${transaction.id}'
+
+                                )"
+
+                            >
+
+                                Edit
+
+                            </button>
+
+
+                            <button
+
+                                class="btn danger-button"
+
+                                onclick="deleteTransaction(
+
+                                    '${transaction.id}'
+
+                                )"
+
+                            >
+
+                                Delete
+
+                            </button>
+
+                        </td>
+
+
+                    </tr>
+
+                `;
+
+            }
+
+        )
+
+        .join("");
 
 }
 
 
-/* =========================================
+
+/* =====================================================
+   MOBILE TRANSACTIONS
+===================================================== */
+
+function renderMobileTransactions(
+
+    transactions
+
+) {
+
+    const container =
+
+        document.getElementById(
+
+            "mobileTransactions"
+
+        );
+
+
+    if (!transactions.length) {
+
+        container.innerHTML = `
+
+            <div class="empty-message">
+
+                No transactions found.
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+
+        transactions.map(
+
+            function (transaction) {
+
+                const isIncome =
+
+                    transaction.type ===
+
+                    "income";
+
+
+                return `
+
+                    <div class="transaction-card">
+
+
+                        <div
+
+                            class="transaction-top"
+
+                        >
+
+                            <span>
+
+                                ${escapeHTML(
+
+                                    transaction.description
+
+                                )}
+
+                            </span>
+
+
+                            <span class="${
+
+                                isIncome
+
+                                    ? "green"
+
+                                    : "red"
+
+                            }">
+
+                                ${
+
+                                    isIncome
+
+                                        ? "+"
+
+                                        : "-"
+
+                                }
+
+                                ${formatMoney(
+
+                                    transaction.amount
+
+                                )}
+
+                            </span>
+
+                        </div>
+
+
+                        <div
+
+                            class="transaction-info"
+
+                        >
+
+                            <strong>
+
+                                ${
+
+                                    isIncome
+
+                                        ? "Income"
+
+                                        : "Expense"
+
+                                }
+
+                            </strong>
+
+
+                            <br>
+
+
+                            Date:
+
+                            ${transaction.date}
+
+
+                            <br>
+
+
+                            Category:
+
+                            ${escapeHTML(
+
+                                transaction.category
+
+                            )}
+
+
+                            <br>
+
+
+                            Payment:
+
+                            ${escapeHTML(
+
+                                transaction.payment
+
+                            )}
+
+                        </div>
+
+
+                        <br>
+
+
+                        <button
+
+                            class="btn secondary-button"
+
+                            onclick="openTransaction(
+
+                                '${transaction.type}',
+
+                                '${transaction.id}'
+
+                            )"
+
+                        >
+
+                            Edit
+
+                        </button>
+
+
+                        <button
+
+                            class="btn danger-button"
+
+                            onclick="deleteTransaction(
+
+                                '${transaction.id}'
+
+                            )"
+
+                        >
+
+                            Delete
+
+                        </button>
+
+
+                    </div>
+
+                `;
+
+            }
+
+        )
+
+        .join("");
+
+}
+
+
+
+/* =====================================================
+   DELETE TRANSACTION
+===================================================== */
+
+function deleteTransaction(id) {
+
+    const confirmation = confirm(
+
+        "Are you sure you want to delete this transaction?"
+
+    );
+
+
+    if (!confirmation) {
+
+        return;
+
+    }
+
+
+    shopData.transactions =
+
+        shopData.transactions.filter(
+
+            function (transaction) {
+
+                return transaction.id !== id;
+
+            }
+
+        );
+
+
+    saveData();
+
+
+    updateDashboard();
+
+
+    showMessage(
+
+        "Transaction deleted"
+
+    );
+
+}
+
+
+
+/* =====================================================
+   DELETE ALL DATA
+===================================================== */
+
+function deleteAllShopData() {
+
+    const confirmation = confirm(
+
+        "WARNING!\n\n" +
+
+        "This will permanently delete all shop " +
+
+        "transactions and settings from this device.\n\n" +
+
+        "Continue?"
+
+    );
+
+
+    if (!confirmation) {
+
+        return;
+
+    }
+
+
+    localStorage.removeItem(
+
+        STORAGE_KEY
+
+    );
+
+
+    location.reload();
+
+}
+
+
+
+/* =====================================================
    CSV EXPORT
-========================================= */
+===================================================== */
 
-function exportCSV(){
+function exportCSV() {
 
-    if(transactions.length===0){
+    if (
 
-        alert("No transactions to export.");
+        shopData.transactions.length ===
+
+        0
+
+    ) {
+
+        alert(
+
+            "There are no transactions to export."
+
+        );
 
         return;
 
@@ -1681,77 +3889,287 @@ function exportCSV(){
 
 
     let csv =
+
         "Date,Type,Category,Description,Payment Mode,Amount\n";
 
 
-    transactions.forEach(t=>{
+    shopData.transactions.forEach(
 
-        csv +=
-            `"${t.date}",`+
-            `"${t.type}",`+
-            `"${t.category}",`+
-            `"${t.description.replace(/"/g,'""')}",`+
-            `"${t.payment}",`+
-            `"${t.amount}"\n`;
+        function (transaction) {
 
-    });
+            const row = [
+
+                transaction.date,
+
+                transaction.type,
+
+                transaction.category,
+
+                transaction.description,
+
+                transaction.payment,
+
+                transaction.amount
+
+            ];
 
 
-    const blob =
-        new Blob(
-            [csv],
-            {type:"text/csv;charset=utf-8;"}
-        );
+            csv +=
+
+                row.map(
+
+                    function (value) {
+
+                        return '"' +
+
+                            String(value)
+
+                                .replace(
+
+                                    /"/g,
+
+                                    '""'
+
+                                ) +
+
+                            '"';
+
+                    }
+
+                ).join(",") +
+
+                "\n";
+
+        }
+
+    );
+
+
+    const blob = new Blob(
+
+        [csv],
+
+        {
+
+            type:
+
+                "text/csv;charset=utf-8;"
+
+        }
+
+    );
 
 
     const url =
-        URL.createObjectURL(blob);
+
+        URL.createObjectURL(
+
+            blob
+
+        );
 
 
-    const a =
-        document.createElement("a");
+    const link =
 
-    a.href=url;
+        document.createElement(
 
-    a.download=
-        "eduviora-shop-transactions.csv";
+            "a"
 
-    a.click();
+        );
 
-    URL.revokeObjectURL(url);
+
+    link.href = url;
+
+
+    link.download =
+
+        "EDUVIORA-Shop-Report.csv";
+
+
+    document.body.appendChild(
+
+        link
+
+    );
+
+
+    link.click();
+
+
+    document.body.removeChild(
+
+        link
+
+    );
+
+
+    URL.revokeObjectURL(
+
+        url
+
+    );
+
+
+    showMessage(
+
+        "CSV report downloaded"
+
+    );
 
 }
 
 
-/* =========================================
-   SECURITY / HTML ESCAPE
-========================================= */
 
-function escapeHTML(value){
+/* =====================================================
+   CLOSE MODAL
+===================================================== */
 
-    return String(value)
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
+function closeModal(id) {
+
+    document.getElementById(
+
+        id
+
+    ).style.display = "none";
 
 }
 
 
-/* =========================================
-   MODAL OUTSIDE CLICK
-========================================= */
 
-window.addEventListener("click",function(e){
+/* =====================================================
+   CLOSE MODAL WHEN CLICKING OUTSIDE
+===================================================== */
 
-    if(e.target.classList.contains("modal")){
+window.addEventListener(
 
-        e.target.style.display="none";
+    "click",
+
+    function (event) {
+
+        if (
+
+            event.target.classList.contains(
+
+                "modal"
+
+            )
+
+        ) {
+
+            event.target.style.display =
+
+                "none";
+
+        }
 
     }
 
-});
+);
+
+
+
+/* =====================================================
+   NAVIGATION
+===================================================== */
+
+function goHome() {
+
+    window.scrollTo({
+
+        top: 0,
+
+        behavior: "smooth"
+
+    });
+
+}
+
+
+
+function goToReports() {
+
+    document.getElementById(
+
+        "reportsSection"
+
+    ).scrollIntoView({
+
+        behavior: "smooth"
+
+    });
+
+}
+
+
+
+function showAllTransactions() {
+
+    document.getElementById(
+
+        "transactionsSection"
+
+    ).scrollIntoView({
+
+        behavior: "smooth"
+
+    });
+
+}
+
+
+
+/* =====================================================
+   SUCCESS MESSAGE
+===================================================== */
+
+function showMessage(message) {
+
+    const box =
+
+        document.getElementById(
+
+            "messageBox"
+
+        );
+
+
+    box.textContent = message;
+
+
+    box.style.display = "block";
+
+
+    setTimeout(
+
+        function () {
+
+            box.style.display = "none";
+
+        },
+
+        2500
+
+    );
+
+}
+
+
+
+/* =====================================================
+   INITIAL START
+===================================================== */
+
+window.addEventListener(
+
+    "load",
+
+    function () {
+
+        updateDashboard();
+
+    }
+
+);
 
 </script>
 
