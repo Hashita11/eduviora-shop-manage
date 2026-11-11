@@ -2219,6 +2219,28 @@ td .btn {
     </section>
 
 
+   <!-- Daily & Weekly Profit Summary Card -->
+<div class="card p-3 mb-4 shadow-sm rounded-4 border-0 bg-white">
+    <h5 class="text-primary fw-bold mb-3">📊 Profit & Loss Summary</h5>
+    
+    <div class="row g-2">
+        <!-- Daily Summary Box -->
+        <div class="col-6">
+            <div class="p-3 bg-light rounded-3 text-center">
+                <small class="text-muted d-block fw-bold">TODAY'S PROFIT</small>
+                <span id="dailyProfit" class="fs-5 fw-bold text-success">₹0.00</span>
+            </div>
+        </div>
+        <!-- Weekly Summary Box -->
+        <div class="col-6">
+            <div class="p-3 bg-light rounded-3 text-center">
+                <small class="text-muted d-block fw-bold">THIS WEEK'S PROFIT</small>
+                <span id="weeklyProfit" class="fs-5 fw-bold text-primary">₹0.00</span>
+            </div>
+        </div>
+    </div>
+</div>
+
 
     <!-- =================================================
          MONTHLY REPORT
@@ -5509,6 +5531,58 @@ window.addEventListener(
             let message = `*EDUVIORA SHOP MANAGER - BILL*%0A--------------------------------%0ACustomer: ${customer}%0AItems: ${items}%0ATotal Amount: ₹${total}%0A--------------------------------%0Aధన్యవాదాలు!`;
             window.open(`https://api.whatsapp.com/send?text=${message}`, '_blank');
         }
+
+   // Function to Calculate and Render Daily & Weekly Profit
+function updateProfitSummary() {
+    // Assuming transactions are stored in localStorage as 'transactions' or 'edu_transactions'
+    // (మీరు వాడుతున్న ఎక్విప్‌మెంట్/ట్రాన్సాక్షన్ కీ పేరు బట్టి దీన్ని మార్చుకోవచ్చు)
+    let transactions = JSON.parse(localStorage.getItem('transactions')) || JSON.parse(localStorage.getItem('edu_transactions')) || [];
+    
+    let todayStr = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+    
+    let todayProfit = 0;
+    let weeklyProfit = 0;
+
+    // Calculate current week start date (7 days ago)
+    let now = new Date();
+    let weekAgo = new Date();
+    weekAgo.setDate(now.getDate() - 7);
+
+    transactions.forEach(tx => {
+        // tx structure expects: { date, type ('income'/'expense'), amount }
+        let txDate = new Date(tx.date);
+        let amount = parseFloat(tx.amount) || 0;
+        let isIncome = (tx.type === 'income' || tx.type === 'Sales' || tx.type === 'Service'); // మీ టైప్ ప్రకారం
+
+        // Daily Check
+        if (tx.date === todayStr) {
+            if (isIncome) todayProfit += amount;
+            else todayProfit -= amount;
+        }
+
+        // Weekly Check (Last 7 Days)
+        if (txDate >= weekAgo && txDate <= now) {
+            if (isIncome) weeklyProfit += amount;
+            else weeklyProfit -= amount;
+        }
+    });
+
+    let dailyEl = document.getElementById('dailyProfit');
+    let weeklyEl = document.getElementById('weeklyProfit');
+
+    if (dailyEl) {
+        dailyEl.innerHTML = `₹${todayProfit.toFixed(2)}`;
+        dailyEl.className = `fs-5 fw-bold ${todayProfit >= 0 ? 'text-success' : 'text-danger'}`;
+    }
+    if (weeklyEl) {
+        weeklyEl.innerHTML = `₹${weeklyProfit.toFixed(2)}`;
+        weeklyEl.className = `fs-5 fw-bold ${weeklyProfit >= 0 ? 'text-primary' : 'text-danger'}`;
+    }
+}
+
+// Run on page load
+updateProfitSummary();
+
 </script>
 
 </body>
