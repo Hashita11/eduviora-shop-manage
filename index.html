@@ -5533,14 +5533,27 @@ window.addEventListener(
         }
 
    function updateProfitSummary() {
-    // మీ యాప్ వాడే లోకల్ స్టోరేజ్ కీస్‌ అన్నీ ఇక్కడ చెక్ చేయబడతాయి
-    let transactions = JSON.parse(localStorage.getItem('transactions')) || 
-                       JSON.parse(localStorage.getItem('edu_transactions')) || 
-                       JSON.parse(localStorage.getItem('shop_transactions')) || [];
+    // మీ యాప్ ఒరిజినల్గా డేటా స్టోర్ చేసే కీ పేరుని ఇక్కడ రీడ్ చేస్తున్నాం
+    let transactions = [];
     
-    // ఒకవేళ డేటా అరే (Array) రూపంలో లేకపోతే ఖాళీగా ఉంచుతుంది
-    if (!Array.isArray(transactions)) {
-        transactions = [];
+    // ఒకవేళ మీ యాప్ లో గ్లోబల్ వేరియబుల్ లేదా వేరే కీ ఉంటే ఇక్కడ ఆటోమేటిక్గా సెట్ అవుతుంది
+    if (typeof allTransactions !== 'undefined' && Array.isArray(allTransactions)) {
+        transactions = allTransactions;
+    } else {
+        // లోకల్ స్టోరేజ్ నుండి అన్ని సాధ్యమైన కీస్ చెక్ చేస్తుంది
+        let keys = ['transactions', 'edu_transactions', 'shop_transactions', 'shop_data', 'expenses', 'income_data'];
+        for (let key of keys) {
+            let data = localStorage.getItem(key);
+            if (data) {
+                try {
+                    let parsed = JSON.parse(data);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        transactions = parsed;
+                        break;
+                    }
+                } catch(e) {}
+            }
+        }
     }
 
     let todayStr = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
@@ -5552,22 +5565,21 @@ window.addEventListener(
     weekAgo.setDate(now.getDate() - 7);
 
     transactions.forEach(tx => {
-        // డేటా ఫార్మాట్ మ్యాచ్ అవ్వడానికి డేట్ మరియు అమౌంట్ తీసుకుంటున్నాం
+        // డేటా ఫార్మాట్ (Date మరియు Amount) మ్యాచ్ చేయడం
         let txDateStr = tx.date ? tx.date.split('T')[0] : '';
         let txDate = new Date(tx.date || tx.createdAt || Date.now());
-        let amount = parseFloat(tx.amount) || 0;
+        let amount = parseFloat(tx.amount || tx.total || 0) || 0;
         
-        // మీ యాప్‌లో టైప్ 'income', 'Sales', 'Service' లేదా పాజిటివ్ ఉంటే ఇన్‌కమ్ కింద లెక్క;}
-        let type = (tx.type || '').toLowerCase();
-        let isIncome = type.includes('income') || type.includes('sales') || type.includes('service') || tx.amount > 0;
+        let type = (tx.type || tx.category || '').toLowerCase();
+        let isIncome = type.includes('income') || type.includes('sales') || type.includes('service') || type.includes('credit') || tx.type === 'Sales';
 
-        // Daily Check (ఈరోజు డేట్ తో మ్యాచ్ అయితే)
+        // Daily Check
         if (txDateStr === todayStr || tx.date === todayStr) {
             if (isIncome) todayProfit += Math.abs(amount);
             else todayProfit -= Math.abs(amount);
         }
 
-        // Weekly Check (గత 7 రోజుల్లో)
+        // Weekly Check
         if (txDate >= weekAgo && txDate <= now) {
             if (isIncome) weeklyProfit += Math.abs(amount);
             else weeklyProfit -= Math.abs(amount);
@@ -5587,10 +5599,8 @@ window.addEventListener(
     }
 }
 
-// పేజ్ లోడ్ అయిన వెంటనే రన్ అవ్వడానికి
-document.addEventListener("DOMContentLoaded", updateProfitSummary);
-updateProfitSummary();
-
+// పేజ్ లోడ్ అయినప్పుడు మరియు ట్రాన్సాక్షన్స్ యాడ్ అయినప్పుడు ఇది రన్ అవుతుంది
+setTimeout(updateProfitSummary, 500);
 
 </script>
 
