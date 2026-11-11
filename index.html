@@ -2531,7 +2531,53 @@ td .btn {
         </div>
 
     </section>
+   
+<!-- Product Inventory Section -->
+    <div class="card p-3 mb-4 shadow-sm rounded-4 border-0 bg-white">
+        <h5 class="text-primary fw-bold mb-3">📦 Product Inventory</h5>
+        <div class="row g-2 mb-3">
+            <div class="col-12">
+                <input type="text" id="prodName" class="form-control rounded-3 py-2" placeholder="Product Name">
+            </div>
+            <div class="col-6">
+                <input type="number" id="prodPrice" class="form-control rounded-3 py-2" placeholder="Price (₹)">
+            </div>
+            <div class="col-6">
+                <input type="number" id="prodStock" class="form-control rounded-3 py-2" placeholder="Stock Qty">
+            </div>
+        </div>
+        <button class="btn btn-primary w-100 rounded-3 py-2 fw-bold shadow-sm" onclick="addProduct()">+ Add Product</button>
+        <ul id="productList" class="list-group mt-3"></ul>
+    </div>
 
+    <!-- Khata Book Section -->
+    <div class="card p-3 mb-4 shadow-sm rounded-4 border-0 bg-white">
+        <h5 class="text-primary fw-bold mb-3">📒 Khata / Ledger (బాకీల ఖాతా)</h5>
+        <div class="mb-3">
+            <input type="text" id="partyName" class="form-control rounded-3 py-2 mb-2" placeholder="Party Name (కస్టమర్/సప్లయర్)">
+            <select id="partyType" class="form-select rounded-3 py-2 mb-2">
+                <option value="give">You'll Give (ఇవ్వాలి)</option>
+                <option value="get">You'll Get (తీసుకోవాలి)</option>
+            </select>
+            <input type="number" id="partyAmount" class="form-control rounded-3 py-2 mb-3" placeholder="Amount (₹)">
+            <button class="btn btn-success w-100 rounded-3 py-2 fw-bold shadow-sm" onclick="addKhataEntry()">Save Khata Entry</button>
+        </div>
+        <div id="khataSummary" class="fw-bold mt-2 p-2 bg-light rounded-3 text-center"></div>
+    </div>
+
+    <!-- Low Stock Alert Banner -->
+    <div id="stockAlertBox" class="alert alert-warning rounded-4 shadow-sm d-none mb-4" role="alert">
+        ⚠️ హెచ్చరిక: కొన్ని వస్తువుల స్టాక్ తక్కువగా ఉంది!
+    </div>
+
+    <!-- Quick Bill Section -->
+    <div class="card p-3 mb-4 shadow-sm rounded-4 border-0 bg-white">
+        <h5 class="text-primary fw-bold mb-3">🧾 Quick Bill & WhatsApp Share</h5>
+        <input type="text" id="billCustomer" class="form-control rounded-3 py-2 mb-2" placeholder="Customer Name">
+        <input type="text" id="billItems" class="form-control rounded-3 py-2 mb-2" placeholder="Items Purchased">
+        <input type="number" id="billTotal" class="form-control rounded-3 py-2 mb-3" placeholder="Total Amount (₹)">
+        <button class="btn btn-dark w-100 rounded-3 py-2 fw-bold shadow-sm" onclick="generateBillWhatsApp()">Share via WhatsApp 💬</button>
+    </div>
 
 
     <!-- =================================================
@@ -2806,46 +2852,6 @@ td .btn {
 </div>
 
 
-    <!-- Product Inventory Section -->
-    <div class="card p-3 mb-3 shadow-sm">
-        <h5 class="text-primary mb-3">📦 Product Inventory</h5>
-        <div class="input-group mb-2">
-            <input type="text" id="prodName" class="form-control" placeholder="Product Name">
-            <input type="number" id="prodPrice" class="form-control" placeholder="Price (₹)">
-            <input type="number" id="prodStock" class="form-control" placeholder="Stock Qty">
-            <button class="btn btn-primary" onclick="addProduct()">Add</button>
-        </div>
-        <ul id="productList" class="list-group"></ul>
-    </div>
-
-    <!-- Khata Book Section -->
-    <div class="card p-3 mb-3 shadow-sm">
-        <h5 class="text-primary mb-3">📒 Khata / Ledger (బాకీల ఖాతా)</h5>
-        <div class="mb-2">
-            <input type="text" id="partyName" class="form-control mb-1" placeholder="Party Name">
-            <select id="partyType" class="form-select mb-1">
-                <option value="give">You'll Give (ఇవ్వాలి)</option>
-                <option value="get">You'll Get (తీసుకోవాలి)</option>
-            </select>
-            <input type="number" id="partyAmount" class="form-control mb-2" placeholder="Amount (₹)">
-            <button class="btn btn-success w-100" onclick="addKhataEntry()">Save Entry</button>
-        </div>
-        <div id="khataSummary" class="fw-bold mt-2"></div>
-    </div>
-
-    <!-- Low Stock Alert Banner -->
-    <div id="stockAlertBox" class="alert alert-warning d-none" role="alert">
-        ⚠️ హెచ్చరిక: కొన్ని వస్తువుల స్టాక్ తక్కువగా ఉంది!
-    </div>
-
-    <!-- Quick Bill Section -->
-    <div class="card p-3 mb-3 shadow-sm">
-        <h5 class="text-primary mb-3">🧾 Quick Bill & WhatsApp Share</h5>
-        <input type="text" id="billCustomer" class="form-control mb-2" placeholder="Customer Name">
-        <input type="text" id="billItems" class="form-control mb-2" placeholder="Items Purchased">
-        <input type="number" id="billTotal" class="form-control mb-2" placeholder="Total Amount (₹)">
-        <button class="btn btn-dark w-100 mb-2" onclick="generateBillWhatsApp()">Share via WhatsApp</button>
-    </div>
 
 
 <!-- =====================================================
@@ -5434,7 +5440,7 @@ window.addEventListener(
             let name = document.getElementById('prodName').value;
             let price = parseFloat(document.getElementById('prodPrice').value);
             let stock = parseInt(document.getElementById('prodStock').value);
-            if(!name || isNaN(price) || isNaN(stock)) { alert('అన్ని వివరాలు నింపండి.'); return; }
+            if(!name || isNaN(price) || isNaN(stock)) { alert('దయచేసి అన్ని వివరాలు సరిగ్గా నింపండి.'); return; }
             products.push({ name, price, stock });
             localStorage.setItem('edu_products', JSON.stringify(products));
             renderProducts(); checkLowStock();
@@ -5447,8 +5453,8 @@ window.addEventListener(
             if(!list) return;
             list.innerHTML = '';
             products.forEach((p, index) => {
-                let alertClass = p.stock < 5 ? 'text-danger fw-bold' : '';
-                list.innerHTML += `<li class="list-group-item d-flex justify-content-between align-items-center">${p.name} - ₹${p.price} <span class="${alertClass}">Stock: ${p.stock}</span><button class="btn btn-sm btn-danger" onclick="removeProduct(${index})">X</button></li>`;
+                let alertClass = p.stock < 5 ? 'text-danger fw-bold' : 'text-muted';
+                list.innerHTML += `<li class="list-group-item d-flex justify-content-between align-items-center py-2 px-3 border-0 bg-light mb-1 rounded-3"><span><strong>${p.name}</strong> - ₹${p.price}</span> <span class="${alertClass}">Stock: ${p.stock}</span> <button class="btn btn-sm btn-outline-danger border-0" onclick="removeProduct(${index})">✕</button></li>`;
             });
         }
         function removeProduct(index) {
@@ -5468,6 +5474,8 @@ window.addEventListener(
             khataEntries.push({ name, type, amount });
             localStorage.setItem('edu_khata', JSON.stringify(khataEntries));
             updateKhataUI();
+            document.getElementById('partyName').value = '';
+            document.getElementById('partyAmount').value = '';
         }
         function updateKhataUI() {
             let summary = document.getElementById('khataSummary');
@@ -5501,7 +5509,6 @@ window.addEventListener(
             let message = `*EDUVIORA SHOP MANAGER - BILL*%0A--------------------------------%0ACustomer: ${customer}%0AItems: ${items}%0ATotal Amount: ₹${total}%0A--------------------------------%0Aధన్యవాదాలు!`;
             window.open(`https://api.whatsapp.com/send?text=${message}`, '_blank');
         }
-
 </script>
 
 </body>
