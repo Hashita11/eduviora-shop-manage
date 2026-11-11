@@ -2219,27 +2219,6 @@ td .btn {
     </section>
 
 
-   <!-- Daily & Weekly Profit Summary Card -->
-<div class="card p-3 mb-4 shadow-sm rounded-4 border-0 bg-white">
-    <h5 class="text-primary fw-bold mb-3">📊 Profit & Loss Summary</h5>
-    
-    <div class="row g-2">
-        <!-- Daily Summary Box -->
-        <div class="col-6">
-            <div class="p-3 bg-light rounded-3 text-center">
-                <small class="text-muted d-block fw-bold">TODAY'S PROFIT</small>
-                <span id="dailyProfit" class="fs-5 fw-bold text-success">₹0.00</span>
-            </div>
-        </div>
-        <!-- Weekly Summary Box -->
-        <div class="col-6">
-            <div class="p-3 bg-light rounded-3 text-center">
-                <small class="text-muted d-block fw-bold">THIS WEEK'S PROFIT</small>
-                <span id="weeklyProfit" class="fs-5 fw-bold text-primary">₹0.00</span>
-            </div>
-        </div>
-    </div>
-</div>
 
 
     <!-- =================================================
@@ -5532,75 +5511,7 @@ window.addEventListener(
             window.open(`https://api.whatsapp.com/send?text=${message}`, '_blank');
         }
 
-   function updateProfitSummary() {
-    // మీ యాప్ ఒరిజినల్గా డేటా స్టోర్ చేసే కీ పేరుని ఇక్కడ రీడ్ చేస్తున్నాం
-    let transactions = [];
-    
-    // ఒకవేళ మీ యాప్ లో గ్లోబల్ వేరియబుల్ లేదా వేరే కీ ఉంటే ఇక్కడ ఆటోమేటిక్గా సెట్ అవుతుంది
-    if (typeof allTransactions !== 'undefined' && Array.isArray(allTransactions)) {
-        transactions = allTransactions;
-    } else {
-        // లోకల్ స్టోరేజ్ నుండి అన్ని సాధ్యమైన కీస్ చెక్ చేస్తుంది
-        let keys = ['transactions', 'edu_transactions', 'shop_transactions', 'shop_data', 'expenses', 'income_data'];
-        for (let key of keys) {
-            let data = localStorage.getItem(key);
-            if (data) {
-                try {
-                    let parsed = JSON.parse(data);
-                    if (Array.isArray(parsed) && parsed.length > 0) {
-                        transactions = parsed;
-                        break;
-                    }
-                } catch(e) {}
-            }
-        }
-    }
-
-    let todayStr = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
-    let todayProfit = 0;
-    let weeklyProfit = 0;
-
-    let now = new Date();
-    let weekAgo = new Date();
-    weekAgo.setDate(now.getDate() - 7);
-
-    transactions.forEach(tx => {
-        // డేటా ఫార్మాట్ (Date మరియు Amount) మ్యాచ్ చేయడం
-        let txDateStr = tx.date ? tx.date.split('T')[0] : '';
-        let txDate = new Date(tx.date || tx.createdAt || Date.now());
-        let amount = parseFloat(tx.amount || tx.total || 0) || 0;
-        
-        let type = (tx.type || tx.category || '').toLowerCase();
-        let isIncome = type.includes('income') || type.includes('sales') || type.includes('service') || type.includes('credit') || tx.type === 'Sales';
-
-        // Daily Check
-        if (txDateStr === todayStr || tx.date === todayStr) {
-            if (isIncome) todayProfit += Math.abs(amount);
-            else todayProfit -= Math.abs(amount);
-        }
-
-        // Weekly Check
-        if (txDate >= weekAgo && txDate <= now) {
-            if (isIncome) weeklyProfit += Math.abs(amount);
-            else weeklyProfit -= Math.abs(amount);
-        }
-    });
-
-    let dailyEl = document.getElementById('dailyProfit');
-    let weeklyEl = document.getElementById('weeklyProfit');
-
-    if (dailyEl) {
-        dailyEl.innerHTML = `₹${todayProfit.toFixed(2)}`;
-        dailyEl.className = `fs-5 fw-bold ${todayProfit >= 0 ? 'text-success' : 'text-danger'}`;
-    }
-    if (weeklyEl) {
-        weeklyEl.innerHTML = `₹${weeklyProfit.toFixed(2)}`;
-        weeklyEl.className = `fs-5 fw-bold ${weeklyProfit >= 0 ? 'text-primary' : 'text-danger'}`;
-    }
-}
-
-// పేజ్ లోడ్ అయినప్పుడు మరియు ట్రాన్సాక్షన్స్ యాడ్ అయినప్పుడు ఇది రన్ అవుతుంది
-setTimeout(updateProfitSummary, 500);
+   
 
 </script>
 
