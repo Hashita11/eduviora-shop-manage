@@ -2806,6 +2806,47 @@ td .btn {
 </div>
 
 
+    <!-- Product Inventory Section -->
+    <div class="card p-3 mb-3 shadow-sm">
+        <h5 class="text-primary mb-3">📦 Product Inventory</h5>
+        <div class="input-group mb-2">
+            <input type="text" id="prodName" class="form-control" placeholder="Product Name">
+            <input type="number" id="prodPrice" class="form-control" placeholder="Price (₹)">
+            <input type="number" id="prodStock" class="form-control" placeholder="Stock Qty">
+            <button class="btn btn-primary" onclick="addProduct()">Add</button>
+        </div>
+        <ul id="productList" class="list-group"></ul>
+    </div>
+
+    <!-- Khata Book Section -->
+    <div class="card p-3 mb-3 shadow-sm">
+        <h5 class="text-primary mb-3">📒 Khata / Ledger (బాకీల ఖాతా)</h5>
+        <div class="mb-2">
+            <input type="text" id="partyName" class="form-control mb-1" placeholder="Party Name">
+            <select id="partyType" class="form-select mb-1">
+                <option value="give">You'll Give (ఇవ్వాలి)</option>
+                <option value="get">You'll Get (తీసుకోవాలి)</option>
+            </select>
+            <input type="number" id="partyAmount" class="form-control mb-2" placeholder="Amount (₹)">
+            <button class="btn btn-success w-100" onclick="addKhataEntry()">Save Entry</button>
+        </div>
+        <div id="khataSummary" class="fw-bold mt-2"></div>
+    </div>
+
+    <!-- Low Stock Alert Banner -->
+    <div id="stockAlertBox" class="alert alert-warning d-none" role="alert">
+        ⚠️ హెచ్చరిక: కొన్ని వస్తువుల స్టాక్ తక్కువగా ఉంది!
+    </div>
+
+    <!-- Quick Bill Section -->
+    <div class="card p-3 mb-3 shadow-sm">
+        <h5 class="text-primary mb-3">🧾 Quick Bill & WhatsApp Share</h5>
+        <input type="text" id="billCustomer" class="form-control mb-2" placeholder="Customer Name">
+        <input type="text" id="billItems" class="form-control mb-2" placeholder="Items Purchased">
+        <input type="number" id="billTotal" class="form-control mb-2" placeholder="Total Amount (₹)">
+        <button class="btn btn-dark w-100 mb-2" onclick="generateBillWhatsApp()">Share via WhatsApp</button>
+    </div>
+
 
 <!-- =====================================================
      SHOP SETTINGS MODAL
@@ -5384,46 +5425,7 @@ window.addEventListener(
 
 );
 
-    <!-- Product Inventory Section -->
-    <div class="card p-3 mb-3 shadow-sm">
-        <h5 class="text-primary mb-3">📦 Product Inventory</h5>
-        <div class="input-group mb-2">
-            <input type="text" id="prodName" class="form-control" placeholder="Product Name">
-            <input type="number" id="prodPrice" class="form-control" placeholder="Price (₹)">
-            <input type="number" id="prodStock" class="form-control" placeholder="Stock Qty">
-            <button class="btn btn-primary" onclick="addProduct()">Add</button>
-        </div>
-        <ul id="productList" class="list-group"></ul>
-    </div>
 
-    <!-- Khata Book Section -->
-    <div class="card p-3 mb-3 shadow-sm">
-        <h5 class="text-primary mb-3">📒 Khata / Ledger (బాకీల ఖాతా)</h5>
-        <div class="mb-2">
-            <input type="text" id="partyName" class="form-control mb-1" placeholder="Party Name">
-            <select id="partyType" class="form-select mb-1">
-                <option value="give">You'll Give (ఇవ్వాలి)</option>
-                <option value="get">You'll Get (తీసుకోవాలి)</option>
-            </select>
-            <input type="number" id="partyAmount" class="form-control mb-2" placeholder="Amount (₹)">
-            <button class="btn btn-success w-100" onclick="addKhataEntry()">Save Entry</button>
-        </div>
-        <div id="khataSummary" class="fw-bold mt-2"></div>
-    </div>
-
-    <!-- Low Stock Alert Banner -->
-    <div id="stockAlertBox" class="alert alert-warning d-none" role="alert">
-        ⚠️ హెచ్చరిక: కొన్ని వస్తువుల స్టాక్ తక్కువగా ఉంది!
-    </div>
-
-    <!-- Quick Bill Section -->
-    <div class="card p-3 mb-3 shadow-sm">
-        <h5 class="text-primary mb-3">🧾 Quick Bill & WhatsApp Share</h5>
-        <input type="text" id="billCustomer" class="form-control mb-2" placeholder="Customer Name">
-        <input type="text" id="billItems" class="form-control mb-2" placeholder="Items Purchased">
-        <input type="number" id="billTotal" class="form-control mb-2" placeholder="Total Amount (₹)">
-        <button class="btn btn-dark w-100 mb-2" onclick="generateBillWhatsApp()">Share via WhatsApp</button>
-    </div>
 
     
         // 1. Product Inventory Logic
