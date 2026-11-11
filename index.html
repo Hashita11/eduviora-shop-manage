@@ -5384,6 +5384,125 @@ window.addEventListener(
 
 );
 
+    <!-- Product Inventory Section -->
+    <div class="card p-3 mb-3 shadow-sm">
+        <h5 class="text-primary mb-3">📦 Product Inventory</h5>
+        <div class="input-group mb-2">
+            <input type="text" id="prodName" class="form-control" placeholder="Product Name">
+            <input type="number" id="prodPrice" class="form-control" placeholder="Price (₹)">
+            <input type="number" id="prodStock" class="form-control" placeholder="Stock Qty">
+            <button class="btn btn-primary" onclick="addProduct()">Add</button>
+        </div>
+        <ul id="productList" class="list-group"></ul>
+    </div>
+
+    <!-- Khata Book Section -->
+    <div class="card p-3 mb-3 shadow-sm">
+        <h5 class="text-primary mb-3">📒 Khata / Ledger (బాకీల ఖాతా)</h5>
+        <div class="mb-2">
+            <input type="text" id="partyName" class="form-control mb-1" placeholder="Party Name">
+            <select id="partyType" class="form-select mb-1">
+                <option value="give">You'll Give (ఇవ్వాలి)</option>
+                <option value="get">You'll Get (తీసుకోవాలి)</option>
+            </select>
+            <input type="number" id="partyAmount" class="form-control mb-2" placeholder="Amount (₹)">
+            <button class="btn btn-success w-100" onclick="addKhataEntry()">Save Entry</button>
+        </div>
+        <div id="khataSummary" class="fw-bold mt-2"></div>
+    </div>
+
+    <!-- Low Stock Alert Banner -->
+    <div id="stockAlertBox" class="alert alert-warning d-none" role="alert">
+        ⚠️ హెచ్చరిక: కొన్ని వస్తువుల స్టాక్ తక్కువగా ఉంది!
+    </div>
+
+    <!-- Quick Bill Section -->
+    <div class="card p-3 mb-3 shadow-sm">
+        <h5 class="text-primary mb-3">🧾 Quick Bill & WhatsApp Share</h5>
+        <input type="text" id="billCustomer" class="form-control mb-2" placeholder="Customer Name">
+        <input type="text" id="billItems" class="form-control mb-2" placeholder="Items Purchased">
+        <input type="number" id="billTotal" class="form-control mb-2" placeholder="Total Amount (₹)">
+        <button class="btn btn-dark w-100 mb-2" onclick="generateBillWhatsApp()">Share via WhatsApp</button>
+    </div>
+
+    <script>
+        // 1. Product Inventory Logic
+        let products = JSON.parse(localStorage.getItem('edu_products')) || [];
+        function addProduct() {
+            let name = document.getElementById('prodName').value;
+            let price = parseFloat(document.getElementById('prodPrice').value);
+            let stock = parseInt(document.getElementById('prodStock').value);
+            if(!name || isNaN(price) || isNaN(stock)) { alert('అన్ని వివరాలు నింపండి.'); return; }
+            products.push({ name, price, stock });
+            localStorage.setItem('edu_products', JSON.stringify(products));
+            renderProducts(); checkLowStock();
+            document.getElementById('prodName').value = '';
+            document.getElementById('prodPrice').value = '';
+            document.getElementById('prodStock').value = '';
+        }
+        function renderProducts() {
+            let list = document.getElementById('productList');
+            if(!list) return;
+            list.innerHTML = '';
+            products.forEach((p, index) => {
+                let alertClass = p.stock < 5 ? 'text-danger fw-bold' : '';
+                list.innerHTML += `<li class="list-group-item d-flex justify-content-between align-items-center">${p.name} - ₹${p.price} <span class="${alertClass}">Stock: ${p.stock}</span><button class="btn btn-sm btn-danger" onclick="removeProduct(${index})">X</button></li>`;
+            });
+        }
+        function removeProduct(index) {
+            products.splice(index, 1);
+            localStorage.setItem('edu_products', JSON.stringify(products));
+            renderProducts(); checkLowStock();
+        }
+        renderProducts();
+
+        // 2. Khata Ledger Logic
+        let khataEntries = JSON.parse(localStorage.getItem('edu_khata')) || [];
+        function addKhataEntry() {
+            let name = document.getElementById('partyName').value;
+            let type = document.getElementById('partyType').value;
+            let amount = parseFloat(document.getElementById('partyAmount').value);
+            if(!name || isNaN(amount)) { alert('అన్ని వివరాలు నమోదు చేయండి.'); return; }
+            khataEntries.push({ name, type, amount });
+            localStorage.setItem('edu_khata', JSON.stringify(khataEntries));
+            updateKhataUI();
+        }
+        function updateKhataUI() {
+            let summary = document.getElementById('khataSummary');
+            if(!summary) return;
+            let totalGet = khataEntries.filter(e => e.type === 'get').reduce((a, b) => a + b.amount, 0);
+            let totalGive = khataEntries.filter(e => e.type === 'give').reduce((a, b) => a + b.amount, 0);
+            summary.innerHTML = `<span class="text-success">తీసుకోవాల్సింది: ₹${totalGet}</span> | <span class="text-danger">ఇవ్వాల్సింది: ₹${totalGive}</span>`;
+        }
+        updateKhataUI();
+
+        // 3. Low Stock Alert Logic
+        function checkLowStock() {
+            let lowStockItems = products.filter(p => p.stock < 5);
+            let alertBox = document.getElementById('stockAlertBox');
+            if(!alertBox) return;
+            if(lowStockItems.length > 0) {
+                alertBox.classList.remove('d-none');
+                alertBox.innerHTML = `⚠️ Low Stock Alert: ${lowStockItems.map(i => i.name).join(', ')}`;
+            } else {
+                alertBox.classList.add('d-none');
+            }
+        }
+        checkLowStock();
+
+        // 4. Quick Bill WhatsApp Logic
+        function generateBillWhatsApp() {
+            let customer = document.getElementById('billCustomer').value;
+            let items = document.getElementById('billItems').value;
+            let total = document.getElementById('billTotal').value;
+            if(!customer || !items || !total) { alert('బిల్లు వివరాలు పూర్తి చేయండి.'); return; }
+            let message = `*EDUVIORA SHOP MANAGER - BILL*%0A--------------------------------%0ACustomer: ${customer}%0AItems: ${items}%0ATotal Amount: ₹${total}%0A--------------------------------%0Aధన్యవాదాలు!`;
+            window.open(`https://api.whatsapp.com/send?text=${message}`, '_blank');
+        }
+    </script>
+
+   
+
 </script>
 
 </body>
