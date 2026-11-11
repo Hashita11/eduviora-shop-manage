@@ -5532,38 +5532,45 @@ window.addEventListener(
             window.open(`https://api.whatsapp.com/send?text=${message}`, '_blank');
         }
 
-   // Function to Calculate and Render Daily & Weekly Profit
-function updateProfitSummary() {
-    // Assuming transactions are stored in localStorage as 'transactions' or 'edu_transactions'
-    // (మీరు వాడుతున్న ఎక్విప్‌మెంట్/ట్రాన్సాక్షన్ కీ పేరు బట్టి దీన్ని మార్చుకోవచ్చు)
-    let transactions = JSON.parse(localStorage.getItem('transactions')) || JSON.parse(localStorage.getItem('edu_transactions')) || [];
+   function updateProfitSummary() {
+    // మీ యాప్ వాడే లోకల్ స్టోరేజ్ కీస్‌ అన్నీ ఇక్కడ చెక్ చేయబడతాయి
+    let transactions = JSON.parse(localStorage.getItem('transactions')) || 
+                       JSON.parse(localStorage.getItem('edu_transactions')) || 
+                       JSON.parse(localStorage.getItem('shop_transactions')) || [];
     
+    // ఒకవేళ డేటా అరే (Array) రూపంలో లేకపోతే ఖాళీగా ఉంచుతుంది
+    if (!Array.isArray(transactions)) {
+        transactions = [];
+    }
+
     let todayStr = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
-    
     let todayProfit = 0;
     let weeklyProfit = 0;
 
-    // Calculate current week start date (7 days ago)
     let now = new Date();
     let weekAgo = new Date();
     weekAgo.setDate(now.getDate() - 7);
 
     transactions.forEach(tx => {
-        // tx structure expects: { date, type ('income'/'expense'), amount }
-        let txDate = new Date(tx.date);
+        // డేటా ఫార్మాట్ మ్యాచ్ అవ్వడానికి డేట్ మరియు అమౌంట్ తీసుకుంటున్నాం
+        let txDateStr = tx.date ? tx.date.split('T')[0] : '';
+        let txDate = new Date(tx.date || tx.createdAt || Date.now());
         let amount = parseFloat(tx.amount) || 0;
-        let isIncome = (tx.type === 'income' || tx.type === 'Sales' || tx.type === 'Service'); // మీ టైప్ ప్రకారం
+        
+        // మీ యాప్‌లో టైప్ 'income', 'Sales', 'Service' లేదా పాజిటివ్ ఉంటే ఇన్‌కమ్ కింద లెక్క;}
+        let type = (tx.type || '').toLowerCase();
+        let isIncome = type.includes('income') || type.includes('sales') || type.includes('service') || tx.amount > 0;
 
-        // Daily Check
-        if (tx.date === todayStr) {
-            if (isIncome) todayProfit += amount;
-            else todayProfit -= amount;
+        // Daily Check (ఈరోజు డేట్ తో మ్యాచ్ అయితే)
+        if (txDateStr === todayStr || tx.date === todayStr) {
+            if (isIncome) todayProfit += Math.abs(amount);
+            else todayProfit -= Math.abs(amount);
         }
 
-        // Weekly Check (Last 7 Days)
+        // Weekly Check (గత 7 రోజుల్లో)
         if (txDate >= weekAgo && txDate <= now) {
-            if (isIncome) weeklyProfit += amount;
-            else weeklyProfit -= amount;
+            if (isIncome) weeklyProfit += Math.abs(amount);
+            else weeklyProfit -= Math.abs(amount);
         }
     });
 
@@ -5580,8 +5587,10 @@ function updateProfitSummary() {
     }
 }
 
-// Run on page load
+// పేజ్ లోడ్ అయిన వెంటనే రన్ అవ్వడానికి
+document.addEventListener("DOMContentLoaded", updateProfitSummary);
 updateProfitSummary();
+
 
 </script>
 
