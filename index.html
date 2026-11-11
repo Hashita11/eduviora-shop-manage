@@ -2533,23 +2533,48 @@ td .btn {
 
     </section>
    
-<!-- Product Inventory Section -->
-    <div class="card p-3 mb-4 shadow-sm rounded-4 border-0 bg-white">
-        <h5 class="text-primary fw-bold mb-3">📦 Product Inventory</h5>
-        <div class="row g-2 mb-3">
-            <div class="col-12">
-                <input type="text" id="prodName" class="form-control rounded-3 py-2" placeholder="Product Name">
-            </div>
-            <div class="col-6">
-                <input type="number" id="prodPrice" class="form-control rounded-3 py-2" placeholder="Price (₹)">
-            </div>
-            <div class="col-6">
-                <input type="number" id="prodStock" class="form-control rounded-3 py-2" placeholder="Stock Qty">
-            </div>
+<!-- Product Inventory Section with Categories -->
+<div class="card p-3 mb-4 shadow-sm rounded-4 border-0 bg-white">
+    <h5 class="text-primary fw-bold mb-3">📦 Product Inventory & Categories</h5>
+    
+    <!-- Input Form -->
+    <div class="row g-2 mb-2">
+        <div class="col-12">
+            <input type="text" id="prodName" class="form-control rounded-3 py-2" placeholder="Product Name">
         </div>
-        <button class="btn btn-primary w-100 rounded-3 py-2 fw-bold shadow-sm" onclick="addProduct()">+ Add Product</button>
-        <ul id="productList" class="list-group mt-3"></ul>
+        <div class="col-6">
+            <input type="number" id="prodPrice" class="form-control rounded-3 py-2" placeholder="Price (₹)">
+        </div>
+        <div class="col-6">
+            <input type="number" id="prodStock" class="form-control rounded-3 py-2" placeholder="Stock Qty">
+        </div>
+        <div class="col-12">
+            <select id="prodCategory" class="form-select rounded-3 py-2">
+                <option value="General">General / సాధారణం</option>
+                <option value="Stationery">Stationery / స్టేషనరీ</option>
+                <option value="Fancy">Fancy Items / ఫ్యాన్సీ</option>
+                <option value="Books">Books & Notebooks / పుస్తకాలు</option>
+                <option value="Others">Others / ఇతరులు</option>
+            </select>
+        </div>
     </div>
+    <button class="btn btn-primary w-100 rounded-3 py-2 fw-bold shadow-sm mb-3" onclick="addProduct()">+ Add Product</button>
+
+    <!-- Category Filter Dropdown -->
+    <div class="mb-3">
+        <label class="form-label fw-bold text-muted small">Filter by Category:</label>
+        <select id="filterCategory" class="form-select rounded-3 py-1" onchange="renderProducts()">
+            <option value="All">All Categories (అన్నీ చూపించు)</option>
+            <option value="General">General</option>
+            <option value="Stationery">Stationery</option>
+            <option value="Fancy">Fancy Items</option>
+            <option value="Books">Books & Notebooks</option>
+            <option value="Others">Others</option>
+        </select>
+    </div>
+
+    <ul id="productList" class="list-group mt-2"></ul>
+</div>
 
     <!-- Khata Book Section -->
     <div class="card p-3 mb-4 shadow-sm rounded-4 border-0 bg-white">
@@ -5434,37 +5459,76 @@ window.addEventListener(
 
 
 
-    
-        // 1. Product Inventory Logic
-        let products = JSON.parse(localStorage.getItem('edu_products')) || [];
-        function addProduct() {
-            let name = document.getElementById('prodName').value;
-            let price = parseFloat(document.getElementById('prodPrice').value);
-            let stock = parseInt(document.getElementById('prodStock').value);
-            if(!name || isNaN(price) || isNaN(stock)) { alert('దయచేసి అన్ని వివరాలు సరిగ్గా నింపండి.'); return; }
-            products.push({ name, price, stock });
-            localStorage.setItem('edu_products', JSON.stringify(products));
-            renderProducts(); checkLowStock();
-            document.getElementById('prodName').value = '';
-            document.getElementById('prodPrice').value = '';
-            document.getElementById('prodStock').value = '';
-        }
-        function renderProducts() {
-            let list = document.getElementById('productList');
-            if(!list) return;
-            list.innerHTML = '';
-            products.forEach((p, index) => {
-                let alertClass = p.stock < 5 ? 'text-danger fw-bold' : 'text-muted';
-                list.innerHTML += `<li class="list-group-item d-flex justify-content-between align-items-center py-2 px-3 border-0 bg-light mb-1 rounded-3"><span><strong>${p.name}</strong> - ₹${p.price}</span> <span class="${alertClass}">Stock: ${p.stock}</span> <button class="btn btn-sm btn-outline-danger border-0" onclick="removeProduct(${index})">✕</button></li>`;
-            });
-        }
-        function removeProduct(index) {
-            products.splice(index, 1);
-            localStorage.setItem('edu_products', JSON.stringify(products));
-            renderProducts(); checkLowStock();
-        }
-        renderProducts();
+     // Updated Products Logic with Category
+    let products = JSON.parse(localStorage.getItem('edu_products')) || [];
 
+    function addProduct() {
+        let name = document.getElementById('prodName').value;
+        let price = parseFloat(document.getElementById('prodPrice').value);
+        let stock = parseInt(document.getElementById('prodStock').value);
+        let category = document.getElementById('prodCategory').value;
+
+        if(!name || isNaN(price) || isNaN(stock)) { 
+            alert('దయచేసి ప్రొడక్ట్ పేరు, ధర మరియు స్టాక్ సరిగ్గా నింపండి.'); 
+            return; 
+        }
+
+        products.push({ name, price, stock, category });
+        localStorage.setItem('edu_products', JSON.stringify(products));
+        renderProducts(); 
+        checkLowStock();
+
+        // Clear Inputs
+        document.getElementById('prodName').value = '';
+        document.getElementById('prodPrice').value = '';
+        document.getElementById('prodStock').value = '';
+    }
+
+    function renderProducts() {
+        let list = document.getElementById('productList');
+        let selectedFilter = document.getElementById('filterCategory').value;
+        if(!list) return;
+        
+        list.innerHTML = '';
+        
+        // Filter products based on dropdown selection
+        let filteredProducts = products.filter(p => {
+            if(selectedFilter === 'All') return true;
+            return p.category === selectedFilter;
+        });
+
+        if(filteredProducts.length === 0) {
+            list.innerHTML = `<li class="list-group-item text-center text-muted border-0 bg-light rounded-3 py-2">ఈ క్యాటగిరీలో వస్తువులు లేవు</li>`;
+            return;
+        }
+
+        filteredProducts.forEach((p, index) => {
+            // Find actual index in main array for deletion
+            let originalIndex = products.indexOf(p);
+            let alertClass = p.stock < 5 ? 'text-danger fw-bold' : 'text-muted';
+            
+            list.innerHTML += `<li class="list-group-item d-flex justify-content-between align-items-center py-2 px-3 border-0 bg-light mb-1 rounded-3">
+                <div>
+                    <strong>${p.name}</strong> <span class="badge bg-secondary style-badge" style="font-size: 10px;">${p.category || 'General'}</span><br>
+                    <small class="text-muted">₹${p.price}</small>
+                </div> 
+                <div class="text-end">
+                    <span class="${alertClass} d-block">Stock: ${p.stock}</span>
+                    <button class="btn btn-sm btn-outline-danger border-0 p-0 mt-1" onclick="removeProduct(${originalIndex})">✕ Delete</button>
+                </div>
+            </li>`;
+        });
+    }
+
+    function removeProduct(index) {
+        products.splice(index, 1);
+        localStorage.setItem('edu_products', JSON.stringify(products));
+        renderProducts(); 
+        checkLowStock();
+    }
+
+    // Initial load
+    renderProducts();
         // 2. Khata Ledger Logic
         let khataEntries = JSON.parse(localStorage.getItem('edu_khata')) || [];
         function addKhataEntry() {
