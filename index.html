@@ -5567,13 +5567,34 @@ window.addEventListener(
 
         // 4. Quick Bill WhatsApp Logic
         function generateBillWhatsApp() {
-            let customer = document.getElementById('billCustomer').value;
-            let items = document.getElementById('billItems').value;
-            let total = document.getElementById('billTotal').value;
-            if(!customer || !items || !total) { alert('బిల్లు వివరాలు పూర్తి చేయండి.'); return; }
-            let message = `*EDUVIORA SHOP MANAGER - BILL*%0A--------------------------------%0ACustomer: ${customer}%0AItems: ${items}%0ATotal Amount: ₹${total}%0A--------------------------------%0Aధన్యవాదాలు!`;
-            window.open(`https://api.whatsapp.com/send?text=${message}`, '_blank');
-        }
+    let customer = document.getElementById('billCustomer').value;
+    let itemsInput = document.getElementById('billItems').value;
+    let total = document.getElementById('billTotal').value;
+
+    if(!customer || !itemsInput || !total) { 
+        alert('దయచేసి కస్టమర్ పేరు, ఐటమ్స్ మరియు టోటల్ అమౌంట్ నింపండి.'); 
+        return; 
+    }
+
+    // ఐటమ్స్ ఎక్కువ ఉన్నప్పుడు (ఉదాహరణకు కామాలు లేదా కొత్త లైన్లతో విడదీసినప్పుడు) వాటిని క్లీన్ చేయడం
+    let itemsList = itemsInput.split(',').map(item => `▪️ ${item.trim()}`).join('%0A');
+
+    // వాట్సాప్ మెసేజ్ ఫార్మాట్
+    let message = `*🧾 EDUVIORA SHOP MANAGER - INVOICE*%0A` +
+                  `--------------------------------%0A` +
+                  `👤 *Customer:* ${customer}%0A` +
+                  `📅 *Date:* ${new Date().toLocaleDateString('en-GB')}%0A` +
+                  `--------------------------------%0A` +
+                  `📦 *Items Purchased:*%0A${itemsList}%0A` +
+                  `--------------------------------%0A` +
+                  `💰 *Total Amount:* *₹${total}*%0A` +
+                  `--------------------------------%0A` +
+                  `🙏 *ధన్యవాదాలు! మళ్లీ రండి.*`;
+
+    // వాట్సాప్ వెబ్/యాప్ ఓపెన్ అవ్వడానికి URL
+    let whatsappUrl = `https://api.whatsapp.com/send?text=${message}`;
+    window.open(whatsappUrl, '_blank');
+}
 
    
 
