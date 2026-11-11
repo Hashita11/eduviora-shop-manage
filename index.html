@@ -5425,7 +5425,7 @@ window.addEventListener(
         <button class="btn btn-dark w-100 mb-2" onclick="generateBillWhatsApp()">Share via WhatsApp</button>
     </div>
 
-    <script>
+    
         // 1. Product Inventory Logic
         let products = JSON.parse(localStorage.getItem('edu_products')) || [];
         function addProduct() {
@@ -5499,9 +5499,6 @@ window.addEventListener(
             let message = `*EDUVIORA SHOP MANAGER - BILL*%0A--------------------------------%0ACustomer: ${customer}%0AItems: ${items}%0ATotal Amount: ₹${total}%0A--------------------------------%0Aధన్యవాదాలు!`;
             window.open(`https://api.whatsapp.com/send?text=${message}`, '_blank');
         }
-    </script>
-
-   
 
 </script>
 
