@@ -2596,6 +2596,23 @@ td .btn {
         ⚠️ హెచ్చరిక: కొన్ని వస్తువుల స్టాక్ తక్కువగా ఉంది!
     </div>
 
+   <!-- === 1. LOW STOCK REORDER BUTTON === -->
+<div class="card p-3 mb-3 border-0 rounded-4 shadow-sm" style="background: #f8f9fa;">
+    <h6 class="fw-bold mb-2 text-dark" style="font-size: 14px;">📦 Low Stock Reorder</h6>
+    <button class="btn btn-sm w-100 fw-semibold text-white shadow-sm" style="background: #d97706; border-radius: 8px; padding: 8px;" onclick="sendLowStockOrderWhatsApp()">
+        💬 Send Stock Order via WhatsApp
+    </button>
+</div>
+<!-- === 2. BARCODE SCANNER BUTTON === -->
+<div class="card p-3 mb-3 border-0 rounded-4 shadow-sm" style="background: #f8f9fa;">
+    <h6 class="fw-bold mb-2 text-dark" style="font-size: 14px;">📷 Barcode / Quick Search</h6>
+    <div class="input-group input-group-sm">
+        <input type="text" id="barcodeInput" class="form-control" placeholder="Scan or Type Item Name..." style="border-radius: 8px 0 0 8px;">
+        <button class="btn text-white fw-semibold" style="background: #4f46e5; border-radius: 0 8px 8px 0;" onclick="handleBarcodeScan(document.getElementById('barcodeInput').value)">
+            Add Item
+        </button>
+    </div>
+</div>
     <!-- Quick Bill Section -->
     <div class="card p-3 mb-4 shadow-sm rounded-4 border-0 bg-white">
         <h5 class="text-primary fw-bold mb-3">🧾 Quick Bill & WhatsApp Share</h5>
@@ -2604,6 +2621,34 @@ td .btn {
         <input type="number" id="billTotal" class="form-control rounded-3 py-2 mb-3" placeholder="Total Amount (₹)">
         <button class="btn btn-dark w-100 rounded-3 py-2 fw-bold shadow-sm" onclick="generateBillWhatsApp()">Share via WhatsApp 💬</button>
     </div>
+
+   <!-- === 3. TAX & GST INVOICE TOGGLE / BUTTON === -->
+<div class="card p-3 mb-3 border-0 rounded-4 shadow-sm" style="background: #f8f9fa;">
+    <h6 class="fw-bold mb-2 text-dark" style="font-size: 14px;">🧾 GST / Tax Options</h6>
+    <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="gstToggle" style="cursor: pointer;">
+        <label class="form-check-label fw-semibold text-secondary" for="gstToggle" style="font-size: 13px;">Include 5% GST on Bill</label>
+    </div>
+</div>
+
+   <!-- === 4. PAYMENT MODES TRACKING DISPLAY === -->
+<div class="card p-3 mb-3 border-0 rounded-4 shadow-sm" style="background: #f8f9fa;">
+    <h6 class="fw-bold mb-2 text-dark" style="font-size: 14px;">💳 Payment Modes Tracking</h6>
+    <div class="row text-center g-2">
+        <div class="col-6">
+            <div class="p-2 rounded-3 bg-white border">
+                <small class="text-muted d-block" style="font-size: 11px;">Cash Balance</small>
+                <span id="cashBalanceDisplay" class="fw-bold text-success">₹0</span>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="p-2 rounded-3 bg-white border">
+                <small class="text-muted d-block" style="font-size: 11px;">UPI Balance</small>
+                <span id="upiBalanceDisplay" class="fw-bold text-primary">₹0</span>
+            </div>
+        </div>
+    </div>
+</div>
 
    <!-- === 1. DATA BACKUP & RESTORE CARDS (Clean Professional Style) === -->
 <div class="card p-3 mb-3 border-0 rounded-4 shadow-sm" style="background: #f8f9fa;">
@@ -2637,6 +2682,13 @@ td .btn {
     💬 Send WhatsApp Reminder
 </button>
 
+   <!-- === 5. THERMAL INVOICE PRINT BUTTON === -->
+<div class="card p-3 mb-3 border-0 rounded-4 shadow-sm" style="background: #f8f9fa;">
+    <h6 class="fw-bold mb-2 text-dark" style="font-size: 14px;">🖨️ Thermal Print</h6>
+    <button class="btn btn-sm w-100 fw-semibold text-white shadow-sm" style="background: #374151; border-radius: 8px; padding: 8px;" onclick="printThermalBill()">
+        🖨️ Print / Save PDF Invoice
+    </button>
+</div>
 
     <!-- =================================================
          FOOTER
@@ -5738,6 +5790,97 @@ function sendDailyReportWhatsApp(totalIncome, totalExpense, totalProfit) {
 
     let whatsappUrl = `https://wa.me/${ownerPhone}?text=${message}`;
     window.open(whatsappUrl, '_blank');
+}
+
+   function sendLowStockOrderWhatsApp() {
+    let lowStockItems = products.filter(p => p.stock < 5);
+    if(lowStockItems.length === 0) {
+        alert('తక్కువ స్టాక్ ఉన్న ఐటమ్స్ ఏవీ లేవు.');
+        return;
+    }
+
+    let orderList = "";
+    lowStockItems.forEach((item, index) => {
+        orderList += `%0A  ${index + 1}. ${item.name} (Current Stock: ${item.stock})`;
+    });
+
+    let message = `*📦 STOCK REORDER REQUEST*%0A` +
+                  `-----------------------------------%0A` +
+                  `దయచేసి ఈ క్రింది సరుకులు త్వరగా పంపగలరు:%0A` +
+                  orderList + `%0A` +
+                  `-----------------------------------%0A` +
+                  `_Sent via Eduviora Shop Manager_`;
+
+    let supplierPhone = "9030369283"; // మీ సప్లయర్ వాట్సాప్ నంబర్ ఇక్కడ ఇవ్వవచ్చు
+    window.open(`https://wa.me/${supplierPhone}?text=${message}`, '_blank');
+}
+
+// బార్‌కోడ్ ఇన్పుట్ బాక్స్ లేదా కెమెరా ట్రిగ్గర్ కోసం
+function handleBarcodeScan(scannedCode) {
+    let matchedProduct = products.find(p => p.barcode === scannedCode || p.name.toLowerCase() === scannedCode.toLowerCase());
+    if(matchedProduct) {
+        let currentItems = document.getElementById('billItems').value;
+        document.getElementById('billItems').value = currentItems ? currentItems + `, ${matchedProduct.name}` : matchedProduct.name;
+        document.getElementById('billTotal').value = (parseFloat(document.getElementById('billTotal').value) || 0) + matchedProduct.price;
+        alert(`Added: ${matchedProduct.name} (₹${matchedProduct.price})`);
+    } else {
+        alert('ప్రొడక్ట్ కనుగొనబడలేదు!');
+    }
+}
+
+   function calculateGST(subtotal, gstPercent = 5) {
+    let taxAmount = (subtotal * gstPercent) / 100;
+    let grandTotal = subtotal + taxAmount;
+    return {
+        tax: taxAmount.toFixed(2),
+        total: grandTotal.toFixed(2)
+    };
+}
+// వాట్సాప్ ఇన్వాయిస్‌లో ట్యాక్స్ చూపించడానికి:
+// let calc = calculateGST(1000, 5); -> calc.tax, calc.total వాడుకోవచ్చు.
+let paymentBalances = JSON.parse(localStorage.getItem('edu_payment_modes')) || { cash: 0, upi: 0 };
+
+function recordPayment(amount, mode) {
+    if(mode === 'cash') {
+        paymentBalances.cash += amount;
+    } else if(mode === 'upi') {
+        paymentBalances.upi += amount;
+    }
+    localStorage.setItem('edu_payment_modes', JSON.stringify(paymentBalances));
+    updatePaymentUI();
+}
+
+function updatePaymentUI() {
+    let cashElem = document.getElementById('cashBalanceDisplay');
+    let upiElem = document.getElementById('upiBalanceDisplay');
+    if(cashElem) cashElem.innerText = `₹${paymentBalances.cash}`;
+    if(upiElem) upiElem.innerText = `₹${paymentBalances.upi}`;
+}
+
+   
+   function printThermalBill() {
+    let customer = document.getElementById('billCustomer').value || "Cash Customer";
+    let items = document.getElementById('billItems').value || "-";
+    let total = document.getElementById('billTotal').value || "0";
+
+    let printWindow = window.open('', '', 'height=500,width=400');
+    printWindow.document.write('<html><head><title>Invoice</title>');
+    printWindow.document.write('<style>body{font-family: monospace; font-size: 12px; padding: 10px;}</style>');
+    printWindow.document.write('</head><body>');
+    printWindow.document.write('<h3 style="text-align:center; margin:0;">EDUVIORA SHOP</h3>');
+    printWindow.document.write('<p style="text-align:center;">Tax Invoice</p>');
+    printWindow.document.write('<hr>');
+    printWindow.document.write(`<p><b>Customer:</b> ${customer}</p>`);
+    printWindow.document.write(`<p><b>Date:</b> ${new Date().toLocaleDateString()}</p>`);
+    printWindow.document.write('<hr>');
+    printWindow.document.write(`<p><b>Items:</b><br>${items}</p>`);
+    printWindow.document.write('<hr>');
+    printWindow.document.write(`<h4 style="text-align:right;">Total: ₹${total}</h4>`);
+    printWindow.document.write('<p style="text-align:center; margin-top:20px;">Thank You! Visit Again.</p>');
+    printWindow.document.write('</body></html>');
+    printWindow.document.close();
+    printWindow.focus();
+    setTimeout(() => { printWindow.print(); printWindow.close(); }, 500);
 }
 
 </script>
