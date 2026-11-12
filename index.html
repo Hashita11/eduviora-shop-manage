@@ -2605,6 +2605,38 @@ td .btn {
         <button class="btn btn-dark w-100 rounded-3 py-2 fw-bold shadow-sm" onclick="generateBillWhatsApp()">Share via WhatsApp 💬</button>
     </div>
 
+   <!-- === 1. DATA BACKUP & RESTORE CARDS (Clean Professional Style) === -->
+<div class="card p-3 mb-3 border-0 rounded-4 shadow-sm" style="background: #f8f9fa;">
+    <h6 class="fw-bold mb-3 text-dark" style="font-size: 14px;">📦 Data Backup & Recovery</h6>
+    <div class="d-flex gap-2">
+        <!-- Download Backup Button -->
+        <button class="btn btn-sm flex-fill fw-semibold text-white shadow-sm" style="background: #2563eb; border-radius: 8px;" onclick="exportData()">
+            📥 Download Backup
+        </button>
+        
+        <!-- Restore Data Button -->
+        <label class="btn btn-sm flex-fill fw-semibold text-white mb-0 text-center shadow-sm" style="background: #059669; border-radius: 8px; cursor: pointer; padding-top: 7px;">
+            📤 Restore Data <input type="file" id="restoreFile" onchange="importData(event)" hidden>
+        </label>
+    </div>
+</div>
+
+
+<!-- === 2. DAILY SALES REPORT BUTTON === -->
+<div class="card p-3 mb-3 border-0 rounded-4 shadow-sm" style="background: #f8f9fa;">
+    <h6 class="fw-bold mb-2 text-dark" style="font-size: 14px;">📊 Business Insights</h6>
+    <button class="btn btn-sm w-100 fw-semibold text-white shadow-sm" style="background: #10b981; border-radius: 8px; padding: 8px;" onclick="sendDailyReportWhatsApp(totalIncome || 0, totalExpense || 0, totalProfit || 0)">
+        💬 Send Today's Report via WhatsApp
+    </button>
+</div>
+
+
+<!-- === 3. KHATA REMINDER BUTTON (ఖాతా లెడ్జర్ లిస్ట్ కోసం) === -->
+<!-- ఉదాహరణకు పార్టీ పేరు Raju అయితే: -->
+<button class="btn btn-sm fw-semibold shadow-sm px-3" style="background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; border-radius: 6px;" onclick="sendKhataReminder('Raju', 500, 'get')">
+    💬 Send WhatsApp Reminder
+</button>
+
 
     <!-- =================================================
          FOOTER
@@ -5670,8 +5702,8 @@ function importData(event) {
     };
     reader.readAsText(file);
 }
-// --- 2. KHATA WHATSAPP REMINDER ---
-function sendKhataReminder(name, amount, type) {
+// --- 2. KHATA WHATSAPP REMINDER (Customer/Party Number తో సహా) ---
+function sendKhataReminder(customerPhone, name, amount, type) {
     let actionText = type === 'get' ? "తీసుకోవాల్సింది (Due Amount)" : "ఇవ్వాల్సింది (Payable Amount)";
     
     let message = `*⚠️ PAYMENT REMINDER - EDUVIORA*%0A` +
@@ -5682,29 +5714,32 @@ function sendKhataReminder(name, amount, type) {
                   `-----------------------------------%0A` +
                   `దయచేసి సెటిల్ చేయగలరు. ధన్యవాదాలు!`;
 
-    // పార్టీ మొబైల్ నంబర్ లేదా డైరెక్ట్ వాట్సాప్ లింక్
-    let whatsappUrl = `https://wa.me/?text=${message}`;
+    // ఒకవేళ కస్టమర్ ఫోన్ నంబర్ ఇస్తే ఆ నంబర్‌కి, లేదంటే డైరెక్ట్‌గా వాట్సాప్‌కి వెళుతుంది
+    let whatsappUrl = customerPhone ? `https://wa.me/${customerPhone}?text=${message}` : `https://wa.me/?text=${message}`;
     window.open(whatsappUrl, '_blank');
 }
 
-   // --- 3. DAILY SALES SUMMARY WHATSAPP REPORT ---
+
+// --- 3. DAILY SALES SUMMARY WHATSAPP REPORT (షాప్ ఓనర్ నంబర్‌కు వెళ్లేలా) ---
 function sendDailyReportWhatsApp(totalIncome, totalExpense, totalProfit) {
     let todayDate = new Date().toLocaleDateString('en-GB');
     
+    // షాప్ ఓనర్ ప్రొఫైల్ నుండి మొబైల్ నంబర్‌ను ఆటోమేటిక్‌గా తీసుకోవడం
+    let shopProfile = JSON.parse(localStorage.getItem('eduviora_shop_profile')) || {};
+    let ownerPhone = shopProfile.mobile || "9030369283"; // ఒకవేళ నంబర్ లేకపోతే డిఫాల్ట్ నంబర్
+
     let message = `*📊 DAILY SALES REPORT - ${todayDate}*%0A` +
                   `-----------------------------------%0A` +
                   `📥 *Today's Income:* ₹${totalIncome || 0}%0A` +
                   `📤 *Today's Expenses:* ₹${totalExpense || 0}%0A` +
                   `📈 *Net Profit:* ₹${totalProfit || 0}%0A` +
                   `-----------------------------------%0A` +
-                  `_Generated via Eduviora Shop Manager_`;
+                  `_Generated via ${shopProfile.shopName || 'Eduviora Shop Manager'}__`;
 
-    let adminPhone = "9030369283"; // మీ లేదా షాప్ ఓనర్ వాట్సాప్ నంబర్
-    let whatsappUrl = `https://wa.me/${adminPhone}?text=${message}`;
+    let whatsappUrl = `https://wa.me/${ownerPhone}?text=${message}`;
     window.open(whatsappUrl, '_blank');
 }
-   
-   
+
 </script>
 
 </body>
