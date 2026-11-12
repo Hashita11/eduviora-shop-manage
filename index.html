@@ -5630,7 +5630,80 @@ function showExpiryScreen() {
 
 // పేజ్ లోడ్ అయిన వెంటనే లైసెన్స్ చెక్ చేస్తుంది
 document.addEventListener("DOMContentLoaded", checkShopLicense);
+   
+// --- 1. DATA BACKUP & RESTORE ---
+function exportData() {
+    let allData = {
+        shopProfile: localStorage.getItem('eduviora_shop_profile'),
+        license: localStorage.getItem('eduviora_license'),
+        products: localStorage.getItem('edu_products'),
+        khata: localStorage.getItem('edu_khata')
+    };
+    
+    let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(allData));
+    let downloadAnchor = document.createElement('a');
+    downloadAnchor.setAttribute("href", dataStr);
+    downloadAnchor.setAttribute("download", "eduviora_shop_backup.json");
+    document.body.appendChild(downloadAnchor);
+    downloadAnchor.click();
+    downloadAnchor.remove();
+}
 
+function importData(event) {
+    let file = event.target.files[0];
+    if (!file) return;
+    
+    let reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            let importedData = JSON.parse(e.target.result);
+            if(importedData.shopProfile) localStorage.setItem('eduviora_shop_profile', importedData.shopProfile);
+            if(importedData.license) localStorage.setItem('eduviora_license', importedData.license);
+            if(importedData.products) localStorage.setItem('edu_products', importedData.products);
+            if(importedData.khata) localStorage.setItem('edu_khata', importedData.khata);
+            
+            alert('డేటా విజయవంతంగా రీస్టోర్ చేయబడింది! యాప్ రిఫ్రెష్ అవుతుంది.');
+            location.reload();
+        } catch (err) {
+            alert('தಪ್ಪైన ఫైల్ ఫార్మాట్. దయచేసి సరైన బ్యాకప్ ఫైల్ ఎంచుకోండి.');
+        }
+    };
+    reader.readAsText(file);
+}
+// --- 2. KHATA WHATSAPP REMINDER ---
+function sendKhataReminder(name, amount, type) {
+    let actionText = type === 'get' ? "తీసుకోవాల్సింది (Due Amount)" : "ఇవ్వాల్సింది (Payable Amount)";
+    
+    let message = `*⚠️ PAYMENT REMINDER - EDUVIORA*%0A` +
+                  `-----------------------------------%0A` +
+                  `నమస్కారం *${name}*,%0A` +
+                  `మీ ఖాతా వివరాల ప్రకారం మా వద్ద బ్యాలెన్స్ ఉంది:%0A` +
+                  `📌 *${actionText}: ₹${amount}*%0A` +
+                  `-----------------------------------%0A` +
+                  `దయచేసి సెటిల్ చేయగలరు. ధన్యవాదాలు!`;
+
+    // పార్టీ మొబైల్ నంబర్ లేదా డైరెక్ట్ వాట్సాప్ లింక్
+    let whatsappUrl = `https://wa.me/?text=${message}`;
+    window.open(whatsappUrl, '_blank');
+}
+
+   // --- 3. DAILY SALES SUMMARY WHATSAPP REPORT ---
+function sendDailyReportWhatsApp(totalIncome, totalExpense, totalProfit) {
+    let todayDate = new Date().toLocaleDateString('en-GB');
+    
+    let message = `*📊 DAILY SALES REPORT - ${todayDate}*%0A` +
+                  `-----------------------------------%0A` +
+                  `📥 *Today's Income:* ₹${totalIncome || 0}%0A` +
+                  `📤 *Today's Expenses:* ₹${totalExpense || 0}%0A` +
+                  `📈 *Net Profit:* ₹${totalProfit || 0}%0A` +
+                  `-----------------------------------%0A` +
+                  `_Generated via Eduviora Shop Manager_`;
+
+    let adminPhone = "9030369283"; // మీ లేదా షాప్ ఓనర్ వాట్సాప్ నంబర్
+    let whatsappUrl = `https://wa.me/${adminPhone}?text=${message}`;
+    window.open(whatsappUrl, '_blank');
+}
+   
    
 </script>
 
