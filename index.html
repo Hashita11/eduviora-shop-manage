@@ -5543,35 +5543,43 @@ window.addEventListener(
         }
         checkLowStock();
 
-        // 4. Quick Bill WhatsApp Logic
-        function generateBillWhatsApp() {
-    let customer = document.getElementById('billCustomer').value;
-    let itemsInput = document.getElementById('billItems').value;
-    let total = document.getElementById('billTotal').value;
+      
+            // 4. Quick Bill WhatsApp Logic (Updated)
+    function generateBillWhatsApp() {
+        let customer = document.getElementById('billCustomer').value;
+        let itemsInput = document.getElementById('billItems').value; // ఐటమ్స్ వివరాలు
+        let total = document.getElementById('billTotal').value;
 
-    if(!customer || !itemsInput || !total) { 
-        alert('దయచేసి కస్టమర్ పేరు, ఐటమ్స్ మరియు టోటల్ అమౌంట్ నింపండి.'); 
-        return; 
+        if(!customer || !itemsInput || !total) { 
+            alert('దయచేసి కస్టమర్ పేరు, ఐటమ్స్ మరియు టోటల్ అమౌంట్ నింపండి.'); 
+            return; 
+        }
+
+        // ఐటమ్స్ లైన్ బై లైన్ నీట్‌గా ఫార్మాట్ చేయడం
+        let itemsArray = itemsInput.split(',');
+        let formattedItems = "";
+        
+        itemsArrayforEach((item, index) => {
+            formattedItems += `%0A  ${index + 1}. ${item.trim()}`;
+        });
+
+        // వాట్సాప్ మెసేజ్ ప్రొఫెషనల్ ఫార్మాట్
+        let message = `*🧾 EDUVIORA SHOP MANAGER - INVOICE*%0A` +
+                      `-----------------------------------%0A` +
+                      `👤 *Customer:* ${customer}%0A` +
+                      `📅 *Date:* ${new Date().toLocaleDateString('en-GB')}%0A` +
+                      `-----------------------------------%0A` +
+                      `📦 *Items Purchased:*` + formattedItems + `%0A` +
+                      `-----------------------------------%0A` +
+                      `💰 *Total Amount:* *₹${total}*%0A` +
+                      `-----------------------------------%0A` +
+                      `🙏 *ధన్యవాదాలు! మళ్లీ రండి.*`;
+
+        // నేరుగా వాట్సాప్ యాప్ లేదా వెబ్‌కి పంపే యుఆర్‌ఎల్
+        let whatsappUrl = `https://wa.me/?text=${message}`;
+        window.open(whatsappUrl, '_blank');
     }
 
-    // ఐటమ్స్ పేర్లను సరిగ్గా లైన్ బై లైన్ ఫార్మాట్ చేయడం
-    let formattedItems = itemsInput.split(',').map(item => `- ${item.trim()}`).join('%0A');
-
-    // వాట్సాప్ మెసేజ్ ఫార్మాట్
-    let message = `*🧾 EDUVIORA SHOP MANAGER - INVOICE*%0A` +
-                  `--------------------------------%0A` +
-                  `👤 *Customer:* ${customer}%0A` +
-                  `📅 *Date:* ${new Date().toLocaleDateString('en-GB')}%0A` +
-                  `--------------------------------%0A` +
-                  `📦 *Items Purchased:*%0A${formattedItems}%0A` +
-                  `--------------------------------%0A` +
-                  `💰 *Total Amount:* *₹${total}*%0A` +
-                  `--------------------------------%0A` +
-                  `🙏 *ధన్యవాదాలు! మళ్లీ రండి.*`;
-
-    let whatsappUrl = `https://api.whatsapp.com/send?text=${message}`;
-    window.open(whatsappUrl, '_blank');
-}
 // --- LICENSE & SUBSCRIPTION CONTROL SYSTEM ---
 function checkShopLicense() {
     // లోకల్ స్టోరేజ్ నుండి షాప్ లైసెన్స్ సమాచారం చెక్ చేయడం
