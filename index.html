@@ -5543,11 +5543,10 @@ window.addEventListener(
         }
         checkLowStock();
 
-      
-            // 4. Quick Bill WhatsApp Logic (Updated)
+              // 4. Quick Bill WhatsApp Logic (Fixed & Tested)
     function generateBillWhatsApp() {
         let customer = document.getElementById('billCustomer').value;
-        let itemsInput = document.getElementById('billItems').value; // ఐటమ్స్ వివరాలు
+        let itemsInput = document.getElementById('billItems').value; // ఐటమ్స్ ఇన్పుట్
         let total = document.getElementById('billTotal').value;
 
         if(!customer || !itemsInput || !total) { 
@@ -5555,11 +5554,11 @@ window.addEventListener(
             return; 
         }
 
-        // ఐటమ్స్ లైన్ బై లైన్ నీట్‌గా ఫార్మాట్ చేయడం
+        // ఐటమ్స్ పేర్లను లైన్ బై లైన్ ఫార్మాట్ చేయడం (Corrected Loop)
         let itemsArray = itemsInput.split(',');
         let formattedItems = "";
         
-        itemsArrayforEach((item, index) => {
+        itemsArray.forEach((item, index) => {
             formattedItems += `%0A  ${index + 1}. ${item.trim()}`;
         });
 
@@ -5575,10 +5574,12 @@ window.addEventListener(
                       `-----------------------------------%0A` +
                       `🙏 *ధన్యవాదాలు! మళ్లీ రండి.*`;
 
-        // నేరుగా వాట్సాప్ యాప్ లేదా వెబ్‌కి పంపే యుఆర్‌ఎల్
+        // మొబైల్ మరియు డెస్క్‌టాప్‌లో పర్ఫెక్ట్‌గా వాట్సాప్ ఓపెన్ అయ్యే లింక్
         let whatsappUrl = `https://wa.me/?text=${message}`;
         window.open(whatsappUrl, '_blank');
     }
+
+
 
 // --- LICENSE & SUBSCRIPTION CONTROL SYSTEM ---
 function checkShopLicense() {
