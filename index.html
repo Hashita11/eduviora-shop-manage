@@ -2605,12 +2605,6 @@ td .btn {
         <button class="btn btn-dark w-100 rounded-3 py-2 fw-bold shadow-sm" onclick="generateBillWhatsApp()">Share via WhatsApp 💬</button>
     </div>
 
-   <!-- కేవలం టెస్టింగ్ కోసం మాత్రమే -->
-<div style="text-align: center; margin: 20px;">
-    <button onclick="testExpiredState()" style="background: #dc3545; color: white; padding: 10px 15px; border: none; border-radius: 5px; font-weight: bold;">
-        ⚠️ Test Expiry Screen
-    </button>
-</div>
 
     <!-- =================================================
          FOOTER
@@ -5651,10 +5645,6 @@ function showExpiryScreen() {
 document.addEventListener("DOMContentLoaded", checkShopLicense);
 
    
-function testExpiredState() {
-    localStorage.setItem('eduviora_license', JSON.stringify({shopName: "Test Shop", expiryDate: "2025-01-01", status: "ACTIVE"}));
-    location.reload();
-}
 </script>
 
 </body>
