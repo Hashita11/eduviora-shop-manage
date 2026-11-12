@@ -3371,7 +3371,12 @@ function saveShopSettings() {
     shopData.settings.address = document.getElementById("settingsAddress").value.trim();
     shopData.settings.openingBalance = Number(document.getElementById("settingsOpeningBalance").value) || 0;
 
-    // --- 7 రోజుల ఫ్రీ ట్రయల్ లైసెన్స్ ఆటోమేటిక్‌గా సెట్ చేయడం ---
+    if(!shopData.settings.shopName || !shopData.settings.mobile) {
+        alert('దయచేసి షాప్ పేరు మరియు మొబైల్ నంబర్ తప్పకుండా నింపండి.');
+        return;
+    }
+
+    // --- 1. 7 రోజుల ఫ్రీ ట్రయల్ లైసెన్స్ ఆటోమేటిక్‌గా సెట్ చేయడం ---
     let trialDate = new Date();
     trialDate.setDate(trialDate.getDate() + 7);
     let expiryStr = trialDate.toISOString().split('T')[0];
@@ -3382,14 +3387,31 @@ function saveShopSettings() {
         status: "ACTIVE"
     };
     localStorage.setItem('eduviora_license', JSON.stringify(licenseData));
-    // --------------------------------------------------------
+    // -----------------------------------------------------------------
 
+    // మీ యాప్ డేటా మరియు హెడ్డింగ్ అప్‌డేట్ అయ్యే ఒరిజినల్ ఫంక్షన్లు
     saveData();
     loadShopSettings();
-    updateDashboard();
+    updateDashboard(); // <-- ఇది షాప్ పేరును హెడ్డింగ్‌గా అప్‌డేట్ చేస్తుంది!
     closeModal("settingsModal");
     showMessage("Shop profile & 7-day trial saved successfully");
+
+    // --- 2. వాట్సాప్ ద్వారా అడ్మిన్‌కు (మీకు) వివరాలు పంపడం ---
+    let adminPhone = "9030369283"; // మీ వాట్సాప్ నంబర్
+    let waMessage = `*New Shop Registration - Eduviora*%0A` +
+                    `🏪 Shop Name: ${shopData.settings.shopName}%0A` +
+                    `👤 Owner Name: ${shopData.settings.ownerName}%0A` +
+                    `📞 Mobile: ${shopData.settings.mobile}%0A` +
+                    `📍 Address: ${shopData.settings.address}%0A` +
+                    `💰 Opening Balance: ₹${shopData.settings.openingBalance}%0A` +
+                    `⏳ Trial Expiry: ${expiryStr}`;
+
+    let waUrl = `https://wa.me/${adminPhone}?text=${waMessage}`;
+    
+    // కస్టమర్ ఫోన్ నుండి ఆటోమేటిక్‌గా మీ వాట్సాప్‌కు చాట్ ఓపెన్ అవుతుంది
+    window.open(waUrl, '_blank');
 }
+
 
 
 
