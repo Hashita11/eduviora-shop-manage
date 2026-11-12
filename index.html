@@ -3365,74 +3365,30 @@ function loadShopSettings() {
 
 
 function saveShopSettings() {
+    shopData.settings.shopName = document.getElementById("settingsShopName").value.trim() || "My Shop";
+    shopData.settings.ownerName = document.getElementById("settingsOwnerName").value.trim();
+    shopData.settings.mobile = document.getElementById("settingsMobile").value.trim();
+    shopData.settings.address = document.getElementById("settingsAddress").value.trim();
+    shopData.settings.openingBalance = Number(document.getElementById("settingsOpeningBalance").value) || 0;
 
-    shopData.settings.shopName =
+    // --- 7 రోజుల ఫ్రీ ట్రయల్ లైసెన్స్ ఆటోమేటిక్‌గా సెట్ చేయడం ---
+    let trialDate = new Date();
+    trialDate.setDate(trialDate.getDate() + 7);
+    let expiryStr = trialDate.toISOString().split('T')[0];
 
-        document.getElementById(
-
-            "settingsShopName"
-
-        ).value.trim() || "My Shop";
-
-
-    shopData.settings.ownerName =
-
-        document.getElementById(
-
-            "settingsOwnerName"
-
-        ).value.trim();
-
-
-    shopData.settings.mobile =
-
-        document.getElementById(
-
-            "settingsMobile"
-
-        ).value.trim();
-
-
-    shopData.settings.address =
-
-        document.getElementById(
-
-            "settingsAddress"
-
-        ).value.trim();
-
-
-    shopData.settings.openingBalance =
-
-        Number(
-
-            document.getElementById(
-
-                "settingsOpeningBalance"
-
-            ).value
-
-        ) || 0;
-
+    let licenseData = {
+        shopName: shopData.settings.shopName,
+        expiryDate: expiryStr,
+        status: "ACTIVE"
+    };
+    localStorage.setItem('eduviora_license', JSON.stringify(licenseData));
+    // --------------------------------------------------------
 
     saveData();
-
-
     loadShopSettings();
-
-
     updateDashboard();
-
-
     closeModal("settingsModal");
-
-
-    showMessage(
-
-        "Shop profile saved successfully"
-
-    );
-
+    showMessage("Shop profile & 7-day trial saved successfully");
 }
 
 
