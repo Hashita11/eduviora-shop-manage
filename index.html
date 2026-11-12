@@ -1935,6 +1935,21 @@ td .btn {
 </style>
 </head>
     <body>
+<!-- === PASSWORD LOGIN OVERLAY === -->
+<div id="loginOverlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0f172a; display: flex; justify-content: center; align-items: center; z-index: 9999;">
+    <div class="card p-4 shadow-lg border-0 rounded-4" style="width: 320px; background: #ffffff;">
+        <div class="text-center mb-3">
+            <h4 class="fw-bold text-primary mb-1">🔐 Eduviora Secure</h4>
+            <p class="text-muted" style="font-size: 13px;">Enter your Shop Password to Continue</p>
+        </div>
+        <div class="mb-3">
+            <input type="password" id="shopPasswordInput" class="form-control text-center py-2" placeholder="Enter 4-Digit PIN / Password" style="font-size: 18px; letter-spacing: 3px; border-radius: 8px;">
+        </div>
+        <button class="btn btn-primary w-100 fw-semibold py-2 shadow-sm" style="border-radius: 8px;" onclick="verifyShopLogin()">
+            Login to Shop Manager
+        </button>
+    </div>
+</div>
 
 <!-- =====================================================
      HEADER
@@ -5870,6 +5885,33 @@ function updatePaymentUI() {
     printWindow.focus();
     setTimeout(() => { printWindow.print(); printWindow.close(); }, 500);
 }
+
+   // --- PASSWORD LOGIN LOGIC ---
+const DEFAULT_PASSWORD = "1234"; // దీన్ని మీరు మార్చుకోవచ్చు లేదా ప్రొఫైల్ నుండి సెట్ చేసుకోవచ్చు
+
+function verifyShopLogin() {
+    let enteredPass = document.getElementById('shopPasswordInput').value;
+    
+    // లోకల్ స్టోరేజ్ నుండి కస్టమ్ పాస్‌వర్డ్ చెక్ చేయడం (ఒకవేళ సెట్ చేసి ఉంటే)
+    let savedPass = localStorage.getItem('eduviora_shop_pass') || DEFAULT_PASSWORD;
+
+    if(enteredPass === savedPass) {
+        // పాస్‌వర్డ్ కరెక్ట్ అయితే లాగిన్ స్క్రీన్ మాయం అవుతుంది
+        document.getElementById('loginOverlay').style.display = 'none';
+    } else {
+        alert('❌ తప్పు పాస్‌వర్డ్! దయచేసి సరైన పాస్‌వర్డ్ ఎంటర్ చేయండి.');
+        document.getElementById('shopPasswordInput').value = '';
+    }
+}
+
+// ఆటోమేటిక్ చెక్: యాప్ లోడ్ అయినప్పుడు లాగిన్ ఉండాలా లేదా అనేది ఇక్కడ హ్యాండ్ అవుతుంది
+window.addEventListener('DOMContentLoaded', () => {
+    // కావాలంటే ప్రతిసారీ లాగిన్ అడిగేలా లేదా ఒకసారి లాగిన్ అయితే ఉంచేలా సెట్ చేయవచ్చు
+    let isLogged = sessionStorage.getItem('eduviora_logged_in');
+    if(isLogged === 'true') {
+        document.getElementById('loginOverlay').style.display = 'none';
+    }
+});
 
 </script>
 
