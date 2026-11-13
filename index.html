@@ -6059,6 +6059,38 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+   // === FEATURE 3: LICENSE EXPIRY & STATUS CHECKER ===
+window.addEventListener('DOMContentLoaded', () => {
+    let licenseData = localStorage.getItem('eduviora_license');
+    if (licenseData) {
+        try {
+            let license = JSON.parse(licenseData);
+            
+            // ఒకవేళ అడ్మిన్ బ్లాక్ చేస్తే
+            if (license.status === "BLOCKED") {
+                alert("🚫 మీ షాప్ లైసెన్స్ అడ్మిన్ ద్వారా బ్లాక్ చేయబడింది. దయచేసి అడ్మిన్‌ను సంప్రదించండి.");
+                return;
+            }
+
+            let today = new Date().toISOString().split('T')[0];
+            let expiryDate = license.expiryDate;
+
+            // మిగిలిన రోజులు లెక్కించడం
+            let diffTime = new Date(expiryDate) - new Date(today);
+            let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+            if (diffDays < 0) {
+                alert("⚠️ మీ సబ్‌స్క్రిప్షన్ గడువు ముగిసింది! దయచేసి రెన్యూవల్ కోడ్ ఎంటర్ చేయండి.");
+            } else if (diffDays <= 5 && diffDays >= 0) {
+                console.log(`⚠️ Warning: License expires in ${diffDays} days.`);
+                // కావాలంటే స్క్రీన్ పై చిన్న వార్నింగ్ బ్యానర్ చూపించవచ్చు
+            }
+        } catch (e) {
+            console.log("License check error");
+        }
+    }
+});
+
 </script>
 
 </body>
