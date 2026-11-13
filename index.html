@@ -6428,6 +6428,128 @@ function formatKhataDate(date) {
 
 
 
+/* =========================================
+   EDUVIORA STAFF / CASHIER MODE
+========================================= */
+
+function isStaffModeActive() {
+    return localStorage.getItem("staff_mode") === "ACTIVE";
+}
+
+// Enable Staff Mode
+function enableStaffMode() {
+    const pin = prompt("Staff Mode కోసం 4 అంకెల PIN సెట్ చేయండి:");
+
+    if (pin === null) return;
+
+    if (!/^[0-9]{4}$/.test(pin)) {
+        alert("4 అంకెల PIN మాత్రమే నమోదు చేయండి.");
+        return;
+    }
+
+    localStorage.setItem("staff_pin", pin);
+    localStorage.setItem("staff_mode", "ACTIVE");
+
+    alert("Staff Mode ON అయింది. Profit, Reports, Settings లాక్ అయ్యాయి.");
+
+    applyStaffRestrictions();
+}
+
+// Admin Full Access
+function disableStaffMode() {
+    const adminPin = prompt("Admin Password నమోదు చేయండి:");
+
+    if (adminPin === null) return;
+
+    const savedPassword =
+        localStorage.getItem("eduviora_shop_pass") || DEFAULT_PASSWORD;
+
+    if (adminPin !== savedPassword) {
+        alert("తప్పు Admin Password!");
+        return;
+    }
+
+    localStorage.removeItem("staff_mode");
+    localStorage.removeItem("staff_pin");
+
+    alert("Admin Full Access తిరిగి ప్రారంభమైంది.");
+
+    location.reload();
+}
+
+// Apply restrictions
+function applyStaffRestrictions() {
+
+    const active = isStaffModeActive();
+
+    // Today's Profit card
+    const todayProfit = document.getElementById("todayProfit");
+    if (todayProfit) {
+        const card = todayProfit.closest(".dashboard-card");
+        if (card) card.style.display = active ? "none" : "";
+    }
+
+    // Monthly Profit card
+    const monthlyProfit = document.getElementById("monthlyProfit");
+    if (monthlyProfit) {
+        const card = monthlyProfit.closest(".summary-card");
+        if (card) card.style.display = active ? "none" : "";
+    }
+
+    // Monthly Reports
+    const reports = document.getElementById("reportsSection");
+    if (reports) {
+        reports.style.display = active ? "none" : "";
+    }
+
+    // Reports navigation button
+    document.querySelectorAll(".nav-button").forEach(button => {
+        if (button.getAttribute("onclick") === "goToReports()") {
+            button.style.display = active ? "none" : "";
+        }
+    });
+
+    // Settings button
+    document.querySelectorAll(".settings-button").forEach(button => {
+        button.style.display = active ? "none" : "";
+    });
+
+    console.log("Staff Mode:", active ? "ACTIVE" : "OFF");
+}
+
+// Prevent direct Reports navigation
+const originalGoToReports = window.goToReports;
+
+window.goToReports = function () {
+    if (isStaffModeActive()) {
+        alert("Reports చూడటానికి Admin Access అవసరం.");
+        return;
+    }
+
+    if (typeof originalGoToReports === "function") {
+        originalGoToReports();
+    }
+};
+
+// Prevent Settings opening in Staff Mode
+const originalOpenSettings = window.openSettings;
+
+window.openSettings = function () {
+    if (isStaffModeActive()) {
+        alert("Settings కోసం Admin Access అవసరం.");
+        return;
+    }
+
+    if (typeof originalOpenSettings === "function") {
+        originalOpenSettings();
+    }
+};
+
+// Apply when page loads
+window.addEventListener("DOMContentLoaded", function () {
+    applyStaffRestrictions();
+});
+
 
 
    
