@@ -1962,6 +1962,12 @@ td .btn {
         </div>
     </div>
 </div>
+<!-- === FORGOT PASSWORD OPTION === -->
+<div class="mt-3 text-center">
+    <a href="#" onclick="forgotPassword()" style="font-size: 12px; color: #94a3b8; text-decoration: underline;">
+        Forgot Password?
+    </a>
+</div>
 
        
 <!-- === CHANGE PASSWORD SECTION === -->
@@ -5963,6 +5969,23 @@ function changeShopPassword() {
     } else {
         alert('❌ పాత పాస్‌వర్డ్ తప్పుగా ఉంది!');
         document.getElementById('oldPassword').value = '';
+    }
+}
+
+   // --- FORGOT PASSWORD RESET LOGIC ---
+function forgotPassword() {
+    let recoveryCode = prompt("🔐 Enter Admin / Recovery Code (သို့မဟုတ် మీ రిజిస్టర్డ్ మొబైల్ నంబర్):");
+    
+    // ఇక్కడ మీరు మీ పర్సనల్ మాస్టర్ పిన్ లేదా మీ షాప్ నంబర్ పెట్టుకోవచ్చు
+    let masterAdminPin = "9030369283"; 
+
+    if (recoveryCode === masterAdminPin) {
+        // పాస్‌వర్డ్‌ను డిఫాల్ట్‌కి రీసెట్ చేయడం
+        localStorage.removeItem('eduviora_shop_pass');
+        alert('✅ పాస్‌వర్డ్ విజయవంతంగా రీసెట్ చేయబడింది!\nమీ తాత్కాలిక (Default) పాస్‌వర్డ్: 1234\nదయచేసి లాగిన్ అయ్యాక దీన్ని మార్చుకోండి.');
+        location.reload(); // పేజ్ రిఫ్రెష్ అవుతుంది
+    } else if (recoveryCode !== null) {
+        alert('❌ తప్పు రికవరీ కోడ్! దయచేసి సరైన కోడ్ ఎంటర్ చేయండి.');
     }
 }
 
