@@ -1963,6 +1963,18 @@ td .btn {
     </div>
 </div>
 
+       
+<!-- === CHANGE PASSWORD SECTION === -->
+<div class="card p-3 mb-3 border-0 rounded-4 shadow-sm" style="background: #f8f9fa;">
+    <h6 class="fw-bold mb-2 text-dark" style="font-size: 14px;">🔐 Security / Change Password</h6>
+    <div class="mb-2">
+        <input type="password" id="oldPassword" class="form-control form-control-sm mb-2" placeholder="Current Password">
+        <input type="password" id="newPassword" class="form-control form-control-sm mb-2" placeholder="New Password (4-6 digits)">
+        <button class="btn btn-sm w-100 fw-semibold text-white shadow-sm" style="background: #2563eb; border-radius: 8px; padding: 6px;" onclick="changeShopPassword()">
+            Update Password
+        </button>
+    </div>
+</div>
 
 <!-- =====================================================
      HEADER
@@ -5925,6 +5937,34 @@ window.addEventListener('DOMContentLoaded', () => {
         document.getElementById('loginOverlay').style.display = 'none';
     }
 });
+
+   // --- CHANGE PASSWORD FUNCTION ---
+function changeShopPassword() {
+    let oldPass = document.getElementById('oldPassword').value;
+    let newPass = document.getElementById('newPassword').value;
+    
+    // ప్రస్తుత సేవ్ అయిన పాస్‌వర్డ్ (డిఫాల్ట్ '1234' లేదా యూజర్ మార్చుకున్నది)
+    let currentSavedPass = localStorage.getItem('eduviora_shop_pass') || "1234";
+
+    if(!oldPass || !newPass) {
+        alert('⚠️ దయచేసి పాత మరియు కొత్త పాస్‌వర్డ్ రెండూ ఎంటర్ చేయండి.');
+        return;
+    }
+
+    if(oldPass === currentSavedPass) {
+        if(newPass.length >= 4) {
+            localStorage.setItem('eduviora_shop_pass', newPass);
+            alert('✅ పాస్‌వర్డ్ విజయవంతంగా మార్చబడింది!');
+            document.getElementById('oldPassword').value = '';
+            document.getElementById('newPassword').value = '';
+        } else {
+            alert('⚠️ కొత్త పాస్‌వర్డ్ కనీసం 4 అంకెలు ఉండాలి.');
+        }
+    } else {
+        alert('❌ పాత పాస్‌వర్డ్ తప్పుగా ఉంది!');
+        document.getElementById('oldPassword').value = '';
+    }
+}
 
 </script>
 
