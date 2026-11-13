@@ -6122,7 +6122,6 @@ function generateKhataStatementPDF() {
         return;
     }
 
-    // ప్రింట్ విండో ఓపెన్ చేసి స్టేట్‌మెంట్ జనరేట్ చేయడం
     let printWindow = window.open('', '_blank');
     printWindow.document.write(`
         <html>
@@ -6149,16 +6148,19 @@ function generateKhataStatementPDF() {
                 <span>Authorized Signature</span>
                 <span>Customer Signature</span>
             </div>
-            <script>
-                window.onload = function() { window.print(); }
-            <\/script>
         </body>
         </html>
     `);
     printWindow.document.close();
+    
+    // ఆటోమేటిక్ ప్రింట్ విండో ఓపెన్ అవ్వడానికి
+    setTimeout(() => {
+        printWindow.focus();
+        printWindow.print();
+    }, 500);
 }
 
-   function enableStaffMode() {
+function enableStaffMode() {
     let pin = prompt("స్టాఫ్ లాక్ సెట్ చేయడానికి లేదా ఎనేబుల్ చేయడానికి 4-అంకెల పిన్ ఎంటర్ చేయండి (ఉదా: 5678):");
     if(pin) {
         localStorage.setItem('staff_mode', 'ACTIVE');
@@ -6178,13 +6180,10 @@ function disableStaffMode() {
     }
 }
 
-// సేఫ్ స్టాఫ్ మోడ్ చెకింగ్ స్క్రిప్ట్
+// పేజ్ లోడ్ అయినప్పుడు స్టాఫ్ మోడ్ చెక్ చేసి రిపోర్ట్స్ హైడ్ చేయడం
 window.addEventListener('DOMContentLoaded', () => {
     try {
         if(localStorage.getItem('staff_mode') === 'ACTIVE') {
-            console.log("Staff Restricted Mode is Active");
-            
-            // సురక్షితంగా కార్డ్స్‌ని హైడ్ చేయడం
             let cards = document.querySelectorAll('.card');
             if(cards) {
                 cards.forEach(card => {
