@@ -6177,28 +6177,29 @@ function disableStaffMode() {
         alert('❌ తప్పు పిన్!');
     }
 }
-// పేజ్ లోడ్ అయినప్పుడు స్టాఫ్ మోడ్ ఉంటే ప్రాఫిట్ & రిపోర్ట్స్ ఆటోమేటిక్‌గా హైడ్ చేయడం
+
+// సేఫ్ స్టాఫ్ మోడ్ చెకింగ్ స్క్రిప్ట్
 window.addEventListener('DOMContentLoaded', () => {
-    if(localStorage.getItem('staff_mode') === 'ACTIVE') {
-        console.log("Staff Restricted Mode is Active - Locking Profit & Reports");
-
-        // 1. పేజీలోని అన్ని కార్డ్స్‌ను చెక్ చేసి 'Profit' లేదా 'ప్రాఫిట్' ఉన్నవాటిని హైడ్ చేయడం
-        let cards = document.querySelectorAll('.card');
-        cards.forEach(card => {
-            if(card.innerText.includes('Profit') || card.innerText.includes('ప్రాఫిట్') || card.innerText.includes('Net Profit')) {
-                card.style.display = 'none';
+    try {
+        if(localStorage.getItem('staff_mode') === 'ACTIVE') {
+            console.log("Staff Restricted Mode is Active");
+            
+            // సురక్షితంగా కార్డ్స్‌ని హైడ్ చేయడం
+            let cards = document.querySelectorAll('.card');
+            if(cards) {
+                cards.forEach(card => {
+                    if(card && card.innerText && (card.innerText.includes('Profit') || card.innerText.includes('ప్రాఫిట్') || card.innerText.includes('Net Profit'))) {
+                        card.style.display = 'none';
+                    }
+                });
             }
-        });
-
-        // 2. బాటమ్ నావిగేషన్ లేదా మెనూలో ఉన్న 'Reports' లేదా 'రిపోర్ట్స్' బటన్‌ను హైడ్ చేయడం
-        let navButtons = document.querySelectorAll('a, button, div');
-        navButtons.forEach(btn => {
-            if(btn.innerText.includes('Reports') || btn.innerText.includes('రిపోర్ట్స్') || btn.innerText.includes('Monthly Report')) {
-                btn.style.display = 'none';
-            }
-        });
+        }
+    } catch (err) {
+        console.error("Error in staff mode script: ", err);
     }
 });
+
+
 
    
 </script>
