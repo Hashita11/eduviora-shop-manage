@@ -6115,91 +6115,288 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-   
-// 1. Khata Statement PDF Function
-function generateKhataStatementPDF() {
-    let partyName = document.getElementById('statementPartyName').value.trim();
-    if(!partyName) {
-        alert('⚠️ దయచేసి పార్టీ పేరు ఎంటర్ చేయండి.');
-        return;
-    }
 
-    let printWindow = window.open('', '_blank');
-    if(printWindow) {
+/* =====================================
+   EDUVIORA SHOP MANAGER
+   KHATA PDF + STAFF MODE
+===================================== */
+
+/* 1. KHATA STATEMENT PDF */
+
+function generateKhataStatementPDF() {
+    try {
+        const partyInput =
+            document.getElementById("statementPartyName");
+
+        if (!partyInput) {
+            alert("Khata Party Name field కనబడలేదు.");
+            return;
+        }
+
+        const partyName = partyInput.value.trim();
+
+        if (!partyName) {
+            alert("దయచేసి పార్టీ పేరు ఎంటర్ చేయండి.");
+            return;
+        }
+
+        const printWindow = window.open("", "_blank");
+
+        if (!printWindow) {
+            alert("Popup Block అయింది. Browserలో Popups Allow చేయండి.");
+            return;
+        }
+
+        const safePartyName = partyName.replace(
+            /[&<>"']/g,
+            function (char) {
+                return {
+                    "&": "&amp;",
+                    "<": "&lt;",
+                    ">": "&gt;",
+                    '"': "&quot;",
+                    "'": "&#39;"
+                }[char];
+            }
+        );
+
+        const today = new Date().toLocaleDateString("en-IN");
+
+        printWindow.document.open();
+
         printWindow.document.write(`
+            <!DOCTYPE html>
             <html>
             <head>
-                <title>Khata Statement - ${partyName}</title>
+                <meta charset="UTF-8">
+                <title>Khata Statement</title>
+
                 <style>
-                    body { font-family: Arial, sans-serif; padding: 20px; color: #333; }
-                    h2 { color: #1e3a8a; text-align: center; }
-                    .box { border: 1px solid #ccc; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
-                    table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-                    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; font-size: 12px; }
-                    th { background-color: #f8f9fa; }
+                    body {
+                        font-family: Arial, sans-serif;
+                        padding: 25px;
+                        color: #333;
+                    }
+
+                    h2 {
+                        color: #1e3a8a;
+                        text-align: center;
+                    }
+
+                    .box {
+                        border: 1px solid #ccc;
+                        padding: 15px;
+                        border-radius: 8px;
+                        margin-bottom: 20px;
+                    }
+
+                    table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        margin-top: 15px;
+                    }
+
+                    th, td {
+                        border: 1px solid #ddd;
+                        padding: 8px;
+                        text-align: left;
+                        font-size: 12px;
+                    }
+
+                    th {
+                        background: #f1f5f9;
+                    }
+
+                    .signatures {
+                        display: flex;
+                        justify-content: space-between;
+                        margin-top: 80px;
+                    }
+
+                    @media print {
+                        button {
+                            display: none;
+                        }
+                    }
                 </style>
             </head>
+
             <body>
+
                 <h2>EDUVIORA SHOP MANAGER</h2>
+                <h3 style="text-align:center">
+                    KHATA STATEMENT
+                </h3>
+
                 <div class="box">
-                    <p><b>Party Name:</b> ${partyName}</p>
-                    <p><b>Statement Date:</b> ${new Date().toLocaleDateString()}</p>
+                    <p><b>Party Name:</b> ${safePartyName}</p>
+                    <p><b>Statement Date:</b> ${today}</p>
                 </div>
-                <p><i>గమనిక: ఈ పార్టీకి సంబంధించిన పూర్తి లెక్కల వివరాలు ఇక్కడ ముద్రించబడతాయి.</i></p>
-                <br><br>
-                <div style="display: flex; justify-content: space-between;">
+
+                <p>
+                    ఈ పార్టీకి సంబంధించిన లావాదేవీల వివరాలు
+                    క్రింది పట్టికలో ఉంటాయి.
+                </p>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Description</th>
+                            <th>Debit</th>
+                            <th>Credit</th>
+                            <th>Balance</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td colspan="5">
+                                Transaction data integration pending
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="signatures">
                     <span>Authorized Signature</span>
                     <span>Customer Signature</span>
                 </div>
+
+                <button onclick="window.print()">
+                    Print / Save as PDF
+                </button>
+
             </body>
             </html>
         `);
+
         printWindow.document.close();
-        setTimeout(() => {
+
+        printWindow.onload = function () {
             printWindow.focus();
             printWindow.print();
-        }, 500);
+        };
+
+    } catch (error) {
+        console.error("Khata PDF Error:", error);
+        alert("Khata Statement తయారీలో సమస్య వచ్చింది.");
     }
 }
 
-// 2. Staff Mode Enable Function
+
+/* 2. STAFF MODE ENABLE */
+
 function enableStaffMode() {
-    let pin = prompt("స్టాఫ్ లాక్ సెట్ చేయడానికి లేదా ఎనేబుల్ చేయడానికి 4-అంకెల పిన్ ఎంటర్ చేయండి (ఉదా: 5678):");
-    if(pin) {
-        localStorage.setItem('staff_mode', 'ACTIVE');
-        alert('🔒 స్టాఫ్ మోడ్ ఎనేబుల్ చేయబడింది! ప్రాఫిట్ మరియు రిపోర్ట్స్ లాక్ చేయబడ్డాయి.');
+
+    const pin = prompt(
+        "స్టాఫ్ మోడ్ కోసం 4 అంకెల PIN ఎంటర్ చేయండి:"
+    );
+
+    if (pin === null) return;
+
+    if (!/^\d{4}$/.test(pin)) {
+        alert("దయచేసి 4 అంకెల PIN ఎంటర్ చేయండి.");
+        return;
+    }
+
+    try {
+        localStorage.setItem("staff_mode", "ACTIVE");
+
+        alert(
+            "Staff Mode Enabled!\nProfit Cards దాచబడతాయి."
+        );
+
         location.reload();
+
+    } catch (error) {
+        console.error(error);
+        alert("Staff Mode Enable కాలేదు.");
     }
 }
 
-// 3. Staff Mode Disable Function
+
+/* 3. ADMIN MODE DISABLE */
+
 function disableStaffMode() {
-    let adminPin = prompt("అడ్మిన్ యాక్సెస్ కోసం మాస్టర్ పిన్ ఎంటర్ చేయండి:");
-    if(adminPin === "1234" || adminPin === "9030369283") {
-        localStorage.removeItem('staff_mode');
-        alert('🔓 అడ్మిన్ ఫుల్ యాక్సెస్ రీస్టోర్ చేయబడింది!');
+
+    const adminPin = prompt(
+        "Admin PIN ఎంటర్ చేయండి:"
+    );
+
+    if (adminPin === null) return;
+
+    /*
+      Replace this demo PIN with a secure
+      server-side authentication system.
+    */
+
+    const validAdminPin = "1234";
+
+    if (adminPin === validAdminPin) {
+
+        localStorage.removeItem("staff_mode");
+
+        alert("Admin Mode Restored!");
+
         location.reload();
+
     } else {
-        alert('❌ తప్పు పిన్!');
+
+        alert("తప్పు Admin PIN!");
+
     }
 }
 
-// 4. Page Load Staff Mode Security Check
-try {
-    if(localStorage.getItem('staff_mode') === 'ACTIVE') {
-        let cards = document.querySelectorAll('.card');
-        if(cards) {
-            cards.forEach(card => {
-                if(card && card.innerText && (card.innerText.includes('Profit') || card.innerText.includes('ప్రాఫిట్') || card.innerText.includes('Net Profit'))) {
-                    card.style.display = 'none';
-                }
-            });
-        }
+
+/* 4. STAFF MODE PAGE SECURITY DISPLAY */
+
+function applyStaffMode() {
+
+    try {
+
+        const isStaff =
+            localStorage.getItem("staff_mode") === "ACTIVE";
+
+        if (!isStaff) return;
+
+        const cards = document.querySelectorAll(".card");
+
+        cards.forEach(function (card) {
+
+            const content = card.innerText || "";
+
+            const isProfitCard =
+                /profit|ప్రాఫిట్|net\s*profit/i.test(content);
+
+            if (isProfitCard) {
+                card.style.display = "none";
+            }
+
+        });
+
+    } catch (error) {
+
+        console.error("Staff Mode Error:", error);
+
     }
-} catch (err) {
-    console.error("Error in staff mode script: ", err);
 }
 
+
+/* 5. RUN AFTER PAGE LOAD */
+
+if (document.readyState === "loading") {
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        applyStaffMode
+    );
+
+} else {
+
+    applyStaffMode();
+
+}
 
 
 
