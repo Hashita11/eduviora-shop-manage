@@ -1935,21 +1935,34 @@ td .btn {
 </style>
 </head>
     <body>
-<!-- === PASSWORD LOGIN OVERLAY === -->
-<div id="loginOverlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0f172a; display: flex; justify-content: center; align-items: center; z-index: 9999;">
-    <div class="card p-4 shadow-lg border-0 rounded-4" style="width: 320px; background: #ffffff;">
-        <div class="text-center mb-3">
-            <h4 class="fw-bold text-primary mb-1">🔐 Eduviora Secure</h4>
-            <p class="text-muted" style="font-size: 13px;">Enter your Shop Password to Continue</p>
-        </div>
+<!-- === COLOURFUL SECURE LOGIN OVERLAY === -->
+<div id="loginOverlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #1e3a8a, #0f172a); display: flex; justify-content: center; align-items: center; z-index: 9999; padding: 20px;">
+    
+    <div class="card p-4 shadow-lg border-0 rounded-4 text-center" style="width: 100%; max-width: 360px; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px);">
+        
+        <!-- మీ లోగో మరియు హెడ్డింగ్ -->
         <div class="mb-3">
-            <input type="password" id="shopPasswordInput" class="form-control text-center py-2" placeholder="Enter 4-Digit PIN / Password" style="font-size: 18px; letter-spacing: 3px; border-radius: 8px;">
+            <img src="logo.png" alt="Eduviora Logo" style="width: 65px; height: 65px; object-fit: contain; border-radius: 12px; background: #ffffff; padding: 4px; box-shadow: 0 4px 10px rgba(0,0,0,0.15);" class="mb-2">
+            <h4 class="fw-bold text-dark mb-1" style="font-size: 20px; color: #1e3a8a !important;">EDUVIORA SECURE</h4>
+            <p class="text-muted" style="font-size: 12px;">Enter your Shop PIN to Access Manager</p>
         </div>
-        <button class="btn btn-primary w-100 fw-semibold py-2 shadow-sm" style="border-radius: 8px;" onclick="verifyShopLogin()">
-            Login to Shop Manager
+
+        <!-- పాస్‌వర్డ్ ఇన్పుట్ బాక్స్ -->
+        <div class="mb-3">
+            <input type="password" id="shopPasswordInput" class="form-control text-center py-2 fw-bold" placeholder="••••" style="font-size: 22px; letter-spacing: 6px; border-radius: 10px; border: 2px solid #cbd5e1; background: #f8fafc;" maxlength="6">
+        </div>
+
+        <!-- లాగిన్ బటన్ -->
+        <button class="btn w-100 fw-bold py-2 text-white shadow-sm" style="background: linear-gradient(135deg, #2563eb, #1d4ed8); border-radius: 10px; font-size: 15px;" onclick="verifyShopLogin()">
+            🔓 Login to Shop Manager
         </button>
+
+        <div class="mt-3">
+            <small class="text-muted" style="font-size: 11px;">Protected by Eduviora ERP Systems</small>
+        </div>
     </div>
 </div>
+
 
 <!-- =====================================================
      HEADER
