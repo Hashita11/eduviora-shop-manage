@@ -6115,6 +6115,8 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+   
+// 1. Khata Statement PDF Function
 function generateKhataStatementPDF() {
     let partyName = document.getElementById('statementPartyName').value.trim();
     if(!partyName) {
@@ -6123,43 +6125,44 @@ function generateKhataStatementPDF() {
     }
 
     let printWindow = window.open('', '_blank');
-    printWindow.document.write(`
-        <html>
-        <head>
-            <title>Khata Statement - ${partyName}</title>
-            <style>
-                body { font-family: Arial, sans-serif; padding: 20px; color: #333; }
-                h2 { color: #1e3a8a; text-align: center; }
-                .box { border: 1px solid #ccc; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
-                table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-                th, td { border: 1px solid #ddd; padding: 8px; text-align: left; font-size: 12px; }
-                th { background-color: #f8f9fa; }
-            </style>
-        </head>
-        <body>
-            <h2>EDUVIORA SHOP MANAGER</h2>
-            <div class="box">
-                <p><b>Party Name:</b> ${partyName}</p>
-                <p><b>Statement Date:</b> ${new Date().toLocaleDateString()}</p>
-            </div>
-            <p><i>గమనిక: ఈ పార్టీకి సంబంధించిన పూర్తి లెక్కల వివరాలు ఇక్కడ ముద్రించబడతాయి.</i></p>
-            <br><br>
-            <div style="display: flex; justify-content: space-between;">
-                <span>Authorized Signature</span>
-                <span>Customer Signature</span>
-            </div>
-        </body>
-        </html>
-    `);
-    printWindow.document.close();
-    
-    // ఆటోమేటిక్ ప్రింట్ విండో ఓపెన్ అవ్వడానికి
-    setTimeout(() => {
-        printWindow.focus();
-        printWindow.print();
-    }, 500);
+    if(printWindow) {
+        printWindow.document.write(`
+            <html>
+            <head>
+                <title>Khata Statement - ${partyName}</title>
+                <style>
+                    body { font-family: Arial, sans-serif; padding: 20px; color: #333; }
+                    h2 { color: #1e3a8a; text-align: center; }
+                    .box { border: 1px solid #ccc; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
+                    table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+                    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; font-size: 12px; }
+                    th { background-color: #f8f9fa; }
+                </style>
+            </head>
+            <body>
+                <h2>EDUVIORA SHOP MANAGER</h2>
+                <div class="box">
+                    <p><b>Party Name:</b> ${partyName}</p>
+                    <p><b>Statement Date:</b> ${new Date().toLocaleDateString()}</p>
+                </div>
+                <p><i>గమనిక: ఈ పార్టీకి సంబంధించిన పూర్తి లెక్కల వివరాలు ఇక్కడ ముద్రించబడతాయి.</i></p>
+                <br><br>
+                <div style="display: flex; justify-content: space-between;">
+                    <span>Authorized Signature</span>
+                    <span>Customer Signature</span>
+                </div>
+            </body>
+            </html>
+        `);
+        printWindow.document.close();
+        setTimeout(() => {
+            printWindow.focus();
+            printWindow.print();
+        }, 500);
+    }
 }
 
+// 2. Staff Mode Enable Function
 function enableStaffMode() {
     let pin = prompt("స్టాఫ్ లాక్ సెట్ చేయడానికి లేదా ఎనేబుల్ చేయడానికి 4-అంకెల పిన్ ఎంటర్ చేయండి (ఉదా: 5678):");
     if(pin) {
@@ -6169,6 +6172,7 @@ function enableStaffMode() {
     }
 }
 
+// 3. Staff Mode Disable Function
 function disableStaffMode() {
     let adminPin = prompt("అడ్మిన్ యాక్సెస్ కోసం మాస్టర్ పిన్ ఎంటర్ చేయండి:");
     if(adminPin === "1234" || adminPin === "9030369283") {
@@ -6180,7 +6184,7 @@ function disableStaffMode() {
     }
 }
 
-// పేజ్ లోడ్ అయినప్పుడు స్టాఫ్ మోడ్ చెక్ చేసి రిపోర్ట్స్ హైడ్ చేయడం
+// 4. Page Load Staff Mode Security Check
 window.addEventListener('DOMContentLoaded', () => {
     try {
         if(localStorage.getItem('staff_mode') === 'ACTIVE') {
@@ -6197,6 +6201,8 @@ window.addEventListener('DOMContentLoaded', () => {
         console.error("Error in staff mode script: ", err);
     }
 });
+
+
 
 
 
