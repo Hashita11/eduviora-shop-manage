@@ -35,7 +35,7 @@
 </head>
 <body>
 
-    <!-- === ADMIN LOGIN OVERLAY === -->
+    <!-- === ADMIN LOGIN OVERLAY (ప్రతిసారీ పిన్ అడిగేలా సెట్ చేయబడింది) === -->
     <div id="adminLoginOverlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #1e3a8a, #0f172a); display: flex; justify-content: center; align-items: center; z-index: 9999; padding: 20px;">
         <div class="card p-4 shadow-lg border-0 rounded-4 text-center admin-card" style="width: 100%; max-width: 360px;">
             <div class="mb-3">
@@ -52,7 +52,7 @@
         </div>
     </div>
 
-    <!-- === MAIN ADMIN PANEL === -->
+    <!-- === MAIN ADMIN PANEL (పాస్‌వర్డ్ ఎంటర్ చేస్తేనే ఇది కనిపిస్తుంది) === -->
     <div class="container py-4" id="adminPanelContainer" style="max-width: 520px; display: none;">
         
         <div class="text-center mb-4">
@@ -77,7 +77,7 @@
                     <option value="30" selected>1 Month Plan - ₹199 (నెలవారీ)</option>
                     <option value="365">1 Year Plan - ₹1,999 (వార్షిక)</option>
                 </select>
-                <!-- Feature 1: Custom Expiry Date Picker -->
+                <!-- Custom Expiry Date Picker -->
                 <input type="date" id="customExpiryDate" class="form-control" style="border-radius: 10px; padding: 8px; font-size: 13px;" title="Specific Expiry Date">
                 <small class="text-muted" style="font-size: 10px;">గమనిక: పైన క్యాలెండర్ డేట్ సెలెక్ట్ చేస్తే అదే వర్తిస్తుంది, లేదంటే ప్లాన్ డేస్ వర్తిస్తాయి.</small>
             </div>
@@ -86,7 +86,6 @@
                 <button class="btn text-white fw-bold w-50 py-2 shadow-sm" style="background: linear-gradient(135deg, #2563eb, #1d4ed8); border-radius: 10px; font-size: 13px;" onclick="generateLicenseKey('ACTIVE')">
                     ✨ Generate License
                 </button>
-                <!-- Feature 4: License Block / Revoke Option -->
                 <button class="btn text-white fw-bold w-50 py-2 shadow-sm" style="background: linear-gradient(135deg, #dc2626, #991b1b); border-radius: 10px; font-size: 13px;" onclick="generateLicenseKey('BLOCKED')">
                     🚫 Block License
                 </button>
@@ -105,7 +104,7 @@
             </div>
         </div>
 
-        <!-- Feature 2: Search & Filter in Admin History -->
+        <!-- Search & Filter in Admin History -->
         <div class="card p-3 admin-card border-0 mb-3">
             <div class="d-flex justify-content-between align-items-center mb-2">
                 <h6 class="fw-bold text-dark m-0" style="font-size: 14px;">📜 Shops History</h6>
@@ -137,30 +136,21 @@
 
     <!-- JAVASCRIPT LOGIC -->
     <script>
-        window.addEventListener('DOMContentLoaded', () => {
-            if(sessionStorage.getItem('eduviora_admin_logged') === 'true') {
-                document.getElementById('adminLoginOverlay').style.display = 'none';
-                document.getElementById('adminPanelContainer').style.display = 'block';
-                loadActiveShops();
-            }
-        });
-
+        // అడ్మిన్ పిన్ వెరిఫికేషన్ (డిఫాల్ట్ పిన్: 1234 లేదా 9030369283)
         function verifyAdminLogin() {
             let pin = document.getElementById('adminPinInput').value.trim();
             if(pin === "1234" || pin === "9030369283") {
-                sessionStorage.setItem('eduviora_admin_logged', 'true');
                 document.getElementById('adminLoginOverlay').style.display = 'none';
                 document.getElementById('adminPanelContainer').style.display = 'block';
                 loadActiveShops();
             } else {
-                alert('❌ తప్పు అడ్మిన్ పిన్!');
+                alert('❌ తప్పు అడ్మిన్ పిన్! దయచేసి సరైన పిన్ ఎంటర్ చేయండి.');
                 document.getElementById('adminPinInput').value = '';
             }
         }
 
         let currentLatestCode = "";
 
-        // Feature 1 & 4: Generate License or Block Code
         function generateLicenseKey(statusType) {
             let shopName = document.getElementById('adminShopName').value.trim();
             let customDate = document.getElementById('customExpiryDate').value;
@@ -173,7 +163,7 @@
 
             let expiryStr = "";
             if (customDate) {
-                expiryStr = customDate; // Custom date picker selected
+                expiryStr = customDate;
             } else {
                 let expiryDate = new Date();
                 expiryDate.setDate(expiryDate.getDate() + days);
@@ -183,7 +173,7 @@
             let licenseObj = {
                 shopName: shopName,
                 expiryDate: expiryStr,
-                status: statusType // "ACTIVE" లేదా "BLOCKED"
+                status: statusType
             };
 
             let jsonString = JSON.stringify(licenseObj);
@@ -215,7 +205,6 @@
             window.open(`https://wa.me/?text=` + encodeURIComponent(msg), '_blank');
         }
 
-        // Feature 2: Load & Filter History Table
         function loadActiveShops() {
             renderTable(JSON.parse(localStorage.getItem('eduviora_all_licenses') || '[]'));
         }
