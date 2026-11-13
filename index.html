@@ -6185,22 +6185,21 @@ function disableStaffMode() {
 }
 
 // 4. Page Load Staff Mode Security Check
-window.addEventListener('DOMContentLoaded', () => {
-    try {
-        if(localStorage.getItem('staff_mode') === 'ACTIVE') {
-            let cards = document.querySelectorAll('.card');
-            if(cards) {
-                cards.forEach(card => {
-                    if(card && card.innerText && (card.innerText.includes('Profit') || card.innerText.includes('ప్రాఫిట్') || card.innerText.includes('Net Profit'))) {
-                        card.style.display = 'none';
-                    }
-                });
-            }
+try {
+    if(localStorage.getItem('staff_mode') === 'ACTIVE') {
+        let cards = document.querySelectorAll('.card');
+        if(cards) {
+            cards.forEach(card => {
+                if(card && card.innerText && (card.innerText.includes('Profit') || card.innerText.includes('ప్రాఫిట్') || card.innerText.includes('Net Profit'))) {
+                    card.style.display = 'none';
+                }
+            });
         }
-    } catch (err) {
-        console.error("Error in staff mode script: ", err);
     }
-});
+} catch (err) {
+    console.error("Error in staff mode script: ", err);
+}
+
 
 
 
