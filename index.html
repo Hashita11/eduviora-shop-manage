@@ -1981,6 +1981,23 @@ td .btn {
             </details>
         </div>
 
+                </div>
+            </details>
+        </div>
+
+        <!-- === ఇక్కడ కస్టమర్ లైసెన్స్ యాక్టివేషన్ బాక్స్ పేస్ట్ చేయండి === -->
+        <div class="card p-2 mb-2 mt-2 border-0 rounded-3 shadow-sm bg-light text-start">
+            <h6 class="fw-bold mb-1 text-primary" style="font-size: 13px;">🔑 License Activation</h6>
+            <input type="text" id="customerLicenseInput" class="form-control form-control-sm mb-1" placeholder="లైసెన్స్ కోడ్ ఇక్కడ పేస్ట్ చేయండి" style="font-size: 11px;">
+            <button class="btn btn-sm w-100 fw-semibold text-white shadow-sm" style="background: #2563eb; border-radius: 6px; font-size: 11px; padding: 4px;" onclick="activateCustomerLicense()">
+                Activate License
+            </button>
+        </div>
+        <!-- ========================================================= -->
+
+        <div class="mt-3">
+            <small class="text-muted" style="font-size: 10px;">Protected by Eduviora ERP Systems</small>
+        </div>
 
         <div class="mt-3">
             <small class="text-muted" style="font-size: 10px;">Protected by Eduviora ERP Systems</small>
@@ -5995,6 +6012,58 @@ function forgotPassword() {
         alert('❌ తప్పు రికవరీ కోడ్! దయచేసి సరైన కోడ్ ఎంటర్ చేయండి.');
     }
 }
+
+   // --- CUSTOMER LICENSE ACTIVATION LOGIC ---
+function activateCustomerLicense() {
+    let licenseCode = document.getElementById('customerLicenseInput').value.trim();
+
+    if (!licenseCode) {
+        alert('⚠️ దయచేసి లైసెన్స్ కోడ్ ఎంటర్ చేయండి.');
+        return;
+    }
+
+    try {
+        // మీరు admin.html నుండి ఇచ్చిన కోడ్ మొత్తం లేదా కేవలం ఆ JSON ఆబ్జెక్ట్ ని రీడ్ చేయడానికి
+        // ఉదాహరణకు అడ్మిన్ ఇచ్చే కోడ్: localStorage.setItem('eduviora_license', '{"shopName":"...","expiryDate":"...","status":"ACTIVE"}');
+        
+        if (licenseCode.includes("localStorage.setItem")) {
+            // ఒకవేళ అడ్మిన్ పంపిన పూర్తి కోడింగ్ ని పేస్ట్ చేస్తే దాన్ని ఎగ్జిక్యూట్ చేయడం
+            eval(licenseCode);
+        } else {
+            // కేవలం జెసన్ టెక్స్ట్ ఇస్తే దాన్ని నేరుగా సేవ్ చేయడం
+            let parsedObj = JSON.parse(licenseCode);
+            if(parsedObj.expiryDate) {
+                localStorage.setItem('eduviora_license', JSON.stringify(parsedObj));
+                localStorage.removeItem('eduviora_is_blocked');
+                alert('✅ లైసెన్స్ విజయవంతంగా యాక్టివేట్ చేయబడింది!');
+                location.reload();
+            } else {
+                alert('❌ తప్పు లైసెన్స్ కోడ్! దయచేసి సరైన కోడ్ ఎంటర్ చేయండి.');
+            }
+        }
+    } catch (error) {
+        alert('❌ చెల్లని కోడ్ ఫార్మాట్. దయచేసి అడ్మిన్ పంపిన కోడ్‌ను సరిగ్గా కాపీ చేయండి.');
+    }
+}
+
+// --- యాప్ స్టార్ట్ అయినప్పుడు లైసెన్స్ చెక్ చేసే కోడ్ ---
+window.addEventListener('DOMContentLoaded', () => {
+    let licenseData = localStorage.getItem('eduviora_license');
+    if (licenseData) {
+        try {
+            let license = JSON.parse(licenseData);
+            let today = new Date().toISOString().split('T')[0];
+            
+            if (today > license.expiryDate) {
+                // గడువు తీరిపోతే లాగిన్ / యాక్టివేషన్ స్క్రీన్ చూపించడం
+                console.log("License Expired!");
+                // కావాలంటే ఇక్కడ యూజర్‌కు రెన్యూవల్ అలర్ట్ చూపవచ్చు
+            }
+        } catch (e) {
+            console.log("Invalid license data");
+        }
+    }
+});
 
 </script>
 
