@@ -5691,7 +5691,10 @@ function addKhataEntry() {
     });
 
     localStorage.setItem('edu_khata', JSON.stringify(khataEntries));
-
+logStaffActivity(
+    "Khata Entry",
+    name + " - ₹" + amount + " - " + date
+);
     updateKhataUI();
 
     document.getElementById('partyName').value = '';
@@ -6550,7 +6553,31 @@ window.addEventListener("DOMContentLoaded", function () {
     applyStaffRestrictions();
 });
 
+// =====================================
+// EDUVIORA STAFF ACTIVITY LOGGER
+// =====================================
 
+function logStaffActivity(action, details = "") {
+    try {
+        const key = "edu_staff_activity_log";
+        let logs = JSON.parse(localStorage.getItem(key) || "[]");
+
+        logs.push({
+            action: String(action),
+            details: String(details),
+            date: new Date().toLocaleString("en-IN")
+        });
+
+        // Keep only the latest 1000 activities
+        if (logs.length > 1000) {
+            logs = logs.slice(-1000);
+        }
+
+        localStorage.setItem(key, JSON.stringify(logs));
+    } catch (error) {
+        console.error("Activity Log Error:", error);
+    }
+}
 
    
 </script>
