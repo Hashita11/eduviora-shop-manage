@@ -6179,10 +6179,17 @@ function generateKhataStatementPDF() {
         }
 
         // Existing Khata data నుంచి ఆ పార్టీ లావాదేవీలు తీసుకోవడం
-        const entries = khataEntries.filter(entry =>
-            String(entry.name || "").trim().toLowerCase() ===
-            partyName.toLowerCase()
-        );
+        const entries = khataEntries
+    .filter(entry =>
+        String(entry.name || "").trim().toLowerCase() ===
+        partyName.toLowerCase()
+    )
+    .sort((a, b) => {
+        if (!a.date && !b.date) return 0;
+        if (!a.date) return -1;
+        if (!b.date) return 1;
+        return a.date.localeCompare(b.date);
+    });
 
         if (entries.length === 0) {
             alert("ఈ పార్టీకి సంబంధించిన లావాదేవీలు కనబడలేదు.");
@@ -6213,6 +6220,16 @@ function generateKhataStatementPDF() {
                 maximumFractionDigits: 2
             });
         }
+       
+// Transaction Date Format
+function formatKhataDate(date) {
+    if (!date) return "Date not available";
+
+    const parts = date.split("-");
+    if (parts.length !== 3) return safeText(date);
+
+    return `${parts[2]}-${parts[1]}-${parts[0]}`;
+}
 
         let totalDebit = 0;
         let totalCredit = 0;
@@ -6234,7 +6251,7 @@ function generateKhataStatementPDF() {
             rows += `
                 <tr>
                     <td>${index + 1}</td>
-                    <td>${safeText(entry.date || "Date not available")}</td>
+                    <td>${formatKhataDate(entry.date)}</td>
                     <td>${safeText(entry.name)}</td>
                     <td>${debit ? "₹" + money(debit) : "-"}</td>
                     <td>${credit ? "₹" + money(credit) : "-"}</td>
