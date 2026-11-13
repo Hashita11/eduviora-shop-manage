@@ -5670,17 +5670,55 @@ window.addEventListener(
     renderProducts();
         // 2. Khata Ledger Logic
         let khataEntries = JSON.parse(localStorage.getItem('edu_khata')) || [];
-        function addKhataEntry() {
-            let name = document.getElementById('partyName').value;
-            let type = document.getElementById('partyType').value;
-            let amount = parseFloat(document.getElementById('partyAmount').value);
-            if(!name || isNaN(amount)) { alert('అన్ని వివరాలు నమోదు చేయండి.'); return; }
-            khataEntries.push({ name, type, amount });
-            localStorage.setItem('edu_khata', JSON.stringify(khataEntries));
-            updateKhataUI();
-            document.getElementById('partyName').value = '';
-            document.getElementById('partyAmount').value = '';
-        }
+        
+function addKhataEntry() {
+    let name = document.getElementById('partyName').value.trim();
+    let type = document.getElementById('partyType').value;
+    let amount = parseFloat(document.getElementById('partyAmount').value);
+    let dateInput = document.getElementById('partyDate');
+    let date = dateInput.value;
+
+    if (!name || isNaN(amount) || amount <= 0 || !date) {
+        alert('పార్టీ పేరు, తేదీ, సరైన మొత్తం నమోదు చేయండి.');
+        return;
+    }
+
+    khataEntries.push({
+        name: name,
+        type: type,
+        amount: amount,
+        date: date
+    });
+
+    localStorage.setItem('edu_khata', JSON.stringify(khataEntries));
+
+    updateKhataUI();
+
+    document.getElementById('partyName').value = '';
+    document.getElementById('partyAmount').value = '';
+
+    // కొత్త Entry కోసం ఈరోజు తేదీని ఉంచడం
+    setKhataDateDefault();
+
+    alert('Khata Entry తేదీతో విజయవంతంగా Save అయింది.');
+}
+
+function setKhataDateDefault() {
+    const dateInput = document.getElementById('partyDate');
+    if (!dateInput) return;
+
+    const now = new Date();
+    const localDate = [
+        now.getFullYear(),
+        String(now.getMonth() + 1).padStart(2, '0'),
+        String(now.getDate()).padStart(2, '0')
+    ].join('-');
+
+    dateInput.value = localDate;
+}
+
+setKhataDateDefault();
+
         function updateKhataUI() {
             let summary = document.getElementById('khataSummary');
             if(!summary) return;
@@ -6196,7 +6234,7 @@ function generateKhataStatementPDF() {
             rows += `
                 <tr>
                     <td>${index + 1}</td>
-                    <td>Date not recorded</td>
+                    <td>${safeText(entry.date || "Date not available")}</td>
                     <td>${safeText(entry.name)}</td>
                     <td>${debit ? "₹" + money(debit) : "-"}</td>
                     <td>${credit ? "₹" + money(credit) : "-"}</td>
