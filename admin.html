@@ -61,6 +61,34 @@
             <p class="text-light opacity-75" style="font-size: 13px;">Advanced Shop License Manager</p>
         </div>
         
+        <!-- STAFF ACTIVITY LOG -->
+<div class="card p-3 mb-4 shadow-sm">
+    <h5 class="text-primary fw-bold">
+        📋 Staff Activity Log
+    </h5>
+
+    <button class="btn btn-primary mb-3"
+            onclick="showStaffActivityLog()">
+        Refresh Activity Log
+    </button>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-sm">
+            <thead>
+                <tr>
+                    <th>Date & Time</th>
+                    <th>Activity</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody id="staffActivityTable">
+                <tr>
+                    <td colspan="3">No Activity Found</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
         <!-- Add / Renew Shop Card -->
         <div class="card p-4 admin-card border-0 mb-3">
             <h5 class="fw-bold mb-3 text-dark" style="font-size: 16px;">👑 Manage Shop License</h5>
@@ -148,7 +176,8 @@
                 document.getElementById('adminPinInput').value = '';
             }
         }
-
+        
+showStaffActivityLog();
         let currentLatestCode = "";
 
         function generateLicenseKey(statusType) {
@@ -250,6 +279,40 @@
                 loadActiveShops();
             }
         }
+
+        // =====================================
+// ADMIN - STAFF ACTIVITY LOG
+// =====================================
+
+function showStaffActivityLog() {
+    const logs = JSON.parse(
+        localStorage.getItem("edu_staff_activity_log") || "[]"
+    );
+
+    const table = document.getElementById("staffActivityTable");
+
+    if (!table) return;
+
+    if (logs.length === 0) {
+        table.innerHTML =
+            '<tr><td colspan="3">No Activity Found</td></tr>';
+        return;
+    }
+
+    table.innerHTML = logs.slice().reverse().map(log => `
+        <tr>
+            <td>${escapeActivityText(log.date)}</td>
+            <td>${escapeActivityText(log.action)}</td>
+            <td>${escapeActivityText(log.details)}</td>
+        </tr>
+    `).join("");
+}
+
+function escapeActivityText(value) {
+    const div = document.createElement("div");
+    div.textContent = String(value ?? "");
+    return div.innerHTML;
+}
     </script>
 </body>
 </html>
