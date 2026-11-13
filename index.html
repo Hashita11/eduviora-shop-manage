@@ -6124,9 +6124,10 @@ window.addEventListener('DOMContentLoaded', () => {
 /* 1. KHATA STATEMENT PDF */
 
 function generateKhataStatementPDF() {
+
+function generateKhataStatementPDF() {
     try {
-        const partyInput =
-            document.getElementById("statementPartyName");
+        const partyInput = document.getElementById("statementPartyName");
 
         if (!partyInput) {
             alert("Khata Party Name field కనబడలేదు.");
@@ -6140,6 +6141,17 @@ function generateKhataStatementPDF() {
             return;
         }
 
+        // Existing Khata data నుంచి ఆ పార్టీ లావాదేవీలు తీసుకోవడం
+        const entries = khataEntries.filter(entry =>
+            String(entry.name || "").trim().toLowerCase() ===
+            partyName.toLowerCase()
+        );
+
+        if (entries.length === 0) {
+            alert("ఈ పార్టీకి సంబంధించిన లావాదేవీలు కనబడలేదు.");
+            return;
+        }
+
         const printWindow = window.open("", "_blank");
 
         if (!printWindow) {
@@ -6147,47 +6159,99 @@ function generateKhataStatementPDF() {
             return;
         }
 
-        const safePartyName = partyName.replace(
-            /[&<>"']/g,
-            function (char) {
-                return {
-                    "&": "&amp;",
-                    "<": "&lt;",
-                    ">": "&gt;",
-                    '"': "&quot;",
-                    "'": "&#39;"
-                }[char];
-            }
-        );
+        // HTML special characters నుంచి రక్షణ
+        function safeText(value) {
+            return String(value ?? "").replace(/[&<>"']/g, char => ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#39;"
+            }[char]));
+        }
+
+        function money(value) {
+            return Number(value || 0).toLocaleString("en-IN", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+        }
+
+        let totalDebit = 0;
+        let totalCredit = 0;
+        let balance = 0;
+        let rows = "";
+
+        entries.forEach((entry, index) => {
+            const amount = Number(entry.amount) || 0;
+
+            // get = Customer నుంచి రావాల్సిన మొత్తం (Debit)
+            // give = Customerకు చెల్లించాల్సిన మొత్తం (Credit)
+            const debit = entry.type === "get" ? amount : 0;
+            const credit = entry.type === "give" ? amount : 0;
+
+            totalDebit += debit;
+            totalCredit += credit;
+            balance += debit - credit;
+
+            rows += `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>Date not recorded</td>
+                    <td>${safeText(entry.name)}</td>
+                    <td>${debit ? "₹" + money(debit) : "-"}</td>
+                    <td>${credit ? "₹" + money(credit) : "-"}</td>
+                    <td>₹${money(balance)}</td>
+                </tr>
+            `;
+        });
 
         const today = new Date().toLocaleDateString("en-IN");
 
         printWindow.document.open();
-
         printWindow.document.write(`
             <!DOCTYPE html>
-            <html>
+            <html lang="en">
             <head>
                 <meta charset="UTF-8">
-                <title>Khata Statement</title>
+                <title>Khata Statement - ${safeText(partyName)}</title>
 
                 <style>
                     body {
                         font-family: Arial, sans-serif;
                         padding: 25px;
-                        color: #333;
+                        color: #263445;
                     }
 
                     h2 {
-                        color: #1e3a8a;
                         text-align: center;
+                        color: #0752a8;
+                        margin-bottom: 5px;
                     }
 
-                    .box {
-                        border: 1px solid #ccc;
-                        padding: 15px;
+                    h3 {
+                        text-align: center;
+                        margin-top: 5px;
+                    }
+
+                    .details {
+                        border: 1px solid #d5dce5;
                         border-radius: 8px;
-                        margin-bottom: 20px;
+                        padding: 12px;
+                        margin: 20px 0;
+                    }
+
+                    .summary {
+                        display: flex;
+                        gap: 10px;
+                        margin: 15px 0;
+                    }
+
+                    .summary div {
+                        flex: 1;
+                        padding: 12px;
+                        background: #f1f5f9;
+                        border-radius: 7px;
                     }
 
                     table {
@@ -6197,76 +6261,100 @@ function generateKhataStatementPDF() {
                     }
 
                     th, td {
-                        border: 1px solid #ddd;
-                        padding: 8px;
+                        border: 1px solid #d5dce5;
+                        padding: 9px;
                         text-align: left;
                         font-size: 12px;
                     }
 
                     th {
+                        background: #eaf1fb;
+                        color: #0752a8;
+                    }
+
+                    .final {
+                        margin-top: 15px;
+                        padding: 12px;
                         background: #f1f5f9;
+                        font-weight: bold;
+                        text-align: right;
                     }
 
                     .signatures {
                         display: flex;
                         justify-content: space-between;
-                        margin-top: 80px;
+                        margin-top: 75px;
+                    }
+
+                    button {
+                        padding: 12px 20px;
+                        background: #0752a8;
+                        color: white;
+                        border: 0;
+                        border-radius: 6px;
+                        margin-top: 25px;
                     }
 
                     @media print {
-                        button {
-                            display: none;
-                        }
+                        button { display: none; }
+                        body { padding: 10px; }
                     }
                 </style>
             </head>
 
             <body>
-
                 <h2>EDUVIORA SHOP MANAGER</h2>
-                <h3 style="text-align:center">
-                    KHATA STATEMENT
-                </h3>
+                <h3>KHATA STATEMENT</h3>
 
-                <div class="box">
-                    <p><b>Party Name:</b> ${safePartyName}</p>
+                <div class="details">
+                    <p><b>Party Name:</b> ${safeText(partyName)}</p>
                     <p><b>Statement Date:</b> ${today}</p>
+                    <p><b>Total Transactions:</b> ${entries.length}</p>
                 </div>
 
-                <p>
-                    ఈ పార్టీకి సంబంధించిన లావాదేవీల వివరాలు
-                    క్రింది పట్టికలో ఉంటాయి.
-                </p>
+                <div class="summary">
+                    <div>
+                        <b>Total Debit</b><br>
+                        ₹${money(totalDebit)}
+                    </div>
+                    <div>
+                        <b>Total Credit</b><br>
+                        ₹${money(totalCredit)}
+                    </div>
+                </div>
 
                 <table>
                     <thead>
                         <tr>
+                            <th>S.No</th>
                             <th>Date</th>
-                            <th>Description</th>
+                            <th>Party</th>
                             <th>Debit</th>
                             <th>Credit</th>
                             <th>Balance</th>
                         </tr>
                     </thead>
-
                     <tbody>
-                        <tr>
-                            <td colspan="5">
-                                Transaction data integration pending
-                            </td>
-                        </tr>
+                        ${rows}
                     </tbody>
                 </table>
+
+                <div class="final">
+                    ${
+                        balance > 0
+                        ? "Amount Receivable: ₹" + money(balance)
+                        : balance < 0
+                        ? "Amount Payable: ₹" + money(Math.abs(balance))
+                        : "Balance Settled: ₹0.00"
+                    }
+                </div>
 
                 <div class="signatures">
                     <span>Authorized Signature</span>
                     <span>Customer Signature</span>
                 </div>
 
-                <button onclick="window.print()">
-                    Print / Save as PDF
-                </button>
-
+                <button onclick="window.print()">Print / Save as PDF</button>
             </body>
             </html>
         `);
@@ -6283,9 +6371,6 @@ function generateKhataStatementPDF() {
         alert("Khata Statement తయారీలో సమస్య వచ్చింది.");
     }
 }
-
-
-
 
 
 
