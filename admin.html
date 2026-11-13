@@ -4,52 +4,170 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eduviora Admin Control Panel</title>
+    <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a, #1e3a8a);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .admin-card {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        .brand-logo {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            border-radius: 12px;
+            background: #ffffff;
+            padding: 4px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+    </style>
 </head>
-<body class="bg-light">
+<body>
 
-    <div class="container py-5">
-        <h2 class="text-center fw-bold text-primary mb-4">👑 Eduviora Shop Manager - Admin Panel</h2>
-        
-        <!-- Add / Renew Shop Card -->
-        <div class="card p-4 shadow-sm rounded-4 border-0 mb-4 bg-white">
-            <h5 class="fw-bold mb-3 text-success">➕ Extend / Register Shop License</h5>
+    <!-- === 1. ADMIN LOGIN OVERLAY (సెక్యూరిటీ పిన్ స్క్రీన్) === -->
+    <div id="adminLoginOverlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #1e3a8a, #0f172a); display: flex; justify-content: center; align-items: center; z-index: 9999; padding: 20px;">
+        <div class="card p-4 shadow-lg border-0 rounded-4 text-center admin-card" style="width: 100%; max-width: 360px;">
             <div class="mb-3">
-                <label class="form-label fw-bold">Shop Name / ID:</label>
-                <input type="text" id="adminShopName" class="form-control" placeholder="ఉదాహరణకు: Sri Venkateswara General Store">
+                <img src="logo.png" alt="Eduviora Logo" class="brand-logo mb-2">
+                <h4 class="fw-bold mb-1" style="font-size: 18px; color: #1e3a8a;">ADMIN SECURITY</h4>
+                <p class="text-muted" style="font-size: 11px;">Enter Master PIN to Access Control Panel</p>
             </div>
             <div class="mb-3">
-                <label class="form-label fw-bold">Select Plan / Days to Extend:</label>
-                <select id="adminPlanDays" class="form-select">
+                <input type="password" id="adminPinInput" class="form-control text-center py-2 fw-bold" placeholder="••••" style="font-size: 20px; letter-spacing: 6px; border-radius: 10px;" maxlength="10">
+            </div>
+            <button class="btn w-100 fw-bold py-2 text-white shadow-sm" style="background: linear-gradient(135deg, #2563eb, #1d4ed8); border-radius: 10px; font-size: 14px;" onclick="verifyAdminLogin()">
+                🔓 Login to Admin Panel
+            </button>
+        </div>
+    </div>
+
+    <!-- === 2. MAIN ADMIN PANEL (ప్రధాన అడ్మిన్ ప్యానెల్) === -->
+    <div class="container py-4" id="adminPanelContainer" style="max-width: 520px; display: none;">
+        
+        <!-- Header with Logo -->
+        <div class="text-center mb-4">
+            <img src="logo.png" alt="Eduviora Logo" class="brand-logo mb-2">
+            <h3 class="fw-bold text-white mb-1" style="font-size: 22px;">EDUVIORA ADMIN</h3>
+            <p class="text-light opacity-75" style="font-size: 13px;">Shop License & Subscription Manager</p>
+        </div>
+        
+        <!-- Add / Renew Shop Card -->
+        <div class="card p-4 admin-card border-0 mb-3">
+            <h5 class="fw-bold mb-3 text-dark" style="font-size: 16px;">👑 Extend / Register Shop License</h5>
+            
+            <div class="mb-3">
+                <label class="form-label fw-semibold text-secondary" style="font-size: 13px;">Shop Name / ID:</label>
+                <input type="text" id="adminShopName" class="form-control" placeholder="ఉదాహరణకు: Sudeep Fancy" style="border-radius: 10px; padding: 10px;">
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label fw-semibold text-secondary" style="font-size: 13px;">Select Plan / Days to Extend:</label>
+                <select id="adminPlanDays" class="form-select" style="border-radius: 10px; padding: 10px;">
                     <option value="7">7 Days Trial (ఫ్రీ ట్రయల్)</option>
                     <option value="30">1 Month Plan - ₹199 (నెలవారీ)</option>
                     <option value="365">1 Year Plan - ₹1,999 (వార్షిక)</option>
                 </select>
             </div>
-            <button class="btn btn-success fw-bold w-100 py-2" onclick="generateLicenseKey()">Generate & Activate License</button>
+            
+            <button class="btn text-white fw-bold w-100 py-2 shadow-sm mb-2" style="background: linear-gradient(135deg, #2563eb, #1d4ed8); border-radius: 10px;" onclick="generateLicenseKey()">
+                ✨ Generate & Save License
+            </button>
         </div>
 
-        <!-- Result / Output Key -->
-        <div id="resultBox" class="card p-3 shadow-sm rounded-4 border-0 bg-white d-none">
-            <h6 class="fw-bold text-dark">📋 Generated License Details:</h6>
+        <!-- Result / Output Key & WhatsApp Share -->
+        <div id="resultBox" class="card p-3 admin-card border-0 mb-3 d-none">
+            <h6 class="fw-bold text-dark mb-2" style="font-size: 14px;">📋 Generated License Details:</h6>
             <p id="outputDetails" class="text-muted small mb-2"></p>
-            <textarea id="outputJson" class="form-control font-monospace small" rows="3" readonly></textarea>
-            <p class="text-success small mt-2 mb-0">👉 ఈ కోడ్‌ను కాపీ చేసి షాప్ ఓనర్‌కి వాట్సాప్‌లో పంపండి లేదా వారి మొబైల్‌లో సెట్ చేయండి.</p>
+            <textarea id="outputJson" class="form-control font-monospace small mb-2 bg-light" rows="3" readonly style="font-size: 11px; border-radius: 8px;"></textarea>
+            
+            <!-- Direct Buttons: Copy & WhatsApp Share -->
+            <div class="d-flex gap-2">
+                <button class="btn btn-sm btn-outline-primary w-50 fw-semibold" onclick="copyLicenseCode()">📋 Copy Code</button>
+                <button class="btn btn-sm btn-success w-50 fw-semibold" onclick="shareOnWhatsApp()">💬 Share on WhatsApp</button>
+            </div>
+        </div>
+
+        <!-- Active Shops History List (ట్రాకింగ్ కోసం) -->
+        <div class="card p-3 admin-card border-0 mb-3">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <h6 class="fw-bold text-dark m-0" style="font-size: 14px;">📜 Generated Shops History</h6>
+                <button class="btn btn-sm btn-outline-danger py-0 px-2" style="font-size: 11px;" onclick="clearHistory()">Clear All</button>
+            </div>
+            <div class="table-responsive" style="max-height: 200px; overflow-y: auto;">
+                <table class="table table-sm table-striped mb-0" style="font-size: 11px;">
+                    <thead>
+                        <tr>
+                            <th>Shop Name</th>
+                            <th>Expiry Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="activeShopsTableBody">
+                        <!-- Dynamic rows -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="text-center mt-3">
+            <small class="text-white opacity-50" style="font-size: 11px;">Protected by Eduviora ERP Systems</small>
         </div>
 
     </div>
 
+    <!-- === 3. JAVASCRIPT LOGIC === -->
     <script>
+        // పేజ్ ఓపెన్ అయినప్పుడు అడ్మిన్ ఆల్రెడీ లాగిన్ అయి ఉన్నాడో లేదో చెక్ చేయడం
+        window.addEventListener('DOMContentLoaded', () => {
+            if(sessionStorage.getItem('eduviora_admin_logged') === 'true') {
+                document.getElementById('adminLoginOverlay').style.display = 'none';
+                document.getElementById('adminPanelContainer').style.display = 'block';
+                loadActiveShops();
+            }
+        });
+
+        // 1. అడ్మిన్ పిన్ వెరిఫికేషన్ (డిఫాల్ట్ పిన్: 1234 లేదా మీ నంబర్ 9030369283)
+        function verifyAdminLogin() {
+            let pin = document.getElementById('adminPinInput').value.trim();
+            let masterPin1 = "1234";
+            let masterPin2 = "9030369283";
+
+            if(pin === masterPin1 || pin === masterPin2) {
+                sessionStorage.setItem('eduviora_admin_logged', 'true');
+                document.getElementById('adminLoginOverlay').style.display = 'none';
+                document.getElementById('adminPanelContainer').style.display = 'block';
+                loadActiveShops();
+            } else {
+                alert('❌ తప్పు అడ్మిన్ పిన్! దయచేసి సరైన పిన్ ఎంటర్ చేయండి.');
+                document.getElementById('adminPinInput').value = '';
+            }
+        }
+
+        let currentLatestCode = "";
+
+        // 2. లైసెన్స్ కోడ్ జనరేట్ చేసి హిస్టరీలో సేవ్ చేయడం
         function generateLicenseKey() {
-            let shopName = document.getElementById('adminShopName').value;
+            let shopName = document.getElementById('adminShopName').value.trim();
             let days = parseInt(document.getElementById('adminPlanDays').value);
 
             if(!shopName) {
-                alert('దయచేసి షాప్ పేరు ఎంటర్ చేయండి.');
+                alert('⚠️ దయచేసి షాప్ పేరు ఎంటర్ చేయండి.');
                 return;
             }
 
-            // గడువు తేదీ లెక్కించడం
             let expiryDate = new Date();
             expiryDate.setDate(expiryDate.getDate() + days);
             let expiryStr = expiryDate.toISOString().split('T')[0];
@@ -61,11 +179,78 @@
             };
 
             let jsonString = JSON.stringify(licenseObj);
+            currentLatestCode = `localStorage.setItem('eduviora_license', '${jsonString}'); location.reload();`;
 
-            // రిజల్ట్ చూపించడం
+            // LocalStorage హిస్టరీలో యాడ్ చేయడం
+            let history = JSON.parse(localStorage.getItem('eduviora_all_licenses') || '[]');
+            history.unshift({ shopName: shopName, expiryDate: expiryStr, code: currentLatestCode });
+            localStorage.setItem('eduviora_all_licenses', JSON.stringify(history));
+
+            // రిజల్ట్ బాక్స్ చూపించడం
             document.getElementById('resultBox').classList.remove('d-none');
-            document.getElementById('outputDetails').innerHTML = `<b>Shop:</b> ${shopName} <br><b>Valid Till:</b> ${expiryStr}`;
-            document.getElementById('outputJson').value = `localStorage.setItem('eduviora_license', '${jsonString}'); location.reload();`;
+            document.getElementById('outputDetails').innerHTML = `<b>Shop:</b> ${shopName} <br><b>Valid Till:</b> <span class="text-success fw-bold">${expiryStr}</span>`;
+            document.getElementById('outputJson').value = currentLatestCode;
+
+            loadActiveShops();
+        }
+
+        // 3. కాపీ కోడ్ ఫంక్షన్
+        function copyLicenseCode() {
+            let outputBox = document.getElementById('outputJson');
+            outputBox.select();
+            navigator.clipboard.writeText(outputBox.value);
+            alert('📋 లైసెన్స్ కోడ్ కాపీ చేయబడింది!');
+        }
+
+        // 4. డైరెక్ట్ వాట్సాప్ షేర్ బటన్
+        function shareOnWhatsApp() {
+            if(!currentLatestCode) return;
+            let shopName = document.getElementById('adminShopName').value.trim();
+            let msg = `Hello! Your Eduviora Shop Manager license for *${shopName}* has been generated/renewed. Please paste this code in your app activation box:\n\n${currentLatestCode}`;
+            let whatsappUrl = `https://wa.me/?text=` + encodeURIComponent(msg);
+            window.open(whatsappUrl, '_blank');
+        }
+
+        // 5. సేవ్ అయిన షాప్స్ టేబుల్ లోడ్ చేయడం
+        function loadActiveShops() {
+            let tbody = document.getElementById('activeShopsTableBody');
+            tbody.innerHTML = '';
+            let history = JSON.parse(localStorage.getItem('eduviora_all_licenses') || '[]');
+
+            if(history.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="3" class="text-center text-muted">No history found</td></tr>`;
+                return;
+            }
+
+            history.forEach((item, index) => {
+                let tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="fw-semibold">${item.shopName}</td>
+                    <td class="text-success">${item.expiryDate}</td>
+                    <td><button class="btn btn-sm btn-outline-secondary py-0 px-1" style="font-size: 10px;" onclick="reUseCode(${index})">Use</button></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // హిస్టరీ నుండి కోడ్ మళ్ళీ రియూస్ చేసుకోవడానికి
+        function reUseCode(index) {
+            let history = JSON.parse(localStorage.getItem('eduviora_all_licenses') || '[]');
+            if(history[index]) {
+                currentLatestCode = history[index].code;
+                document.getElementById('resultBox').classList.remove('d-none');
+                document.getElementById('outputDetails').innerHTML = `<b>Shop:</b> ${history[index].shopName} <br><b>Valid Till:</b> <span class="text-success fw-bold">${history[index].expiryDate}</span>`;
+                document.getElementById('outputJson').value = currentLatestCode;
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // హిస్టరీ క్లియర్ చేయడానికి
+        function clearHistory() {
+            if(confirm('అన్ని హిస్టరీ వివరాలు తొలగించాలా?')) {
+                localStorage.removeItem('eduviora_all_licenses');
+                loadActiveShops();
+            }
         }
     </script>
 </body>
