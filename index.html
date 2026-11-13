@@ -6177,25 +6177,26 @@ function disableStaffMode() {
         alert('❌ తప్పు పిన్!');
     }
 }
-
-// పేజ్ లోడ్ అయినప్పుడు స్టాఫ్ మోడ్ చెక్ చేసి ప్రాఫిట్ & రిపోర్ట్స్ హైడ్ చేయడం
+// పేజ్ లోడ్ అయినప్పుడు స్టాఫ్ మోడ్ ఉంటే ప్రాఫిట్ & రిపోర్ట్స్ ఆటోమేటిక్‌గా హైడ్ చేయడం
 window.addEventListener('DOMContentLoaded', () => {
     if(localStorage.getItem('staff_mode') === 'ACTIVE') {
-        console.log("Staff Restricted Mode is Active");
-        
-        // ప్రాఫిట్ కార్డ్స్ లేదా రిపోర్ట్స్ సెక్షన్‌ను హైడ్ చేయడానికి (లేదా బ్లర్ చేయడానికి)
-        // మీ హెచ్‌టిఎమ్‌ఎల్ ఐడీల ప్రకారం ఇక్కడ సెలెక్ట్ చేసుకోవచ్చు
-        let profitCards = document.querySelectorAll('.card'); // లేదా ప్రాఫిట్ ఉన్న పర్టికులర్ ఎలిమెంట్
-        
-        // ఉదాహరణకు రిపోర్ట్స్ ట్యాబ్ లేదా ప్రాఫిట్ అమౌంట్‌ను కనిపించకుండా చేయడం:
-        // మీరు Reports పేజీకి వెళ్లకుండా బ్లాక్ చేయవచ్చు:
-        let reportsTab = document.querySelector('a[href*="reports"], .reports-section'); 
-        if(reportsTab) {
-            reportsTab.style.display = 'none'; // లేదా డిసేబుల్ చేయడం
-        }
-        
-        // స్టాఫ్ మోడ్ యాక్టివ్‌లో ఉందని హెచ్చరిక చూపించవచ్చు
-        console.scream ? '' : console.log("Staff mode restrictions applied.");
+        console.log("Staff Restricted Mode is Active - Locking Profit & Reports");
+
+        // 1. పేజీలోని అన్ని కార్డ్స్‌ను చెక్ చేసి 'Profit' లేదా 'ప్రాఫిట్' ఉన్నవాటిని హైడ్ చేయడం
+        let cards = document.querySelectorAll('.card');
+        cards.forEach(card => {
+            if(card.innerText.includes('Profit') || card.innerText.includes('ప్రాఫిట్') || card.innerText.includes('Net Profit')) {
+                card.style.display = 'none';
+            }
+        });
+
+        // 2. బాటమ్ నావిగేషన్ లేదా మెనూలో ఉన్న 'Reports' లేదా 'రిపోర్ట్స్' బటన్‌ను హైడ్ చేయడం
+        let navButtons = document.querySelectorAll('a, button, div');
+        navButtons.forEach(btn => {
+            if(btn.innerText.includes('Reports') || btn.innerText.includes('రిపోర్ట్స్') || btn.innerText.includes('Monthly Report')) {
+                btn.style.display = 'none';
+            }
+        });
     }
 });
 
