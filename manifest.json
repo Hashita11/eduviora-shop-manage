@@ -1,0 +1,25 @@
+{
+  "name": "Eduviora Shop Manager",
+  "short_name": "Eduviora Shop",
+  "description": "Income, expense, profit & balance management software for small shops and businesses.",
+  "start_url": "/eduviora-shop-manage/index.html",
+  "scope": "/eduviora-shop-manage/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0A192F",
+  "theme_color": "#0A192F",
+  "icons": [
+    {
+      "src": "logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
