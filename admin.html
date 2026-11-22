@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="te">
 <head>
+    <link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0A192F">
+<link rel="apple-touch-icon" href="logo.png">
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eduviora Admin Control Panel</title>
@@ -313,6 +317,17 @@ function escapeActivityText(value) {
     div.textContent = String(value ?? "");
     return div.innerHTML;
 }
+        
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js')
+        .then((reg) => console.log('SW registered:', reg.scope))
+        .catch((err) => console.error('SW error:', err));
+    });
+  }
+
+
+        
     </script>
 </body>
 </html>
